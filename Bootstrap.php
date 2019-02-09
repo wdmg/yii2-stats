@@ -28,7 +28,7 @@ class Bootstrap implements BootstrapInterface
             true
         );*/
 
-        if(!($app instanceof ConsoleApplication)) {
+        if(!($app instanceof \yii\console\Application)) {
 
             // View behavior to render counter
             $app->get('view')->attachBehavior('behaviors/ViewBehavior', [
