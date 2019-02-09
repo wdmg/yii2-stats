@@ -40,22 +40,34 @@ class Module extends \yii\base\Module
     public $missingTranslation;
 
     /**
-     * Collect statistics
+     * Flag, collect statistics
      * @var boolean
      */
     public $collectStats = true;
 
     /**
-     * Do not collect statistics in dev mode
+     * Flag, do not collect statistics in dev mode
      * @var boolean
      */
     public $ignoreDev = true;
 
     /**
-     * Do not collect statistics for ajax-requests
+     * Flag, do not collect statistics for ajax-requests
      * @var boolean
      */
     public $ignoreAjax = true;
+
+    /**
+     * List of ignored IP`s
+     * @var array
+     */
+    public $ignoreListIp = ['::1', '127.0.0.1'];
+
+    /**
+     * List of ignored User Agents
+     * @var array
+     */
+    public $ignoreListUA = [];
 
     /**
      * Cookie name

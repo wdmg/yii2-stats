@@ -33,6 +33,22 @@ class ControllerBehavior extends \yii\base\Behavior
         }
 
         $request = Yii::$app->request;
+
+        // Ignoring by User IP
+        if (in_array($request->userIP, $module->ignoreListIp)) {
+            return;
+        }
+
+        // Ignoring by User Agent
+        if (count($module->ignoreListUA) > 0) {
+            foreach($module->ignoreListUA as $user_agent) {
+
+                if(stripos($request->userAgent, $user_agent) !== false)
+                    return;
+
+            }
+        }
+
         $cookies = Yii::$app->request->getCookies();
 
         if (!$cookies->has($module->cookieName)) {
