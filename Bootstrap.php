@@ -30,6 +30,11 @@ class Bootstrap implements BootstrapInterface
 
         if(!($app instanceof ConsoleApplication)) {
 
+            // View behavior to render counter
+            $app->get('view')->attachBehavior('behaviors/ViewBehavior', [
+                'class' => ViewBehavior::class,
+            ]);
+
             // Controller behavior to write stat data
             if($module->collectStats) {
                 $app->attachBehavior('behaviors/ControllerBehavior', [
