@@ -35,8 +35,10 @@ class ControllerBehavior extends \yii\base\Behavior
         $request = Yii::$app->request;
 
         // Ignoring by User IP
-        if (in_array($request->userIP, $module->ignoreListIp)) {
-            return;
+        if (count($module->ignoreListIp) > 0) {
+            if (in_array($request->userIP, $module->ignoreListIp)) {
+                return;
+            }
         }
 
         // Ignoring by User Agent
@@ -70,11 +72,56 @@ class ControllerBehavior extends \yii\base\Behavior
         $visitor->referer_uri = $request->getReferrer();
         $visitor->referer_host = parse_url($request->getReferrer(), PHP_URL_HOST) ? parse_url($request->getReferrer(), PHP_URL_HOST) : null;
         $visitor->https = $request->isSecureConnection ? 1 : 0;
+        $visitor->type = $this->identityType($request);
         $visitor->session = $cookie->value;
-        $visitor->unique = null; // @TODO: add check behavior
-        $visitor->params = Json::encode($request->getQueryParams());
+        $visitor->unique = $this->checkUnique($cookie->value);
+        $visitor->params = count($request->getQueryParams()) > 0 ? Json::encode($request->getQueryParams()) : null;
         $visitor->save();
 
+    }
+
+    /**
+     * Is unique visitor
+     * @param $session value
+     */
+    public static function checkUnique($session)
+    {
+        $count = Visitors::find()->where([
+            'session'=> $session
+        ])->count();
+
+        if($count > 0)
+            return 0;
+        else
+            return 1;
+    }
+
+    /**
+     * Determine the type of user
+     * @param $request Request
+     * @return int
+     */
+    public static function identityType($request)
+    {
+
+        if(preg_match('/(?!&)utm_([a-z0-9=%]+)/i', $request->getReferrer()) || preg_match('/(?!&)utm_([a-z0-9=%]+)/i', $request->getUrl()))
+            return Visitors::TYPE_FROM_ADVERTS;
+        else if(preg_match('/gclid/i', $request->getReferrer()) || preg_match('/gclid/i', $request->getUrl()))
+            return Visitors::TYPE_FROM_ADVERTS;
+
+        if ($request->getReferrer() === null)
+            return Visitors::TYPE_DERECT_ENTRY;
+        else if (preg_match("($request->hostName)", $request->getReferrer()))
+            return Visitors::TYPE_INNER_VISIT;
+
+
+        if (preg_match("(google|yandex|mail|rambler|yahoo|bing|baidu|aol|ask|duckduckgo)", $request->getReferrer()))
+            return Visitors::TYPE_FROM_SEARCH;
+
+        if (preg_match("(facebook|vk|vkontakte|ok|odnoklassniki|instagram|twitter|linkedin|pinterest|tumblr|tumblr|tumblr|flickr|myspace|meetup|tagged|ask.fm|meetme|classmates|loveplanet|badoo|twoo|tinder|lovoo", $request->getReferrer()))
+            return Visitors::TYPE_FROM_SOCIALS;
+
+        return Visitors::TYPE_UNDEFINED;
     }
 
 }
