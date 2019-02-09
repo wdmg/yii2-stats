@@ -31,10 +31,11 @@ class Bootstrap implements BootstrapInterface
         if(!($app instanceof ConsoleApplication)) {
 
             // Controller behavior to write stat data
-            $app->attachBehavior('behaviors/ControllerBehavior', [
-                'class' => ControllerBehavior::class,
-            ]);
+            if($module->collectStats) {
+                $app->attachBehavior('behaviors/ControllerBehavior', [
+                    'class' => ControllerBehavior::class,
+                ]);
+            }
         }
-
     }
 }

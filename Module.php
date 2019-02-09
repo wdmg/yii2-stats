@@ -40,6 +40,12 @@ class Module extends \yii\base\Module
     public $missingTranslation;
 
     /**
+     * Collect statistics
+     * @var boolean
+     */
+    public $collectStats = true;
+
+    /**
      * Cookie name
      * @var string
      */
