@@ -17,8 +17,10 @@ class ViewBehavior extends \yii\base\Behavior
     public function onEndBody($event)
     {
 
-        if (YII_DEBUG || YII_ENV == 'dev' || Yii::$app->request->isAjax)
+        $module = Yii::$app->getModule('stats');
+        if (($module->ignoreDev && (YII_DEBUG || YII_ENV == 'dev')) || ($module->ignoreAjax && Yii::$app->request->isAjax)) {
             return;
+        }
 
         echo '<!-- start_counter -->';
 

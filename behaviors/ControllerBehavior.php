@@ -27,10 +27,11 @@ class ControllerBehavior extends \yii\base\Behavior
     public function onAfterAction($event)
     {
 
-        if (YII_DEBUG || YII_ENV == 'dev' || Yii::$app->request->isAjax)
-            return;
-
         $module = Yii::$app->getModule('stats');
+        if (($module->ignoreDev && (YII_DEBUG || YII_ENV == 'dev')) || ($module->ignoreAjax && Yii::$app->request->isAjax)) {
+            return;
+        }
+
         $request = Yii::$app->request;
         $cookies = Yii::$app->request->getCookies();
 
@@ -52,7 +53,7 @@ class ControllerBehavior extends \yii\base\Behavior
         $stats->user_agent = $request->userAgent;
         $stats->referer_uri = $request->getReferrer();
         $stats->referer_host = parse_url($request->getReferrer(), PHP_URL_HOST) ? parse_url($request->getReferrer(), PHP_URL_HOST) : null;
-        $stats->https = $request->isSecureConnection ? 1 : null;
+        $stats->https = $request->isSecureConnection ? 1 : 0;
         $stats->session = $cookie->value;
         $stats->unique = null; // @TODO: add check behavior
         $stats->params = Json::encode($request->getQueryParams());

@@ -46,6 +46,18 @@ class Module extends \yii\base\Module
     public $collectStats = true;
 
     /**
+     * Do not collect statistics in dev mode
+     * @var boolean
+     */
+    public $ignoreDev = true;
+
+    /**
+     * Do not collect statistics for ajax-requests
+     * @var boolean
+     */
+    public $ignoreAjax = true;
+
+    /**
      * Cookie name
      * @var string
      */
