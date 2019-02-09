@@ -5,9 +5,9 @@ use yii\base\InvalidConfigException;
 use yii\rbac\DbManager;
 
 /**
- * Class m190209_130127_stats
+ * Class m190209_130127_stats_visitors
  */
-class m190209_130127_stats extends Migration
+class m190209_130127_stats_visitors extends Migration
 {
     /**
      * {@inheritdoc}
@@ -19,7 +19,7 @@ class m190209_130127_stats extends Migration
             $tableOptions = 'CHARACTER SET utf8 COLLATE utf8_unicode_ci ENGINE=InnoDB';
         }
 
-        $this->createTable('{{%stats%}}', [
+        $this->createTable('{{%stats_visitors%}}', [
             'id'=> $this->bigPrimaryKey(20),
             'request_uri' => $this->string(255)->notNull(),
             'remote_addr' => $this->string(45)->notNull(),
@@ -35,10 +35,10 @@ class m190209_130127_stats extends Migration
             'params' => $this->text(),
         ], $tableOptions);
 
-        $this->createIndex('request','{{%stats}}', ['request_uri'],false);
-        $this->createIndex('remote','{{%stats}}', ['remote_addr', 'remote_host'],false);
-        $this->createIndex('referer','{{%stats}}', ['referer_uri', 'referer_host'],false);
-        $this->createIndex('session','{{%stats}}', ['session'],false);
+        $this->createIndex('request','{{%stats_visitors}}', ['request_uri'],false);
+        $this->createIndex('remote','{{%stats_visitors}}', ['remote_addr', 'remote_host'],false);
+        $this->createIndex('referer','{{%stats_visitors}}', ['referer_uri', 'referer_host'],false);
+        $this->createIndex('session','{{%stats_visitors}}', ['session'],false);
     }
 
     /**
@@ -46,11 +46,11 @@ class m190209_130127_stats extends Migration
      */
     public function safeDown()
     {
-        $this->dropIndex('request', '{{%stats}}');
-        $this->dropIndex('remote', '{{%stats}}');
-        $this->dropIndex('referer', '{{%stats}}');
-        $this->dropIndex('session', '{{%stats}}');
-        $this->truncateTable('{{%stats%}}');
-        $this->dropTable('{{%stats%}}');
+        $this->dropIndex('request', '{{%stats_visitors}}');
+        $this->dropIndex('remote', '{{%stats_visitors}}');
+        $this->dropIndex('referer', '{{%stats_visitors}}');
+        $this->dropIndex('session', '{{%stats_visitors}}');
+        $this->truncateTable('{{%stats_visitors%}}');
+        $this->dropTable('{{%stats_visitors%}}');
     }
 }

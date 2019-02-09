@@ -3,7 +3,7 @@
 namespace wdmg\stats\models;
 
 use Yii;
-class Stats extends \yii\db\ActiveRecord
+class Visitors extends \yii\db\ActiveRecord
 {
 
     /**
@@ -11,7 +11,7 @@ class Stats extends \yii\db\ActiveRecord
      */
     public static function tableName()
     {
-        return '{{stats}}';
+        return '{{stats_visitors}}';
     }
 
     /**

@@ -2,7 +2,7 @@
 
 namespace wdmg\stats\behaviors;
 
-use wdmg\stats\models\Stats;
+use wdmg\stats\models\Visitors;
 use Yii;
 use yii\base\Behavior;
 use yii\base\Event;
@@ -61,19 +61,19 @@ class ControllerBehavior extends \yii\base\Behavior
             $cookie = $cookies->get($module->cookieName);
         }
 
-        $stats = new Stats();
-        $stats->request_uri = $request->getAbsoluteUrl();
-        $stats->remote_addr = $request->userIP;
-        $stats->remote_host = $request->userHost;
-        $stats->user_id = !Yii::$app->user->isGuest ? Yii::$app->user->identity->id : null;
-        $stats->user_agent = $request->userAgent;
-        $stats->referer_uri = $request->getReferrer();
-        $stats->referer_host = parse_url($request->getReferrer(), PHP_URL_HOST) ? parse_url($request->getReferrer(), PHP_URL_HOST) : null;
-        $stats->https = $request->isSecureConnection ? 1 : 0;
-        $stats->session = $cookie->value;
-        $stats->unique = null; // @TODO: add check behavior
-        $stats->params = Json::encode($request->getQueryParams());
-        $stats->save();
+        $visitor = new Visitors();
+        $visitor->request_uri = $request->getAbsoluteUrl();
+        $visitor->remote_addr = $request->userIP;
+        $visitor->remote_host = $request->userHost;
+        $visitor->user_id = !Yii::$app->user->isGuest ? Yii::$app->user->identity->id : null;
+        $visitor->user_agent = $request->userAgent;
+        $visitor->referer_uri = $request->getReferrer();
+        $visitor->referer_host = parse_url($request->getReferrer(), PHP_URL_HOST) ? parse_url($request->getReferrer(), PHP_URL_HOST) : null;
+        $visitor->https = $request->isSecureConnection ? 1 : 0;
+        $visitor->session = $cookie->value;
+        $visitor->unique = null; // @TODO: add check behavior
+        $visitor->params = Json::encode($request->getQueryParams());
+        $visitor->save();
 
     }
 
