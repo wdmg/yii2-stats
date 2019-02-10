@@ -65,8 +65,8 @@ class ControllerBehavior extends \yii\base\Behavior
 
         $visitor = new Visitors();
         $visitor->request_uri = $request->getAbsoluteUrl();
-        $visitor->remote_addr = $request->userIP;
-        $visitor->remote_host = $request->userHost;
+        $visitor->remote_addr = $this->getRemoteIp($request);
+        $visitor->remote_host = $this->getRemoteHost($request);
         $visitor->user_id = !Yii::$app->user->isGuest ? Yii::$app->user->identity->id : null;
         $visitor->user_agent = $request->userAgent;
         $visitor->referer_uri = $request->getReferrer();
@@ -78,6 +78,37 @@ class ControllerBehavior extends \yii\base\Behavior
         $visitor->params = count($request->getQueryParams()) > 0 ? Json::encode($request->getQueryParams()) : null;
         $visitor->save();
 
+    }
+
+    /**
+     * Get client IP
+     * @param $client_ip string
+     */
+    public static function getRemoteIp($request)
+    {
+        $client_ip = $request->userIP;
+        if(!$client_ip)
+            $client_ip = $request->remoteIP;
+
+        return $client_ip;
+    }
+
+    /**
+     * Get client HostName
+     * @param $host_name string
+     */
+    public static function getRemoteHost($request)
+    {
+        $client_ip = self::getRemoteIp($request);
+
+        $host_name = $request->userHost;
+        if(!$host_name)
+            $host_name = $request->remoteHost;
+
+        if(!$host_name)
+            $host_name = gethostbyaddr($client_ip);
+
+        return $host_name;
     }
 
     /**
