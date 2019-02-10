@@ -70,7 +70,7 @@ class ControllerBehavior extends \yii\base\Behavior
         $visitor->user_id = !Yii::$app->user->isGuest ? Yii::$app->user->identity->id : null;
         $visitor->user_agent = $request->userAgent;
         $visitor->referer_uri = $request->getReferrer();
-        $visitor->referer_host = parse_url($request->getReferrer(), PHP_URL_HOST) ? parse_url($request->getReferrer(), PHP_URL_HOST) : null;
+        $visitor->referer_host = $this->getReferrerHost($request);
         $visitor->https = $request->isSecureConnection ? 1 : 0;
         $visitor->type = $this->identityType($request);
         $visitor->session = $cookie->value;
@@ -81,8 +81,19 @@ class ControllerBehavior extends \yii\base\Behavior
     }
 
     /**
+     * Get referrer hostname
+     * @param $request Request
+     * @return string or null
+     */
+    public static function getReferrerHost($request)
+    {
+        return !empty($request->getReferrer()) ? parse_url($request->getReferrer(), PHP_URL_HOST) : null;
+    }
+
+    /**
      * Get client IP
-     * @param $client_ip string
+     * @param $request Request
+     * @return string or null
      */
     public static function getRemoteIp($request)
     {
@@ -94,8 +105,9 @@ class ControllerBehavior extends \yii\base\Behavior
     }
 
     /**
-     * Get client HostName
-     * @param $host_name string
+     * Get client hostname
+     * @param $request Request
+     * @return string or null
      */
     public static function getRemoteHost($request)
     {
@@ -114,6 +126,7 @@ class ControllerBehavior extends \yii\base\Behavior
     /**
      * Is unique visitor
      * @param $session value
+     * @return integer
      */
     public static function checkUnique($session)
     {

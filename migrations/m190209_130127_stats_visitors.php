@@ -30,7 +30,7 @@ class m190209_130127_stats_visitors extends Migration
             'referer_host' => $this->string(255),
             'https' => $this->tinyInteger(1)->null()->defaultValue(0),
             'type' => $this->tinyInteger(1)->null()->defaultValue(0),
-            'datetime' => $this->timestamp()->notNull()->defaultExpression("CURRENT_TIMESTAMP"),
+            'datetime' => $this->integer(),
             'session' => $this->string(32)->notNull(),
             'unique' => $this->boolean()->defaultValue(false),
             'params' => $this->text(),

@@ -3,7 +3,11 @@
 namespace wdmg\stats\models;
 
 use Yii;
-class Visitors extends \yii\db\ActiveRecord
+use yii\db\ActiveRecord;
+use yii\behaviors\TimestampBehavior;
+use yii\db\Expression;
+
+class Visitors extends ActiveRecord
 {
     /**
      * Visitor types
@@ -28,7 +32,14 @@ class Visitors extends \yii\db\ActiveRecord
      */
     public function behaviors()
     {
-        return [];
+        return [
+            [
+                'class' => TimestampBehavior::className(),
+                'attributes' => [
+                    ActiveRecord::EVENT_BEFORE_INSERT => ['datetime'],
+                ]
+            ],
+        ];
     }
 
     /**
