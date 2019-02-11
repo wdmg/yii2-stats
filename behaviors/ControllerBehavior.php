@@ -150,7 +150,7 @@ class ControllerBehavior extends \yii\base\Behavior
 
         if(preg_match('/(?!&)utm_([a-z0-9=%]+)/i', $request->getReferrer()) || preg_match('/(?!&)utm_([a-z0-9=%]+)/i', $request->getUrl()))
             return Visitors::TYPE_FROM_ADVERTS;
-        else if(preg_match('/gclid/i', $request->getReferrer()) || preg_match('/gclid/i', $request->getUrl()))
+        else if(preg_match('/(gclid|yclid)/i', $request->getReferrer()) || preg_match('/(gclid|yclid)/i', $request->getUrl()))
             return Visitors::TYPE_FROM_ADVERTS;
 
         if ($request->getReferrer() === null)
