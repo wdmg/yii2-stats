@@ -69,13 +69,61 @@ class VisitorsController extends Controller
     {
         $searchModel = new VisitorsSearch();
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
+        $visitors = $dataProvider->query->all();
 
-        //$dataProvider->query->all()
+        $chartData = [];
+        $labels = [];
+        $dataset = [];
+        $output = [];
+
+        if ($searchModel->period == 'today' || $searchModel->period == 'yesterday') {
+
+            if($searchModel->period == 'yesterday') {
+                $label = 'Yesterday visitors';
+                $addPeriod = '1 days ';
+            } else {
+                $label = 'Today visitors';
+                $addPeriod = '';
+            }
+
+            foreach ($visitors as $visitor) {
+                for ($i = 1; $i <= 24; $i++) {
+                    if($visitor->datetime <= strtotime('now -'.$addPeriod.''.$i.' hours') && $visitor->datetime > strtotime('now -'.$addPeriod.''.($i + 1).' hours'))
+                        $output[$i][] = $visitor->datetime;
+                }
+            }
+            for ($i = 1; $i <= 24; $i++) {
+                $labels[] = date('d-m-Y H:i:s', strtotime('now -'.$addPeriod.''.$i.' hours'));
+                if(isset($output[$i]))
+                    $dataset[] = count($output[$i]);
+                else
+                    $dataset[] = 0;
+            }
+
+            $chartData = [
+                'labels' => array_reverse($labels),
+                'datasets' => [
+                    [
+                        'label'=> $label,
+                        'data' => array_values(array_reverse($dataset)),
+                        'backgroundColor' => [
+                            'rgba(54, 162, 235, 0.2)'
+                        ],
+                        'borderColor' => [
+                            'rgba(54, 162, 235, 1)'
+                        ],
+                        'borderWidth' => 1
+                    ]
+                ]
+            ];
+        }
+
+
 
         return $this->render('index', [
             'searchModel' => $searchModel,
             'dataProvider' => $dataProvider,
-            'chartData' => []
+            'chartData' => $chartData
         ]);
     }
 
