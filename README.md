@@ -6,6 +6,7 @@ Statistics module for Yii2
 # Requirements 
 * PHP 5.6 or higher
 * Yii2 v.2.0.13 and newest
+* [Yii2 ChartJS](https://github.com/wdmg/yii2-chartjs) widget
 
 # Installation
 To install the module, run the following command in the console:
