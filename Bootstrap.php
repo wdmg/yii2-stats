@@ -19,14 +19,27 @@ class Bootstrap implements BootstrapInterface
         $prefix = (isset($module->routePrefix) ? $module->routePrefix . '/' : '');
 
         // Add module URL rules
-        /*$app->getUrlManager()->addRules(
+        $app->getUrlManager()->addRules(
             [
-                $prefix . '<module:stats>/' => '<module>/items/index',
-                $prefix . '<module:stats>/<controller:(list|item)>/' => '<module>/<controller>',
-                $prefix . '<module:stats>/<controller:(list|item)>/<action:\w+>' => '<module>/<controller>/<action>',
+                $prefix . '<module:stats>/' => '<module>/visitors/index',
+                $prefix . '<module:stats>/<controller:visitors>/' => '<module>/<controller>',
+                $prefix . '<module:stats>/<controller:(visitors|item)>/<action:\w+>' => '<module>/<controller>/<action>',
+                [
+                    'pattern' => $prefix . '<module:stats>/',
+                    'route' => '<module>/visitors/index',
+                    'suffix' => '',
+                ], [
+                    'pattern' => $prefix . '<module:stats>/<controller:visitors>/',
+                    'route' => '<module>/<controller>',
+                    'suffix' => '',
+                ], [
+                    'pattern' => $prefix . '<module:stats>/<controller:(visitors|item)>/<action:\w+>',
+                    'route' => '<module>/<controller>/<action>',
+                    'suffix' => '',
+                ],
             ],
             true
-        );*/
+        );
 
         if(!($app instanceof \yii\console\Application)) {
 

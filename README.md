@@ -46,4 +46,4 @@ $config['bootstrap'][] = 'wdmg\stats\Bootstrap';
 `
 
 # Status and version
-* v.1.0.0 - Module in progress development.
+* v.1.0.1 - Module in progress development.

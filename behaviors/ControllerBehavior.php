@@ -32,7 +32,16 @@ class ControllerBehavior extends \yii\base\Behavior
             return;
         }
 
+        // Get request instance
         $request = Yii::$app->request;
+
+        // Ignoring by route
+        if (count($module->ignoreRoute) > 0) {
+            foreach ($module->ignoreRoute as $route) {
+                if(preg_match('/('.preg_quote($route,'/').')/i', $request->url) || preg_match('/('.preg_quote($route,'/').')/i', $request->url))
+                    return;
+            }
+        }
 
         // Ignoring by User IP
         if (count($module->ignoreListIp) > 0) {
@@ -148,22 +157,39 @@ class ControllerBehavior extends \yii\base\Behavior
     public static function identityType($request)
     {
 
+        $module = Yii::$app->getModule('stats');
+
         if(preg_match('/(?!&)utm_([a-z0-9=%]+)/i', $request->getReferrer()) || preg_match('/(?!&)utm_([a-z0-9=%]+)/i', $request->getUrl()))
             return Visitors::TYPE_FROM_ADVERTS;
-        else if(preg_match('/(gclid|yclid)/i', $request->getReferrer()) || preg_match('/(gclid|yclid)/i', $request->getUrl()))
-            return Visitors::TYPE_FROM_ADVERTS;
+
+        if (count($module->advertisingSystems) > 0) {
+            $patterns = implode($module->advertisingSystems, "|");
+            if(preg_match('/('.$patterns.')/i', $request->getReferrer()) || preg_match('/('.$patterns.')/i', $request->getUrl()))
+                return Visitors::TYPE_FROM_ADVERTS;
+            else
+                $patterns = '';
+        }
 
         if ($request->getReferrer() === null)
             return Visitors::TYPE_DERECT_ENTRY;
         else if (preg_match("($request->hostName)", $request->getReferrer()))
             return Visitors::TYPE_INNER_VISIT;
 
+        if (count($module->searchEngines) > 0) {
+            $patterns = implode($module->searchEngines, "|");
+            if(preg_match('/('.$patterns.')/i', $request->getReferrer()))
+                return Visitors::TYPE_FROM_SEARCH;
+            else
+                $patterns = '';
+        }
 
-        if (preg_match("(google|yandex|mail|rambler|yahoo|bing|baidu|aol|ask|duckduckgo)", $request->getReferrer()))
-            return Visitors::TYPE_FROM_SEARCH;
-
-        if (preg_match("(facebook|vk|vkontakte|ok|odnoklassniki|instagram|twitter|linkedin|pinterest|tumblr|tumblr|tumblr|flickr|myspace|meetup|tagged|ask.fm|meetme|classmates|loveplanet|badoo|twoo|tinder|lovoo", $request->getReferrer()))
-            return Visitors::TYPE_FROM_SOCIALS;
+        if (count($module->socialNetworks) > 0) {
+            $patterns = implode($module->socialNetworks, "|");
+            if(preg_match('/('.$patterns.')/i', $request->getReferrer()))
+                return Visitors::TYPE_FROM_SOCIALS;
+            else
+                $patterns = '';
+        }
 
         return Visitors::TYPE_UNDEFINED;
     }

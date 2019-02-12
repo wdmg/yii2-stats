@@ -32,7 +32,7 @@ class Module extends \yii\base\Module
     /**
      * @var string the module version
      */
-    public $version = "1.0.0";
+    public $version = "1.0.1";
 
     /**
      * @var array of strings missing translations
@@ -58,6 +58,12 @@ class Module extends \yii\base\Module
     public $ignoreAjax = true;
 
     /**
+     * List of ignored routing
+     * @var array
+     */
+    public $ignoreRoute = ['/admin', '/admin/'];
+
+    /**
      * List of ignored IP`s
      * @var array
      */
@@ -80,6 +86,24 @@ class Module extends \yii\base\Module
      * @var integer
      */
     public $cookieExpire = 3110400;
+
+    /**
+     * Advertising Systems
+     * @var array
+     */
+    public $advertisingSystems = ["gclid", "yclid", "fbclid"];
+
+    /**
+     * Social Networks
+     * @var array
+     */
+    public $socialNetworks = ["facebook", "vk", "vkontakte", "ok", "odnoklassniki", "instagram", "twitter", "linkedin", "pinterest", "tumblr", "tumblr", "tumblr", "flickr", "myspace", "meetup", "tagged", "ask.fm", "meetme", "classmates", "loveplanet", "badoo", "twoo", "tinder", "lovoo"];
+
+    /**
+     * Search Engines
+     * @var array
+     */
+    public $searchEngines = ["google", "yandex", "mail", "rambler", "yahoo", "bing", "baidu", "aol", "ask", "duckduckgo"];
 
     /**
      * {@inheritdoc}
