@@ -71,6 +71,10 @@ class VisitorsController extends Controller
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
         $visitors = $dataProvider->query->all();
 
+        $module = Yii::$app->getModule('stats');
+        $clientPlatforms = $module->clientPlatforms;
+        $clientBrowsers = $module->clientBrowsers;
+
         $chartData = [];
         $labels = [];
         $dataset1 = [];
@@ -172,6 +176,8 @@ class VisitorsController extends Controller
         return $this->render('index', [
             'searchModel' => $searchModel,
             'dataProvider' => $dataProvider,
+            'clientPlatforms' => $clientPlatforms,
+            'clientBrowsers' => $clientBrowsers,
             'chartData' => $chartData
         ]);
     }

@@ -7,6 +7,7 @@ use yii\bootstrap\ActiveForm;
 use yii\bootstrap\Button;
 use yii\bootstrap\ButtonGroup;
 use wdmg\widgets\ChartJS;
+use wdmg\stats\MainAsset;
 
 /* @var $this yii\web\View */
 /* @var $searchModel wdmg\stats\models\VisitorsSearch */
@@ -14,11 +15,13 @@ use wdmg\widgets\ChartJS;
 
 $this->title = Yii::t('app/modules/stats', 'Statistics');
 $this->params['breadcrumbs'][] = $this->title;
+$bundle = MainAsset::register($this);
+
 ?>
     <div class="page-header">
         <h1><?= Html::encode($this->title) ?> <small class="text-muted pull-right">[v.<?= $this->context->module->version ?>]</small></h1>
     </div>
-    <div class="visitors-index">
+    <div class="stats visitors-index">
 
         <?php Pjax::begin(); ?>
         <?php /*echo $this->render('_search', ['model' => $searchModel]);*/ ?>
@@ -160,7 +163,7 @@ $this->params['breadcrumbs'][] = $this->title;
                     },
                 ],*/
                 [
-                    'attribute' => 'https',
+                    'label' => 'Client',
                     'format' => 'html',
                     'filter' => false,
                     'headerOptions' => [
@@ -169,11 +172,10 @@ $this->params['breadcrumbs'][] = $this->title;
                     'contentOptions' => [
                         'class' => 'text-center'
                     ],
-                    'value' => function($data) {
-                        if ($data->https)
-                            return '<span class="glyphicon glyphicon-check text-success"></span>';
-                        else
-                            return '<span class="glyphicon glyphicon-check text-muted"></span>';
+                    'value' => function($data) use ($searchModel, $clientPlatforms, $clientBrowsers) {
+                        $client_os = $searchModel->getClientOS($data->user_agent, $clientPlatforms);
+                        $clinet_browser = $searchModel->getClientBrowser($data->user_agent, $clientBrowsers);
+                        return '<span class="icon '.$client_os['icon'].'" title="'.$client_os['title'].'"></span>' . '<span class="icon '.$clinet_browser['icon'].'" title="'.$clinet_browser['title'].'"></span>';
                     },
                 ],
                 [

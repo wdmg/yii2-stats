@@ -106,6 +106,160 @@ class Module extends \yii\base\Module
     public $searchEngines = ["google", "yandex", "mail", "rambler", "yahoo", "bing", "baidu", "aol", "ask", "duckduckgo"];
 
     /**
+     * Client Platforms
+     * @var array
+     */
+    public $clientPlatforms = [
+        '/windows nt 10/i' => [
+            'title' => 'Windows 10',
+            'icon' => 'icon-win-10-os'
+        ],
+        '/windows nt 6.3/i' => [
+            'title' => 'Windows 8.1',
+            'icon' => 'icon-win-8-os'
+        ],
+        '/windows nt 6.2/i' => [
+            'title' => 'Windows 8',
+            'icon' => 'icon-win-8-os'
+        ],
+        '/windows nt 6.1/i' => [
+            'title' => 'Windows 7',
+            'icon' => 'icon-win-7-os'
+        ],
+        '/windows nt 6.0/i' => [
+            'title' => 'Windows Vista',
+            'icon' => 'icon-win-7-os'
+        ],
+        '/windows nt 5.2/i' => [
+            'title' => 'Windows Server 2003/XP x64',
+            'icon' => 'icon-win-xp-os'
+        ],
+        '/windows nt 5.1/i' => [
+            'title' => 'Windows XP',
+            'icon' => 'icon-win-xp-os'
+        ],
+        '/windows xp/i' => [
+            'title' => 'Windows XP',
+            'icon' => 'icon-win-xp-os'
+        ],
+        '/windows nt 5.0/i' => [
+            'title' => 'Windows 2000',
+            'icon' => 'icon-win-xp-os'
+        ],
+        '/windows me/i' => [
+            'title' => 'Windows ME',
+            'icon' => 'icon-win-xp-os'
+        ],
+        '/win98/i' => [
+            'title' => 'Windows 98',
+            'icon' => 'icon-win-xp-os'
+        ],
+        '/win95/i' => [
+            'title' => 'Windows 95',
+            'icon' => 'icon-win-xp-os'
+        ],
+        '/win16/i' => [
+            'title' => 'Windows 3.11',
+            'icon' => 'icon-win-xp-os'
+        ],
+        '/macintosh|mac os x/i' => [
+            'title' => 'Mac OS X',
+            'icon' => 'icon-os-x-os'
+        ],
+        '/mac_powerpc/i' => [
+            'title' => 'Mac OS 9',
+            'icon' => 'icon-mac-9-os'
+        ],
+        '/linux/i' => [
+            'title' => 'Linux',
+            'icon' => 'icon-linux-os'
+        ],
+        '/ubuntu/i' => [
+            'title' => 'Ubuntu',
+            'icon' => 'icon-ubuntu-os'
+        ],
+        '/iphone/i' => [
+            'title' => 'iPhone',
+            'icon' => 'icon-ios-os'
+        ],
+        '/ipod/i' => [
+            'title' => 'iPod',
+            'icon' => 'icon-ios-os'
+        ],
+        '/ipad/i' => [
+            'title' => 'iPad',
+            'icon' => 'icon-ios-os'
+        ],
+        '/android/i' => [
+            'title' => 'Android',
+            'icon' => 'icon-android-os'
+        ],
+        '/blackberry/i' => [
+            'title' => 'BlackBerry',
+            'icon' => 'icon-blackberry-os'
+        ],
+        '/webos/i' => [
+            'title' => 'webOS',
+            'icon' => 'icon-web-os'
+        ]
+    ];
+
+    /**
+     * Client Browsers
+     * @var array
+     */
+    public $clientBrowsers = [
+        '/msie/i' => [
+            'title' => 'Internet Explorer',
+            'icon' => 'icon-ie-browser'
+        ],
+        '/firefox/i' => [
+            'title' => 'Firefox',
+            'icon' => 'icon-firefox-browser'
+        ],
+        '/safari/i' => [
+            'title' => 'Safari',
+            'icon' => 'icon-safari-browser'
+        ],
+        '/chrome/i' => [
+            'title' => 'Chrome',
+            'icon' => 'icon-chrome-browser'
+        ],
+        '/edge/i' => [
+            'title' => 'Edge',
+            'icon' => 'icon-edge-browser'
+        ],
+        '/opera/i' => [
+            'title' => 'Opera',
+            'icon' => 'icon-opera-browser'
+        ],
+        '/netscape/i' => [
+            'title' => 'Netscape',
+            'icon' => 'icon-netscape-browser'
+        ],
+        '/maxthon/i' => [
+            'title' => 'Maxthon',
+            'icon' => 'icon-maxthon-browser'
+        ],
+        '/konqueror/i' => [
+            'title' => 'Konqueror',
+            'icon' => 'icon-konqueror-browser'
+        ],
+        '/ucbrowser/i' => [
+            'title' => 'UC Browser',
+            'icon' => 'icon-uc-browser'
+        ],
+        '/vivaldi/i' => [
+            'title' => 'Vivaldi',
+            'icon' => 'icon-vivaldi-browser'
+        ],
+        '/yabrowser/i' => [
+            'title' => 'Yandex.Browser',
+            'icon' => 'icon-yandex-browser'
+        ]
+    ];
+
+    /**
      * {@inheritdoc}
      */
     public function init()

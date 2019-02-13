@@ -9,6 +9,17 @@ use yii\db\Expression;
 
 class Visitors extends ActiveRecord
 {
+
+    /**
+     * Visitor OS platform
+     */
+    public $client_os;
+
+    /**
+     * Visitor browser
+     */
+    public $client_browser;
+
     /**
      * Visitor types
      */
@@ -94,6 +105,36 @@ class Visitors extends ActiveRecord
             self::TYPE_FROM_ADVERTS => Yii::t('stat', 'From Ads'),
             self::TYPE_FROM_SOCIALS => Yii::t('stat', 'From socials'),
         ];
+    }
+
+    public function getClientOS($user_agent, $platforms)
+    {
+        $platform = [
+            'title' => 'Unknown',
+            'icon' => 'icon-unknown'
+        ];
+
+        foreach ($platforms as $regex => $value) {
+            if (preg_match($regex, $user_agent)) {
+                $platform = $value;
+            }
+        }
+        return $platform;
+    }
+
+    public function getClientBrowser($user_agent, $browsers)
+    {
+        $browser = [
+            'title' => 'Unknown',
+            'icon' => 'icon-unknown'
+        ];
+
+        foreach ($browsers as $regex => $value) {
+            if (preg_match($regex, $user_agent)) {
+                $browser = $value;
+            }
+        }
+        return $browser;
     }
 
 }
