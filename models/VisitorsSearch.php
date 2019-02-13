@@ -68,22 +68,36 @@ class VisitorsSearch extends Visitors
         if(!$this->period)
             $this->period = 'today';
 
+        $dateTime = new \DateTime('00:00:00');
         if ($this->period == 'today') {
-            $query->andFilterWhere(['<=', 'datetime', strtotime('NOW')]);
-            $query->andFilterWhere(['>', 'datetime', strtotime('NOW - 1 day')]);
+            $dateNew = clone $dateTime;
+            $start = $dateNew->modify('+1 day')->getTimestamp();
+            $end = $dateTime->getTimestamp();
         } else if ($this->period == 'yesterday') {
-            $query->andFilterWhere(['<=', 'datetime', strtotime('NOW - 1 day')]);
-            $query->andFilterWhere(['>', 'datetime', strtotime('NOW - 2 day')]);
+            $dateNew = clone $dateTime;
+            $start = $dateNew->getTimestamp();
+            $dateNew2 = clone $dateTime;
+            $end = $dateNew->modify('-1 day')->getTimestamp();
         } else if ($this->period == 'week') {
-            $query->andFilterWhere(['<=', 'datetime', strtotime('NOW')]);
-            $query->andFilterWhere(['>', 'datetime', strtotime('NOW - 1 week')]);
+            $dateNew = clone $dateTime;
+            $start = $dateNew->getTimestamp();
+            $dateNew2 = clone $dateTime;
+            $end = $dateNew->modify('-1 week')->getTimestamp();
         } else if ($this->period == 'month') {
-            $query->andFilterWhere(['<=', 'datetime', strtotime('NOW')]);
-            $query->andFilterWhere(['>', 'datetime', strtotime('NOW - 1 month')]);
+            $dateNew = clone $dateTime;
+            $start = $dateNew->getTimestamp();
+            $dateNew2 = clone $dateTime;
+            $end = $dateNew->modify('-1 month')->getTimestamp();
         } else if ($this->period == 'year') {
-            $query->andFilterWhere(['<=', 'datetime', strtotime('NOW')]);
-            $query->andFilterWhere(['>', 'datetime', strtotime('NOW - 1 year')]);
+            $dateNew = clone $dateTime;
+            $start = $dateNew->getTimestamp();
+            $dateNew2 = clone $dateTime;
+            $end = $dateNew->modify('-1 year')->getTimestamp();
         }
+
+        $query->andFilterWhere(['<', 'datetime', $start]);
+        $query->andFilterWhere(['>=', 'datetime', $end]);
+
 /*
         $query->andFilterWhere([
             '<=',
