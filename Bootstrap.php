@@ -18,6 +18,8 @@ class Bootstrap implements BootstrapInterface
         // Get URL path prefix if exist
         $prefix = (isset($module->routePrefix) ? $module->routePrefix . '/' : '');
 
+        Yii::$app->assetManager->forceCopy = true;
+
         // Add module URL rules
         $app->getUrlManager()->addRules(
             [

@@ -9,6 +9,7 @@ use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
 use yii\filters\AccessControl;
+use GeoIp2\Database\Reader;
 
 /**
  * VisitorsController implements the CRUD actions for Tasks model.
@@ -74,6 +75,7 @@ class VisitorsController extends Controller
         $module = Yii::$app->getModule('stats');
         $clientPlatforms = $module->clientPlatforms;
         $clientBrowsers = $module->clientBrowsers;
+        $reader = new Reader(__DIR__ .'/../assets/GeoLite2-Country.mmdb');
 
         $chartData = [];
         $labels = [];
@@ -178,7 +180,8 @@ class VisitorsController extends Controller
             'dataProvider' => $dataProvider,
             'clientPlatforms' => $clientPlatforms,
             'clientBrowsers' => $clientBrowsers,
-            'chartData' => $chartData
+            'chartData' => $chartData,
+            'reader' => $reader
         ]);
     }
 

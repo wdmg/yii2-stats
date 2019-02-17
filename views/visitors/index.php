@@ -17,6 +17,21 @@ $this->title = Yii::t('app/modules/stats', 'Statistics');
 $this->params['breadcrumbs'][] = $this->title;
 $bundle = MainAsset::register($this);
 
+$this->registerJs(<<< JS
+
+    /* To initialize BS3 tooltips set this below */
+    $(function () { 
+        $("[data-toggle='tooltip']").tooltip(); 
+    });
+    
+    /* To initialize BS3 popovers set this below */
+    $(function () { 
+        $("[data-toggle='popover']").popover(); 
+    });
+
+JS
+);
+
 ?>
     <div class="page-header">
         <h1><?= Html::encode($this->title) ?> <small class="text-muted pull-right">[v.<?= $this->context->module->version ?>]</small></h1>
@@ -138,15 +153,25 @@ $bundle = MainAsset::register($this);
                 'request_uri',
                 //'remote_addr',
                 //'remote_host',
-                'user_id',
-                //'user_agent',
                 [
-                    'attribute' => 'referer_uri',
+                    'attribute' => 'user_id',
                     'format' => 'html',
                     'filter' => false,
                     'value' => function($data) {
+                        if ($data->user_id)
+                            return $data->user_id;
+                        else
+                            return '&nbsp;';
+                    },
+                ],
+                //'user_agent',
+                [
+                    'attribute' => 'referer_uri',
+                    'format' => 'raw',
+                    'filter' => false,
+                    'value' => function($data) {
                         if ($data->referer_uri)
-                            return Html::a($data->referer_uri, $data->referer_uri, ['_target' => "blank"]);
+                            return Html::a($data->referer_uri, $data->referer_uri, ['target' => "_blank", 'title' => $data->referer_uri, 'data-toggle' => "tooltip", 'data-pajax' => 0]);
                         else
                             return '&nbsp;';
                     },
@@ -164,7 +189,7 @@ $bundle = MainAsset::register($this);
                 ],*/
                 [
                     'label' => 'Client',
-                    'format' => 'html',
+                    'format' => 'raw',
                     'filter' => false,
                     'headerOptions' => [
                         'class' => 'text-center'
@@ -175,7 +200,43 @@ $bundle = MainAsset::register($this);
                     'value' => function($data) use ($searchModel, $clientPlatforms, $clientBrowsers) {
                         $client_os = $searchModel->getClientOS($data->user_agent, $clientPlatforms);
                         $clinet_browser = $searchModel->getClientBrowser($data->user_agent, $clientBrowsers);
-                        return '<span class="icon '.$client_os['icon'].'" title="'.$client_os['title'].'"></span>' . '<span class="icon '.$clinet_browser['icon'].'" title="'.$clinet_browser['title'].'"></span>';
+                        return '<span class="icon '.$client_os['icon'].'" data-toggle="tooltip" title="'.$client_os['title'].'"></span>' . '<span class="icon '.$clinet_browser['icon'].'" data-toggle="tooltip" title="'.$clinet_browser['title'].'"></span>';
+                    },
+                ],
+                [
+                    'attribute' => 'remote_addr',
+                    'format' => 'raw',
+                    'filter' => false,
+                    'value' => function($data) use ($reader) {
+                        /*if ($data->remote_addr && $data->remote_host && $data->remote_host !== 'localhost')
+                            return Html::a($data->remote_addr, 'https://check-host.net/ip-info?host=' . $data->remote_addr, ['target' => "_blank", 'data-pajax' => 0]) . ' ('.$data->remote_host . ')';
+                        else if ($data->remote_addr && $data->remote_addr !== '127.0.0.1' && $data->remote_addr !== '::1')
+                            return Html::a($data->remote_addr, 'https://check-host.net/ip-info?host=' . $data->remote_addr, ['target' => "_blank", 'data-pajax' => 0]);
+                        else if ($data->remote_addr)
+                            return $data->remote_addr;
+                        else
+                            return 'Unknow IP';*/
+
+                        /*if ($data->remote_addr && $data->remote_addr !== '127.0.0.1' && $data->remote_addr !== '::1')
+                            return Html::a($data->remote_addr, 'https://check-host.net/ip-info?host=' . $data->remote_addr, ['target' => "_blank", 'data-pajax' => 0]);
+                        else
+                            return 'Unknow IP';
+                        */
+
+                        try {
+                            if ($data->remote_addr && $data->remote_addr !== '127.0.0.1' && $data->remote_addr !== '::1') {
+                                $record = $reader->country($data->remote_addr);
+                                return Html::tag('span', '', ['class' => 'flag flag-'.strtolower($record->country->isoCode), 'data-toggle'=> "tooltip", 'title' => $record->country->name]) . ' ' . $data->remote_addr;
+                            } else if ($data->remote_addr) {
+                                return $data->remote_addr;
+                            }
+                        } catch (Exception $e) {
+                            if ($data->remote_addr) {
+                                return $data->remote_addr;
+                            }
+                        }
+                        return 'Unknow IP';
+
                     },
                 ],
                 [

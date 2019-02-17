@@ -7,6 +7,7 @@ Statistics module for Yii2
 * PHP 5.6 or higher
 * Yii2 v.2.0.13 and newest
 * [Yii2 ChartJS](https://github.com/wdmg/yii2-chartjs) widget
+* [GeoIP2 PHP API](https://github.com/maxmind/GeoIP2-php)
 
 # Installation
 To install the module, run the following command in the console:
@@ -48,3 +49,6 @@ $config['bootstrap'][] = 'wdmg\stats\Bootstrap';
 
 # Status and version
 * v.1.0.1 - Module in progress development.
+
+# Copyright and License
+This product also includes GeoLite2 data created by MaxMind, available from [https://www.maxmind.com](https://www.maxmind.com)
