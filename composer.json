@@ -24,7 +24,8 @@
     "yiisoft/yii2": "^2.0.13",
     "geoip2/geoip2": "~2.0",
     "wdmg/yii2-chartjs": "^1.0.0",
-    "wdmg/yii2-datepicker": "^1.0.1"
+    "wdmg/yii2-datepicker": "^1.0.1",
+    "php": ">=5.4"
   },
   "minimum-stability": "dev",
   "autoload": {
@@ -34,5 +35,15 @@
   },
   "extra": {
     "bootstrap": "wdmg\\stats\\Bootstrap"
+  },
+  "scripts": {
+    "post-install-cmd": [
+      "@get-databases"
+    ],
+    "get-databases": [
+      "php -r \"mkdir database\"",
+      "php -r \"curl -sS https://geolite.maxmind.com/download/geoip/database/GeoLite2-Country.tar.gz > database/GeoLite2-Country.tar.gz\"",
+      "php -r \"tar -xf database/GeoLite2-Country.tar.gz -C database/ --strip-components 1\""
+    ]
   }
 }

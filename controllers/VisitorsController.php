@@ -68,6 +68,13 @@ class VisitorsController extends Controller
      */
     public function actionIndex()
     {
+        $chartData = [];
+        $labels = [];
+        $dataset1 = [];
+        $dataset2 = [];
+        $output1 = [];
+        $output2 = [];
+
         $searchModel = new VisitorsSearch();
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
         $visitors = $dataProvider->query->all();
@@ -75,14 +82,17 @@ class VisitorsController extends Controller
         $module = Yii::$app->getModule('stats');
         $clientPlatforms = $module->clientPlatforms;
         $clientBrowsers = $module->clientBrowsers;
-        $reader = new Reader(__DIR__ .'/../assets/GeoLite2-Country.mmdb');
 
-        $chartData = [];
-        $labels = [];
-        $dataset1 = [];
-        $dataset2 = [];
-        $output1 = [];
-        $output2 = [];
+        $locale = \Locale::getPrimaryLanguage(Yii::$app->language); // Get short locale string
+        if(!$locale)
+            $locale = 'en';
+
+        try {
+            $reader = new Reader(__DIR__ .'/../database/GeoLite2-Country.mmdb', [$locale]);
+        } catch (Exception $e) {
+            $reader = null;
+            Yii::warning($e->getMessage());
+        }
 
         if ($searchModel->period == 'today' || $searchModel->period == 'yesterday' || $searchModel->period == 'week' || $searchModel->period == 'month' || $searchModel->period == 'year') {
 

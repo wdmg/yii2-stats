@@ -224,7 +224,7 @@ JS
                         */
 
                         try {
-                            if ($data->remote_addr && $data->remote_addr !== '127.0.0.1' && $data->remote_addr !== '::1') {
+                            if ($reader && $data->remote_addr && $data->remote_addr !== '127.0.0.1' && $data->remote_addr !== '::1') {
                                 $record = $reader->country($data->remote_addr);
                                 return Html::tag('span', '', ['class' => 'flag flag-'.strtolower($record->country->isoCode), 'data-toggle'=> "tooltip", 'title' => $record->country->name]) . ' ' . $data->remote_addr;
                             } else if ($data->remote_addr) {
