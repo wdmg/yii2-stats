@@ -21,6 +21,7 @@ After configure db connection, run the following command in the console:
 And select the operation you want to perform:
   1) Apply all module migrations
   2) Revert all module migrations
+  3) Update MaxMind GeoIP2 DB
 
 # Migrations
 In any case, you can execute the migration run the following command in the console:
@@ -48,7 +49,7 @@ $config['bootstrap'][] = 'wdmg\stats\Bootstrap';
 `
 
 # Status and version
-* v.1.0.1 - Module in progress development.
+* v.1.0.2 - Module in progress development.
 
 # Copyright and License
 This product also includes GeoLite2 data created by MaxMind, available from [https://www.maxmind.com](https://www.maxmind.com)
