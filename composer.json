@@ -41,10 +41,9 @@
       "@get-databases"
     ],
     "get-databases": [
-      "php -r \"mkdir database\"",
-      "php -r \"curl -sS https://geolite.maxmind.com/download/geoip/database/GeoLite2-Country.tar.gz > database/GeoLite2-Country.tar.gz\"",
-      "php -r \"tar -xf database/GeoLite2-Country.tar.gz -C database/ --strip-components 1\"",
-      "php -r \"rm database/GeoLite2-Country.tar.gz\""
+      "curl -sS https://geolite.maxmind.com/download/geoip/database/GeoLite2-Country.tar.gz > database/GeoLite2-Country.tar.gz",
+      "tar -xf database/GeoLite2-Country.tar.gz -C database/ --strip-components 1",
+      "rm database/GeoLite2-Country.tar.gz"
     ]
   }
 }

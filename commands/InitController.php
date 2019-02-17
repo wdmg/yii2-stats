@@ -40,7 +40,6 @@ class InitController extends Controller
         } else if($selected == "2") {
             Yii::$app->runAction('migrate/down', ['migrationPath' => '@vendor/wdmg/yii2-stats/migrations', 'interactive' => true]);
         } else if($selected == "3") {
-            exec("mkdir database");
             exec("curl -sS https://geolite.maxmind.com/download/geoip/database/GeoLite2-Country.tar.gz > ".__DIR__."/../database/GeoLite2-Country.tar.gz");
             exec("tar -xf ".__DIR__."/../database/GeoLite2-Country.tar.gz -C ".__DIR__."/../database/ --strip-components 1");
             exec("rm ".__DIR__."/../database/GeoLite2-Country.tar.gz");
