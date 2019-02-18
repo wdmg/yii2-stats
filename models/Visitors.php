@@ -79,38 +79,38 @@ class Visitors extends ActiveRecord
     public function attributeLabels()
     {
         return [
-            'id' => Yii::t('stats', 'ID'),
-            'request_uri' => Yii::t('stats', 'Request URL'),
-            'remote_addr' => Yii::t('stats', 'Remote IP'),
-            'remote_host' => Yii::t('stats', 'Remote Host'),
-            'user_id' => Yii::t('stats', 'User ID'),
-            'user_agent' => Yii::t('stats', 'User Agent'),
-            'referer_uri' => Yii::t('stats', 'Referrer URL'),
-            'referer_host' => Yii::t('stats', 'Referrer Host'),
-            'https' => Yii::t('stats', 'HTTPS'),
-            'datetime' => Yii::t('stats', 'DateTime'),
-            'session' => Yii::t('stats', 'Session'),
-            'unique' => Yii::t('stats', 'Unique'),
-            'params' => Yii::t('stats', 'Params'),
+            'id' => Yii::t('app/modules/stats', 'ID'),
+            'request_uri' => Yii::t('app/modules/stats', 'Request URL'),
+            'remote_addr' => Yii::t('app/modules/stats', 'Remote IP'),
+            'remote_host' => Yii::t('app/modules/stats', 'Remote Host'),
+            'user_id' => Yii::t('app/modules/stats', 'User ID'),
+            'user_agent' => Yii::t('app/modules/stats', 'User Agent'),
+            'referer_uri' => Yii::t('app/modules/stats', 'Referrer URL'),
+            'referer_host' => Yii::t('app/modules/stats', 'Referrer Host'),
+            'https' => Yii::t('app/modules/stats', 'HTTPS'),
+            'datetime' => Yii::t('app/modules/stats', 'DateTime'),
+            'session' => Yii::t('app/modules/stats', 'Session'),
+            'unique' => Yii::t('app/modules/stats', 'Unique'),
+            'params' => Yii::t('app/modules/stats', 'Params'),
         ];
     }
 
 
     public static function getVisitorTypeList() {
         return [
-            self::TYPE_UNDEFINED => Yii::t('stat', 'Unknown'),
-            self::TYPE_DERECT_ENTRY => Yii::t('stat', 'Derect entry'),
-            self::TYPE_INNER_VISIT => Yii::t('stat', 'Inner visit'),
-            self::TYPE_FROM_SEARCH => Yii::t('stat', 'From search'),
-            self::TYPE_FROM_ADVERTS => Yii::t('stat', 'From Ads'),
-            self::TYPE_FROM_SOCIALS => Yii::t('stat', 'From socials'),
+            self::TYPE_UNDEFINED => Yii::t('app/modules/stats', 'Unknown'),
+            self::TYPE_DERECT_ENTRY => Yii::t('app/modules/stats', 'Derect entry'),
+            self::TYPE_INNER_VISIT => Yii::t('app/modules/stats', 'Inner visit'),
+            self::TYPE_FROM_SEARCH => Yii::t('app/modules/stats', 'From search'),
+            self::TYPE_FROM_ADVERTS => Yii::t('app/modules/stats', 'From Ads'),
+            self::TYPE_FROM_SOCIALS => Yii::t('app/modules/stats', 'From socials'),
         ];
     }
 
     public function getClientOS($user_agent, $platforms)
     {
         $platform = [
-            'title' => 'Unknown',
+            'title' => Yii::t('app/modules/stats', 'Unknown'),
             'icon' => 'icon-unknown'
         ];
 
@@ -125,7 +125,7 @@ class Visitors extends ActiveRecord
     public function getClientBrowser($user_agent, $browsers)
     {
         $browser = [
-            'title' => 'Unknown',
+            'title' => Yii::t('app/modules/stats', 'Unknown'),
             'icon' => 'icon-unknown'
         ];
 

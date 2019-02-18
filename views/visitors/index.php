@@ -85,7 +85,7 @@ JS
             ],
             'buttons' => [
                 Button::widget([
-                    'label' => 'Today',
+                    'label' => Yii::t('app/modules/stats', 'Today'),
                     'options' => [
                         'name' => 'period',
                         'type' => 'submit',
@@ -94,7 +94,7 @@ JS
                     ]
                 ]),
                 Button::widget([
-                    'label' => 'Yesterday',
+                    'label' => Yii::t('app/modules/stats', 'Yesterday'),
                     'options' => [
                         'name' => 'period',
                         'type' => 'submit',
@@ -103,7 +103,7 @@ JS
                     ]
                 ]),
                 Button::widget([
-                    'label' => 'Weekly',
+                    'label' => Yii::t('app/modules/stats', 'Weekly'),
                     'options' => [
                         'name' => 'period',
                         'type' => 'submit',
@@ -112,7 +112,7 @@ JS
                     ]
                 ]),
                 Button::widget([
-                    'label' => 'Monthly',
+                    'label' => Yii::t('app/modules/stats', 'Monthly'),
                     'options' => [
                         'name' => 'period',
                         'type' => 'submit',
@@ -121,7 +121,7 @@ JS
                     ]
                 ]),
                 Button::widget([
-                    'label' => 'Yearly',
+                    'label' => Yii::t('app/modules/stats', 'Yearly'),
                     'options' => [
                         'name' => 'period',
                         'type' => 'submit',
@@ -192,7 +192,7 @@ JS
                     },
                 ],*/
                 [
-                    'label' => 'Client',
+                    'label' => Yii::t('app/modules/stats', 'Client'),
                     'format' => 'raw',
                     'filter' => false,
                     'headerOptions' => [
