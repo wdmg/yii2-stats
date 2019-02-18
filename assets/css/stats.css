@@ -1,8 +1,13 @@
-.stats table tr > td {
+.stats table tbody tr > td {
     max-width: 260px;
     overflow: hidden;
     text-overflow: ellipsis;
     white-space: nowrap;
+}
+.stats canvas.chartjs-render-monitor {
+    display: block;
+    min-width: 100%;
+    margin-bottom: 20px;
 }
 .stats .icon {
     display: inline-block;

@@ -7,6 +7,7 @@ use yii\bootstrap\ActiveForm;
 use yii\bootstrap\Button;
 use yii\bootstrap\ButtonGroup;
 use wdmg\widgets\ChartJS;
+use wdmg\widgets\DatePicker;
 use wdmg\stats\MainAsset;
 
 /* @var $this yii\web\View */
@@ -20,12 +21,12 @@ $bundle = MainAsset::register($this);
 $this->registerJs(<<< JS
 
     /* To initialize BS3 tooltips set this below */
-    $(function () { 
+    $(function () {
         $("[data-toggle='tooltip']").tooltip(); 
     });
     
     /* To initialize BS3 popovers set this below */
-    $(function () { 
+    $(function () {
         $("[data-toggle='popover']").popover(); 
     });
 
@@ -75,6 +76,11 @@ JS
                 $buttonClass['year'] = 'btn-primary';
             else
                 $buttonClass['year'] = 'btn-default';
+
+            if($searchModel->period == 'custom')
+                $buttonClass['custom'] = 'btn-primary';
+            else
+                $buttonClass['custom'] = 'btn-default';
 
         ?>
 
@@ -129,6 +135,15 @@ JS
                         'class' => 'btn ' . $buttonClass['year']
                     ]
                 ]),
+                Button::widget([
+                    'label' => Yii::t('app/modules/stats', 'Custom date'),
+                    'options' => [
+                        'name' => 'period',
+                        'type' => 'submit',
+                        'value' => 'custom',
+                        'class' => 'btn ' . $buttonClass['custom']
+                    ]
+                ]),
             ]
         ]); ?>
 
@@ -160,7 +175,7 @@ JS
                 [
                     'attribute' => 'user_id',
                     'format' => 'html',
-                    'filter' => false,
+                    'filter' => true,
                     'value' => function($data) {
                         if ($data->user_id)
                             return $data->user_id;
@@ -172,7 +187,7 @@ JS
                 [
                     'attribute' => 'referer_uri',
                     'format' => 'raw',
-                    'filter' => false,
+                    'filter' => true,
                     'value' => function($data) {
                         if ($data->referer_uri)
                             return Html::a($data->referer_uri, $data->referer_uri, ['target' => "_blank", 'title' => $data->referer_uri, 'data-toggle' => "tooltip", 'data-pajax' => 0]);
@@ -210,7 +225,7 @@ JS
                 [
                     'attribute' => 'remote_addr',
                     'format' => 'raw',
-                    'filter' => false,
+                    'filter' => true,
                     'value' => function($data) use ($reader) {
                         /*if ($data->remote_addr && $data->remote_host && $data->remote_host !== 'localhost')
                             return Html::a($data->remote_addr, 'https://check-host.net/ip-info?host=' . $data->remote_addr, ['target' => "_blank", 'data-pajax' => 0]) . ' ('.$data->remote_host . ')';
@@ -246,6 +261,18 @@ JS
                 [
                     'attribute' => 'datetime',
                     'format' => 'datetime',
+                    'filter' => DatePicker::widget([
+                        'model' => $searchModel,
+                        'attribute' => 'datetime',
+                        'options' => [
+                            'class' => 'form-control'
+                        ],
+                        'pluginOptions' => [
+                            'className' => '.datepicker',
+                            'input' => '.form-control',
+                            'toggle' => '.input-group-btn > button',
+                        ]
+                    ]),
                     'headerOptions' => [
                         'class' => 'text-center'
                     ],
@@ -260,7 +287,7 @@ JS
                 [
                     'attribute' => 'unique',
                     'format' => 'html',
-                    'filter' => false,
+                    'filter' => true,
                     'headerOptions' => [
                         'class' => 'text-center'
                     ],

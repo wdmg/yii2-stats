@@ -22,6 +22,9 @@ class VisitorsSearch extends Visitors
     {
         return [
             [['period', 'start_date', 'end_date'], 'safe'],
+            [['request_uri', 'referer_uri', 'remote_addr'], 'string'],
+            [['user_id', 'unique'], 'integer'],
+            [['datetime'], 'date', 'format' => 'php:Y-m-d'],
         ];
     }
 
@@ -64,6 +67,14 @@ class VisitorsSearch extends Visitors
             return $dataProvider;
         }
 
+        // grid filtering conditions
+        $query->andFilterWhere([
+            'request_uri' => $this->request_uri,
+            'referer_uri' => $this->referer_uri,
+            'user_id' => $this->user_id,
+            'remote_addr' => $this->remote_addr,
+            'unique' => $this->unique,
+        ]);
 
         if(!$this->period)
             $this->period = 'today';
@@ -97,6 +108,16 @@ class VisitorsSearch extends Visitors
 
         $query->andFilterWhere(['<', 'datetime', $start]);
         $query->andFilterWhere(['>=', 'datetime', $end]);
+
+        if($this->datetime) {
+            $this->period = 'custom';
+            $dateTime = new \DateTime($this->datetime);
+            $dateNew = clone $dateTime;
+            $start = $dateNew->modify('+1 day')->getTimestamp();
+            $end = $dateTime->getTimestamp();
+            $query->andFilterWhere(['<', 'datetime', $start]);
+            $query->andFilterWhere(['>=', 'datetime', $end]);
+        }
 
 /*
         $query->andFilterWhere([
