@@ -76,7 +76,6 @@ JS
             else
                 $buttonClass['year'] = 'btn-default';
 
-
         ?>
 
         <?= ButtonGroup::widget([
@@ -135,14 +134,19 @@ JS
 
         <?php ActiveForm::end(); ?>
 
-        <?= ChartJS::widget([
-            'type' => 'line',
-            'options' => [
-                'width' => 640,
-                'height' => 260
-            ],
-            'data' => $chartData
-        ]); ?>
+        <?
+            if ($module->useChart) {
+                echo ChartJS::widget([
+                    'type' => 'line',
+                    'options' => [
+                        'width' => 640,
+                        'height' => 260
+                    ],
+                    'data' => $chartData
+                ]);
+            }
+
+        ?>
 
         <?= GridView::widget([
             'dataProvider' => $dataProvider,

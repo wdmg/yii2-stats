@@ -58,6 +58,12 @@ class Module extends \yii\base\Module
     public $ignoreAjax = true;
 
     /**
+     * Flag, use charts for statistic
+     * @var boolean
+     */
+    public $useChart = true;
+
+    /**
      * List of ignored routing
      * @var array
      */

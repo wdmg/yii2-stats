@@ -9,7 +9,6 @@ use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
 use yii\filters\AccessControl;
-use GeoIp2\Database\Reader;
 
 /**
  * VisitorsController implements the CRUD actions for Tasks model.
@@ -70,8 +69,8 @@ class VisitorsController extends Controller
     {
         $chartData = [];
         $labels = [];
-        $dataset1 = [];
-        $dataset2 = [];
+        $all_visitors = [];
+        $unique_visitors = [];
         $output1 = [];
         $output2 = [];
 
@@ -88,13 +87,13 @@ class VisitorsController extends Controller
             $locale = 'en';
 
         try {
-            $reader = new Reader(__DIR__ .'/../database/GeoLite2-Country.mmdb', [$locale]);
+            $reader = new \GeoIp2\Database\Reader(__DIR__ .'/../database/GeoLite2-Country.mmdb', [$locale]);
         } catch (Exception $e) {
             $reader = null;
             Yii::warning($e->getMessage());
         }
 
-        if ($searchModel->period == 'today' || $searchModel->period == 'yesterday' || $searchModel->period == 'week' || $searchModel->period == 'month' || $searchModel->period == 'year') {
+        if ($module->useChart && ($searchModel->period == 'today' || $searchModel->period == 'yesterday' || $searchModel->period == 'week' || $searchModel->period == 'month' || $searchModel->period == 'year')) {
 
             $dateTime = new \DateTime('00:00:00');
             $timestamp = $dateTime->getTimestamp();
@@ -137,6 +136,7 @@ class VisitorsController extends Controller
 
                 }
             }
+
             for ($i = 1; $i <= $iterations; $i++) {
 
                 if($searchModel->period == 'year')
@@ -145,14 +145,14 @@ class VisitorsController extends Controller
                     $labels[] = date($format, strtotime('-'.($i+1).' '.$metrik, $timestamp));
 
                 if(isset($output1[$i]))
-                    $dataset1[] = count($output1[$i]);
+                    $all_visitors[] = count($output1[$i]);
                 else
-                    $dataset1[] = 0;
+                    $all_visitors[] = 0;
 
                 if(isset($output2[$i]))
-                    $dataset2[] = count($output2[$i]);
+                    $unique_visitors[] = count($output2[$i]);
                 else
-                    $dataset2[] = 0;
+                    $unique_visitors[] = 0;
             }
 
 
@@ -161,7 +161,7 @@ class VisitorsController extends Controller
                 'datasets' => [
                     [
                         'label'=> 'Visitors',
-                        'data' => array_values(array_reverse($dataset1)),
+                        'data' => array_values(array_reverse($all_visitors)),
                         'backgroundColor' => [
                             'rgba(54, 162, 235, 0.2)'
                         ],
@@ -172,7 +172,7 @@ class VisitorsController extends Controller
                     ],
                     [
                         'label'=> 'Unique',
-                        'data' => array_values(array_reverse($dataset2)),
+                        'data' => array_values(array_reverse($unique_visitors)),
                         'backgroundColor' => [
                             'rgba(255, 99, 132, 0.2)'
                         ],
@@ -191,6 +191,7 @@ class VisitorsController extends Controller
             'clientPlatforms' => $clientPlatforms,
             'clientBrowsers' => $clientBrowsers,
             'chartData' => $chartData,
+            'module' => $module,
             'reader' => $reader
         ]);
     }

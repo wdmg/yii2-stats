@@ -41,7 +41,7 @@ class Bootstrap implements BootstrapInterface
             true
         );
 
-        if(!($app instanceof \yii\console\Application)) {
+        if(!($app instanceof \yii\console\Application) && $module) {
 
             // View behavior to render counter
             $app->get('view')->attachBehavior('behaviors/ViewBehavior', [
@@ -54,6 +54,7 @@ class Bootstrap implements BootstrapInterface
                     'class' => ControllerBehavior::class,
                 ]);
             }
+
         }
     }
 }
