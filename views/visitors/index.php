@@ -82,6 +82,8 @@ JS
             else
                 $buttonClass['custom'] = 'btn-default';
 
+            $visitorTypes = $searchModel::getVisitorTypeList();
+
         ?>
 
         <?= ButtonGroup::widget([
@@ -285,7 +287,7 @@ JS
                 ],
                 //'session',
                 [
-                    'attribute' => 'unique',
+                    'attribute' => 'type',
                     'format' => 'html',
                     'filter' => true,
                     'headerOptions' => [
@@ -294,11 +296,12 @@ JS
                     'contentOptions' => [
                         'class' => 'text-center'
                     ],
-                    'value' => function($data) {
-                        if ($data->unique)
-                            return '<span class="glyphicon glyphicon-check text-success"></span>';
+                    'value' => function($data) use ($visitorTypes) {
+
+                        if ($visitorTypes && $data->type)
+                            return $visitorTypes[$data->type];
                         else
-                            return '<span class="glyphicon glyphicon-check text-muted"></span>';
+                            return '&nbsp;';
                     },
                 ],
                 //'params',
