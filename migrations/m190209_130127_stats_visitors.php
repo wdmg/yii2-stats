@@ -19,7 +19,7 @@ class m190209_130127_stats_visitors extends Migration
             $tableOptions = 'CHARACTER SET utf8 COLLATE utf8_unicode_ci ENGINE=InnoDB';
         }
 
-        $this->createTable('{{%stats_visitors%}}', [
+        $this->createTable('{{%stats_visitors}}', [
             'id'=> $this->bigPrimaryKey(20),
             'request_uri' => $this->string(255)->notNull(),
             'remote_addr' => $this->string(45)->notNull(),
@@ -51,7 +51,7 @@ class m190209_130127_stats_visitors extends Migration
         $this->dropIndex('remote', '{{%stats_visitors}}');
         $this->dropIndex('referer', '{{%stats_visitors}}');
         $this->dropIndex('session', '{{%stats_visitors}}');
-        $this->truncateTable('{{%stats_visitors%}}');
-        $this->dropTable('{{%stats_visitors%}}');
+        $this->truncateTable('{{%stats_visitors}}');
+        $this->dropTable('{{%stats_visitors}}');
     }
 }

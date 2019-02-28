@@ -35,7 +35,7 @@ class Visitors extends ActiveRecord
      */
     public static function tableName()
     {
-        return '{{stats_visitors}}';
+        return '{{%stats_visitors}}';
     }
 
     /**

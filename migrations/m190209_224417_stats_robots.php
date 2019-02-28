@@ -19,7 +19,7 @@ class m190209_224417_stats_robots extends Migration
             $tableOptions = 'CHARACTER SET utf8 COLLATE utf8_unicode_ci ENGINE=InnoDB';
         }
 
-        $this->createTable('{{%stats_robots%}}', [
+        $this->createTable('{{%stats_robots}}', [
             'id'=> $this->primaryKey(11),
             'name' => $this->string(32)->notNull(),
             'regexp' => $this->string(32)->notNull(),
@@ -638,7 +638,7 @@ class m190209_224417_stats_robots extends Migration
             ["Zeus", "^Zeus", "1"],
             ["Zyborg", "^Zyborg", "1"],
         ];
-        $this->batchInsert('{{%stats_robots%}}', ['name', 'regexp', 'is_badbot'], $rows);
+        $this->batchInsert('{{%stats_robots}}', ['name', 'regexp', 'is_badbot'], $rows);
 
     }
 
@@ -647,7 +647,7 @@ class m190209_224417_stats_robots extends Migration
      */
     public function safeDown()
     {
-        $this->truncateTable('{{%stats_robots%}}');
-        $this->dropTable('{{%stats_robots%}}');
+        $this->truncateTable('{{%stats_robots}}');
+        $this->dropTable('{{%stats_robots}}');
     }
 }

@@ -48,8 +48,11 @@ If you have connected the module not via a composer add Bootstrap section:
 $config['bootstrap'][] = 'wdmg\stats\Bootstrap';
 `
 
-# Status and version
-* v.1.0.2 - Module in progress development.
+# Status and version [in progress development]
+* v.1.0.3 - Fixing tables names in migrations
+* v.1.0.2 - MaxMind GeoIp ad Charts.js
+* v.1.0.1 - Added view for visitors statistics
+* v.1.0.0 - First pre-release
 
 # Copyright and License
 This product also includes GeoLite2 data created by MaxMind, available from [https://www.maxmind.com](https://www.maxmind.com)

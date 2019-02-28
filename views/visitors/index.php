@@ -298,10 +298,10 @@ JS
                     ],
                     'value' => function($data) use ($visitorTypes) {
 
-                        if ($visitorTypes && $data->type)
+                        if ($visitorTypes && $data->type !== null)
                             return $visitorTypes[$data->type];
                         else
-                            return '&nbsp;';
+                            return $data->type;
                     },
                 ],
                 //'params',
