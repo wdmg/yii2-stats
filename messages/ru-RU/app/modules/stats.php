@@ -41,6 +41,7 @@ return [
     'Show client IP' => 'Отображать IP клиента',
     'Show client OS' => 'Отображать ОС клиента',
     'Show type of transition' => 'Отображать тип перехода',
+    'Show auth users' => 'Отображать пользователей',
 
     'Robot' => 'Робот',
     'Robot ID' => 'ID робота',

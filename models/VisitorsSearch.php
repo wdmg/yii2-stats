@@ -24,6 +24,8 @@ class VisitorsSearch extends Visitors
     public $viewClientIP = true;
     public $viewClientOS = true;
     public $viewTransitionType = true;
+    public $viewAuthUser = false;
+    public $viewOptions = false;
 
     /**
      * {@inheritdoc}
@@ -32,7 +34,7 @@ class VisitorsSearch extends Visitors
     {
         return [
             [['period', 'start_date', 'end_date'], 'safe'],
-            [['viewChart', 'viewRobots', 'viewOnlyRobots', 'viewReferrerURI', 'viewReferrerHost', 'viewClientIP', 'viewClientOS', 'viewTransitionType'], 'safe'],
+            [['viewChart', 'viewRobots', 'viewOnlyRobots', 'viewReferrerURI', 'viewReferrerHost', 'viewClientIP', 'viewClientOS', 'viewTransitionType', 'viewAuthUser', 'viewOptions'], 'safe'],
             [['request_uri', 'referer_uri', 'remote_addr'], 'string'],
             [['user_id', 'unique'], 'integer'],
             [['datetime'], 'date', 'format' => 'php:Y-m-d'],
@@ -62,6 +64,7 @@ class VisitorsSearch extends Visitors
             'viewClientIP' => Yii::t('app/modules/stats', 'Show client IP'),
             'viewClientOS' => Yii::t('app/modules/stats', 'Show client OS'),
             'viewTransitionType' => Yii::t('app/modules/stats', 'Show type of transition'),
+            'viewAuthUser' => Yii::t('app/modules/stats', 'Show auth users'),
         ];
     }
 
@@ -80,6 +83,19 @@ class VisitorsSearch extends Visitors
         $dataProvider = new ActiveDataProvider([
             'query' => $query,
         ]);
+
+        $session = Yii::$app->session;
+        if ($session->isActive && isset($params)) {
+            if (isset($params['viewOptions'])) {
+                if ($params['viewOptions']) {
+                    $session->set('stats_params', $params);
+                }
+            }
+        }
+
+        if ($session->get('stats_params')) {
+            $params = array_merge($session->get('stats_params'), $params);
+        }
 
         $this->load($params);
 

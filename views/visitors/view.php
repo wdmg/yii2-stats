@@ -70,10 +70,20 @@ $visitorTypes = $model::getVisitorTypeList();
         [
             'attribute' => 'user_id',
             'format' => 'html',
+            'label' => Yii::t('app/modules/stats', 'User'),
             'visible' => ($model->user_id) ? true : false,
-            'value' => function ($data) {
-                return $data->user_id;
-            },
+            'value' => function($data) {
+                if($data->user_id == $data->user['id'])
+                    if($data->user['id'] && $data->user['username'])
+                        return Html::a($data->user['username'], ['/' . $this->context->module->routePrefix . '/users/view/?id='.$data->user['id']], [
+                            'target' => '_blank',
+                            'data-pjax' => 0
+                        ]);
+                    else
+                        return $data->user_id;
+                else
+                    return $data->user_id;
+            }
         ],
         [
             'attribute' => 'robot',

@@ -163,4 +163,16 @@ class Visitors extends ActiveRecord
             return false;
     }
 
+    /**
+     * @return \yii\db\ActiveQuery
+     */
+    public function getUser($user_id = null)
+    {
+        if(class_exists('\wdmg\users\models\Users') && isset(Yii::$app->modules['users']) && !$user_id)
+            return $this->hasOne(\wdmg\users\models\Users::className(), ['id' => 'user_id']);
+        else if(class_exists('\wdmg\users\models\Users') && isset(Yii::$app->modules['users']) && $user_id)
+            return \wdmg\users\models\Users::findOne(['id' => intval($user_id)]);
+        else
+            return null;
+    }
 }

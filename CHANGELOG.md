@@ -4,6 +4,7 @@ Changelog
 ## 1.0.5 (2019-03-16)
  * Added visitor details modal
  * Added bot detection
+ * Added remembering view options
  * Added custom view options
  
 ## 1.0.4 (2019-03-15)

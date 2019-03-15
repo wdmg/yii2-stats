@@ -222,6 +222,24 @@ JS
                     },
                 ],
                 [
+                    'attribute' => 'user_id',
+                    'format' => 'html',
+                    'label' => Yii::t('app/modules/stats', 'User'),
+                    'visible' => $searchModel->viewAuthUser,
+                    'value' => function($data) {
+                        if($data->user_id == $data->user['id'])
+                            if($data->user['id'] && $data->user['username'])
+                                return Html::a($data->user['username'], ['/' . $this->context->module->routePrefix . '/users/view/?id='.$data->user['id']], [
+                                    'target' => '_blank',
+                                    'data-pjax' => 0
+                                ]);
+                            else
+                                return $data->user_id;
+                        else
+                            return $data->user_id;
+                    }
+                ],
+                [
                     'label' => Yii::t('app/modules/stats', 'Client'),
                     'format' => 'raw',
                     'filter' => false,

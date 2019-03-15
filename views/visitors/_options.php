@@ -21,7 +21,7 @@ use yii\widgets\ActiveForm;
             <div class="stats-search">
 
                 <?php $form = ActiveForm::begin([
-                    'action' => ['index'],
+                    'action' => Yii::$app->request->getUrl(),
                     'method' => 'get',
                     'options' => [
                         'data-pjax' => 1
@@ -40,9 +40,10 @@ use yii\widgets\ActiveForm;
                 <?= $form->field($model, 'viewClientOS')->checkbox()->label(''); ?>
 
                 <?= $form->field($model, 'viewTransitionType')->checkbox()->label(''); ?>
+                <?= $form->field($model, 'viewAuthUser')->checkbox()->label(''); ?>
 
                 <div class="form-group">
-                    <?= Html::submitButton(Yii::t('app/modules/stats', 'Apply'), ['class' => 'btn btn-primary']) ?>
+                    <?= Html::submitButton(Yii::t('app/modules/stats', 'Apply'), ['name' => 'viewOptions', 'value' => '1', 'class' => 'btn btn-primary']) ?>
                     <?= Html::resetButton(Yii::t('app/modules/stats', 'Reset'), ['class' => 'btn btn-default']) ?>
                 </div>
 
