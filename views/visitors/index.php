@@ -6,6 +6,7 @@ use yii\widgets\Pjax;
 use yii\bootstrap\ActiveForm;
 use yii\bootstrap\Button;
 use yii\bootstrap\ButtonGroup;
+use yii\bootstrap\Modal;
 use wdmg\widgets\ChartJS;
 use wdmg\widgets\DatePicker;
 use wdmg\stats\MainAsset;
@@ -168,21 +169,16 @@ JS
             'filterModel' => $searchModel,
             'layout' => '{summary}<br\/>{items}<br\/>{summary}<br\/><div class="text-center">{pager}</div>',
             'columns' => [
-
-                'request_uri',
-                //'remote_addr',
-                //'remote_host',
-                /*[
-                    'attribute' => 'user_id',
-                    'format' => 'html',
-                    'filter' => true,
+                [
+                    'attribute' => 'request_uri',
+                    'format' => 'raw',
                     'value' => function($data) {
-                        if ($data->user_id)
-                            return $data->user_id;
+                        if ($data->https)
+                            return Html::a('<span class="glyphicon glyphicon-lock text-success" data-toggle="tooltip" title="HTTPS"></span>&nbsp;' . $data->request_uri, $data->request_uri, ['target' => "_blank", 'title' => $data->request_uri, 'data-toggle' => "tooltip", 'data-pajax' => 0]);
                         else
-                            return '&nbsp;';
+                            return Html::a($data->request_uri, $data->request_uri, ['target' => "_blank", 'title' => $data->request_uri, 'data-toggle' => "tooltip", 'data-pajax' => 0]);
                     },
-                ],*/
+                ],
                 [
                     'attribute' => 'robot',
                     'format' => 'html',
@@ -201,7 +197,6 @@ JS
                         }
                     },
                 ],
-                //'user_agent',
                 [
                     'attribute' => 'referer_uri',
                     'format' => 'raw',
@@ -249,21 +244,6 @@ JS
                     'filter' => true,
                     'visible' => $searchModel->viewClientIP,
                     'value' => function($data) use ($reader) {
-                        /*if ($data->remote_addr && $data->remote_host && $data->remote_host !== 'localhost')
-                            return Html::a($data->remote_addr, 'https://check-host.net/ip-info?host=' . $data->remote_addr, ['target' => "_blank", 'data-pajax' => 0]) . ' ('.$data->remote_host . ')';
-                        else if ($data->remote_addr && $data->remote_addr !== '127.0.0.1' && $data->remote_addr !== '::1')
-                            return Html::a($data->remote_addr, 'https://check-host.net/ip-info?host=' . $data->remote_addr, ['target' => "_blank", 'data-pajax' => 0]);
-                        else if ($data->remote_addr)
-                            return $data->remote_addr;
-                        else
-                            return 'Unknow IP';*/
-
-                        /*if ($data->remote_addr && $data->remote_addr !== '127.0.0.1' && $data->remote_addr !== '::1')
-                            return Html::a($data->remote_addr, 'https://check-host.net/ip-info?host=' . $data->remote_addr, ['target' => "_blank", 'data-pajax' => 0]);
-                        else
-                            return 'Unknow IP';
-                        */
-
                         try {
                             if ($reader && $data->remote_addr && $data->remote_addr !== '127.0.0.1' && $data->remote_addr !== '::1') {
                                 $record = $reader->country($data->remote_addr);
@@ -276,8 +256,7 @@ JS
                                 return $data->remote_addr;
                             }
                         }
-                        return 'Unknow IP';
-
+                        return Yii::t('app/modules/stats', 'Unknow IP');
                     },
                 ],
                 [
@@ -305,7 +284,6 @@ JS
                         return date('d-m-Y h:i:s', $data->datetime);
                     },
                 ],
-                //'session',
                 [
                     'attribute' => 'type',
                     'format' => 'html',
@@ -325,7 +303,28 @@ JS
                             return $data->type;
                     },
                 ],
-                //'params',
+                [
+                    'class' => \yii\grid\ActionColumn::className(),
+                    'buttons'=> [
+                        'view' => function($url, $data, $key) use ($module) {
+                            $url = Yii::$app->getUrlManager()->createUrl([$module->routePrefix . '/stats/view', 'id' => $data['id']]);
+                            return Html::a('<span class="glyphicon glyphicon-eye-open"></span>', $url, [
+                                'class' => 'visitor-details-link',
+                                'title' => Yii::t('yii', 'View'),
+                                'data-toggle' => 'modal',
+                                'data-target' => '#visitorDetails',
+                                'data-id' => $key,
+                                'data-pjax' => '1'
+                            ]);
+                        },
+                        'update' => function() {
+                            return false;
+                        },
+                        'delete' => function() {
+                            return false;
+                        },
+                    ],
+                ],
             ],
         ]); ?>
         <?php Pjax::end(); ?>
@@ -338,5 +337,29 @@ JS
             ]
         ]); ?>
     </div>
+
+<?php $this->registerJs(<<< JS
+$('.visitor-details-link').click(function(event) {
+    event.preventDefault();
+    $.get(
+        $(this).attr('href'),
+        function (data) {
+            $('#visitorDetails .modal-body').html(data);
+            $('#visitorDetails').modal();
+        }  
+    );
+});
+JS
+); ?>
+
+<?php Modal::begin([
+    'id' => 'visitorDetails',
+    'header' => '<h4 class="modal-title">'.Yii::t('app/modules/stats', 'Visit Information').'</h4>',
+    'footer' => '<a href="#" class="btn btn-primary" data-dismiss="modal">'.Yii::t('app/modules/stats', 'Close').'</a>',
+    'clientOptions' => [
+        'show' => false
+    ]
+]); ?>
+<?php Modal::end(); ?>
 
 <?php echo $this->render('../_debug'); ?>

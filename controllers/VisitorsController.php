@@ -197,6 +197,32 @@ class VisitorsController extends Controller
         ]);
     }
 
+    public function actionView($id)
+    {
+        $module = Yii::$app->getModule('stats');
+        $clientPlatforms = $module->clientPlatforms;
+        $clientBrowsers = $module->clientBrowsers;
+
+        $model = self::findModel($id);
+
+        $locale = \Locale::getPrimaryLanguage(Yii::$app->language); // Get short locale string
+        if(!$locale)
+            $locale = 'en';
+
+        try {
+            $reader = new \GeoIp2\Database\Reader(__DIR__ .'/../database/GeoLite2-Country.mmdb', [$locale]);
+        } catch (Exception $e) {
+            $reader = null;
+            Yii::warning($e->getMessage());
+        }
+
+        return $this->renderAjax('view', [
+            'clientPlatforms' => $clientPlatforms,
+            'clientBrowsers' => $clientBrowsers,
+            'model' => $model,
+            'reader' => $reader
+        ]);
+    }
 
     public function actionClear() {
         if(Visitors::clearOldStats(time())) {
@@ -216,10 +242,10 @@ class VisitorsController extends Controller
      */
     protected function findModel($id)
     {
-        if (($model = Tasks::findOne($id)) !== null) {
+        if (($model = Visitors::findOne($id)) !== null) {
             return $model;
         }
 
-        throw new NotFoundHttpException(Yii::t('app/modules/tasks', 'The requested page does not exist.'));
+        throw new NotFoundHttpException(Yii::t('app/modules/stats', 'The requested page does not exist.'));
     }
 }

@@ -1,9 +1,12 @@
 Changelog
 =========
  
-## 1.0.4 (2019-03-15)
+## 1.0.5 (2019-03-16)
+ * Added visitor details modal
  * Added bot detection
  * Added custom view options
+ 
+## 1.0.4 (2019-03-15)
  * Added statistics storage period
  * Added clear old statistic data
  
