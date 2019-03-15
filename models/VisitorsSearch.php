@@ -93,9 +93,9 @@ class VisitorsSearch extends Visitors
             $query->andFilterWhere(['>', 'robot_id', 0]);
         } else {
             if($this->viewRobots) {
-                $query->andFilterWhere(['>=', 'robot_id', 0]);
+                $query->andFilterWhere(['>=', 'robot_id', null]);
             } else {
-                $query->andFilterWhere(['=', 'robot_id', 0]);
+                $query->andWhere(['robot_id' => null]);
             }
         }
 

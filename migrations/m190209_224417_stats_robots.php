@@ -26,6 +26,18 @@ class m190209_224417_stats_robots extends Migration
             'is_badbot' => $this->boolean()->defaultValue(false),
         ], $tableOptions);
 
+        if (!(Yii::$app->db->getTableSchema('{{%stats_visitors}}', true) === null)) {
+            $this->addForeignKey(
+                'fk_visitors_to_robots',
+                '{{%stats_visitors}}',
+                'robot_id',
+                '{{%stats_robots}}',
+                'id',
+                'NO ACTION',
+                'CASCADE'
+            );
+        }
+
         $rows = [
             ["Rambler", "rambler", "0"],
             ["GoogleBot", "googlebot", "0"],
@@ -646,6 +658,14 @@ class m190209_224417_stats_robots extends Migration
      */
     public function safeDown()
     {
+
+        if (!(Yii::$app->db->getTableSchema('{{%stats_visitors}}', true) === null)) {
+            $this->dropForeignKey(
+                'fk_visitors_to_robots',
+                '{{%stats_visitors}}'
+            );
+        }
+
         $this->truncateTable('{{%stats_robots}}');
         $this->dropTable('{{%stats_robots}}');
     }

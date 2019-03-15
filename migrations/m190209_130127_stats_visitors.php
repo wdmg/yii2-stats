@@ -42,6 +42,21 @@ class m190209_130127_stats_visitors extends Migration
         $this->createIndex('referer','{{%stats_visitors}}', ['referer_uri', 'referer_host'],false);
         $this->createIndex('session','{{%stats_visitors}}', ['session'],false);
         $this->createIndex('robot','{{%stats_visitors}}', ['robot_id'],false);
+
+        // If exist module `Users` set foreign key `user_id` to `users.id`
+        if(class_exists('\wdmg\users\models\Users') && isset(Yii::$app->modules['users'])) {
+            $userTable = \wdmg\users\models\Users::tableName();
+            $this->addForeignKey(
+                'fk_visitors_to_users',
+                '{{%stats_visitors}}',
+                'user_id',
+                $userTable,
+                'id',
+                'NO ACTION',
+                'CASCADE'
+            );
+        }
+
     }
 
     /**
@@ -54,6 +69,17 @@ class m190209_130127_stats_visitors extends Migration
         $this->dropIndex('referer', '{{%stats_visitors}}');
         $this->dropIndex('session', '{{%stats_visitors}}');
         $this->dropIndex('robot', '{{%stats_visitors}}');
+
+        if(class_exists('\wdmg\users\models\Users') && isset(Yii::$app->modules['users'])) {
+            $userTable = \wdmg\users\models\Users::tableName();
+            if (!(Yii::$app->db->getTableSchema($userTable, true) === null)) {
+                $this->dropForeignKey(
+                    'fk_visitors_to_users',
+                    '{{%stats_robots}}'
+                );
+            }
+        }
+
         $this->truncateTable('{{%stats_visitors}}');
         $this->dropTable('{{%stats_visitors}}');
     }

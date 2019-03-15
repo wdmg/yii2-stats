@@ -176,7 +176,7 @@ class ControllerBehavior extends \yii\base\Behavior
             }
         }
 
-        return 0;
+        return null;
     }
 
     /**
