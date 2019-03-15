@@ -1,6 +1,10 @@
 Changelog
 =========
 
+## 1.0.4 (2019-03-15)
+ * Added statistics storage period
+ * Added clear old statistic data
+ 
 ## 1.0.3 (2019-02-28)
  * Added module priority of initialization
  * Fixing tables names in migrations

@@ -137,4 +137,12 @@ class Visitors extends ActiveRecord
         return $browser;
     }
 
+    public static function clearOldStats($period)
+    {
+        if(self::deleteAll("`datetime` <= '".$period."'"))
+            return true;
+        else
+            return false;
+    }
+
 }

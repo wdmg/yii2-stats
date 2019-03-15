@@ -87,6 +87,11 @@ class ControllerBehavior extends \yii\base\Behavior
         $visitor->params = count($request->getQueryParams()) > 0 ? Json::encode($request->getQueryParams()) : null;
         $visitor->save();
 
+        if($module->storagePeriod !== 0 && rand(1, 10) == 1) {
+            $period = (time() - (intval($module->storagePeriod) * 86400));
+            $visitor::clearOldStats($period);
+        }
+
     }
 
     /**

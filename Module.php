@@ -32,7 +32,7 @@ class Module extends \yii\base\Module
     /**
      * @var string the module version
      */
-    private $version = "1.0.3";
+    private $version = "1.0.4";
 
     /**
      * @var integer, priority of initialization
@@ -49,6 +49,12 @@ class Module extends \yii\base\Module
      * @var boolean
      */
     public $collectStats = true;
+
+    /**
+     * Statistics storage period, days
+     * @var integer: 0 - infinity
+     */
+    public $storagePeriod = 0;
 
     /**
      * Flag, do not collect statistics in dev mode

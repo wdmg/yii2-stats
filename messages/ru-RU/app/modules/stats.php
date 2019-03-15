@@ -24,6 +24,11 @@ return [
     'Unique' => 'Уникальный?',
     'Params' => 'Параметры',
 
+    'Clear old data' => 'Очистить статистику',
+    'Are you sure?' => 'Вы уверены?',
+    'Statistics successfully cleared!' => 'Статистика успешно очищена!',
+    'An error occurred while clearing the statistics!' => 'Возникла ошибка при очистке статистики!',
+
     'Unknown' => 'Не определен',
     'Derect entry' => 'Прямой заход',
     'Inner visit' => 'Внутренний переход',

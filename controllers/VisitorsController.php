@@ -196,6 +196,16 @@ class VisitorsController extends Controller
         ]);
     }
 
+
+    public function actionClear() {
+        if(Visitors::clearOldStats(time())) {
+            Yii::info(Yii::t('app/modules/stats', 'Statistics successfully cleared!'));
+        } else {
+            Yii::warning(Yii::t('app/modules/stats', 'An error occurred while clearing the statistics!'));
+        }
+        return self::actionIndex();
+    }
+
     /**
      * Finds the Tasks model based on its primary key value.
      * If the model is not found, a 404 HTTP exception will be thrown.

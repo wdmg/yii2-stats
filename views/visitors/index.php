@@ -86,6 +86,14 @@ JS
 
         ?>
 
+        <?= Html::a(Yii::t('app/modules/stats', 'Clear old data'), ['clear'], [
+            'class' => 'btn btn-danger',
+            'data' => [
+                'confirm' => Yii::t('app/modules/stats', 'Are you sure?'),
+                'method' => 'post',
+            ]
+        ]); ?>
+
         <?= ButtonGroup::widget([
             'options' => [
                 'class' => 'pull-right',
@@ -197,17 +205,17 @@ JS
                             return '&nbsp;';
                     },
                 ],
-                /*[
+                [
                     'attribute' => 'referer_host',
                     'format' => 'html',
                     'filter' => false,
                     'value' => function($data) {
                         if ($data->referer_host)
-                            return Html::a($data->referer_host, $data->referer_host, ['_target' => "blank"]);
+                            return '<img src="http://'.$data->referer_host.'/favicon.ico" style="width:18px;margin-right:4px;" /> '.Html::a($data->referer_host, $data->referer_host, ['_target' => "blank"]);
                         else
                             return '&nbsp;';
                     },
-                ],*/
+                ],
                 [
                     'label' => Yii::t('app/modules/stats', 'Client'),
                     'format' => 'raw',

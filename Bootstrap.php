@@ -54,7 +54,6 @@ class Bootstrap implements BootstrapInterface
                     'class' => ControllerBehavior::class,
                 ]);
             }
-
         }
     }
 }
