@@ -2,6 +2,7 @@
 
 namespace wdmg\stats\models;
 
+use yii;
 use yii\base\Model;
 use yii\data\ActiveDataProvider;
 use wdmg\stats\models\Visitors;
@@ -15,6 +16,15 @@ class VisitorsSearch extends Visitors
     public $start_date;
     public $end_date;
 
+    public $viewChart = true;
+    public $viewRobots = false;
+    public $viewOnlyRobots = false;
+    public $viewReferrerURI = false;
+    public $viewReferrerHost = false;
+    public $viewClientIP = true;
+    public $viewClientOS = true;
+    public $viewTransitionType = true;
+
     /**
      * {@inheritdoc}
      */
@@ -22,6 +32,7 @@ class VisitorsSearch extends Visitors
     {
         return [
             [['period', 'start_date', 'end_date'], 'safe'],
+            [['viewChart', 'viewRobots', 'viewOnlyRobots', 'viewReferrerURI', 'viewReferrerHost', 'viewClientIP', 'viewClientOS', 'viewTransitionType'], 'safe'],
             [['request_uri', 'referer_uri', 'remote_addr'], 'string'],
             [['user_id', 'unique'], 'integer'],
             [['datetime'], 'date', 'format' => 'php:Y-m-d'],
@@ -35,6 +46,23 @@ class VisitorsSearch extends Visitors
     {
         // bypass scenarios() implementation in the parent class
         return Model::scenarios();
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function attributeLabels()
+    {
+        return [
+            'viewChart' => Yii::t('app/modules/stats', 'Show chart'),
+            'viewRobots' => Yii::t('app/modules/stats', 'Show robots'),
+            'viewOnlyRobots' => Yii::t('app/modules/stats', 'Show only robots'),
+            'viewReferrerURI' => Yii::t('app/modules/stats', 'Show referrer URI'),
+            'viewReferrerHost' => Yii::t('app/modules/stats', 'Show referrer Host'),
+            'viewClientIP' => Yii::t('app/modules/stats', 'Show client IP'),
+            'viewClientOS' => Yii::t('app/modules/stats', 'Show client OS'),
+            'viewTransitionType' => Yii::t('app/modules/stats', 'Show type of transition'),
+        ];
     }
 
     /**
@@ -53,12 +81,22 @@ class VisitorsSearch extends Visitors
             'query' => $query,
         ]);
 
-
         $this->load($params);
 
         if(isset($params['period'])) {
             if(!$this->period)
                 $this->period = $params['period'];
+        }
+
+        if($this->viewOnlyRobots) {
+            $this->viewRobots = true;
+            $query->andFilterWhere(['>', 'robot_id', 0]);
+        } else {
+            if($this->viewRobots) {
+                $query->andFilterWhere(['>=', 'robot_id', 0]);
+            } else {
+                $query->andFilterWhere(['=', 'robot_id', 0]);
+            }
         }
 
         if (!$this->validate()) {
@@ -87,22 +125,18 @@ class VisitorsSearch extends Visitors
         } else if ($this->period == 'yesterday') {
             $dateNew = clone $dateTime;
             $start = $dateNew->getTimestamp();
-            $dateNew2 = clone $dateTime;
             $end = $dateNew->modify('-1 day')->getTimestamp();
         } else if ($this->period == 'week') {
             $dateNew = clone $dateTime;
             $start = $dateNew->getTimestamp();
-            $dateNew2 = clone $dateTime;
             $end = $dateNew->modify('-1 week')->getTimestamp();
         } else if ($this->period == 'month') {
             $dateNew = clone $dateTime;
             $start = $dateNew->getTimestamp();
-            $dateNew2 = clone $dateTime;
             $end = $dateNew->modify('-1 month')->getTimestamp();
         } else if ($this->period == 'year') {
             $dateNew = clone $dateTime;
             $start = $dateNew->getTimestamp();
-            $dateNew2 = clone $dateTime;
             $end = $dateNew->modify('-1 year')->getTimestamp();
         }
 

@@ -5,6 +5,7 @@ namespace wdmg\stats\controllers;
 use Yii;
 use wdmg\stats\models\Visitors;
 use wdmg\stats\models\VisitorsSearch;
+use yii\base\Object;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
@@ -93,7 +94,7 @@ class VisitorsController extends Controller
             Yii::warning($e->getMessage());
         }
 
-        if ($module->useChart && ($searchModel->period == 'today' || $searchModel->period == 'yesterday' || $searchModel->period == 'week' || $searchModel->period == 'month' || $searchModel->period == 'year')) {
+        if ($module->useChart && $searchModel->viewChart && ($searchModel->period == 'today' || $searchModel->period == 'yesterday' || $searchModel->period == 'week' || $searchModel->period == 'month' || $searchModel->period == 'year')) {
 
             $dateTime = new \DateTime('00:00:00');
             $timestamp = $dateTime->getTimestamp();

@@ -2,6 +2,7 @@
 
 namespace wdmg\stats\behaviors;
 
+use wdmg\stats\models\Robots;
 use wdmg\stats\models\Visitors;
 use Yii;
 use yii\base\Behavior;
@@ -85,6 +86,7 @@ class ControllerBehavior extends \yii\base\Behavior
         $visitor->session = $cookie->value;
         $visitor->unique = $this->checkUnique($cookie->value);
         $visitor->params = count($request->getQueryParams()) > 0 ? Json::encode($request->getQueryParams()) : null;
+        $visitor->robot_id = $this->detectRobot($request->userAgent);
         $visitor->save();
 
         if($module->storagePeriod !== 0 && rand(1, 10) == 1) {
@@ -152,6 +154,29 @@ class ControllerBehavior extends \yii\base\Behavior
             return 0;
         else
             return 1;
+    }
+
+    /**
+     * Detect bots
+     * @param $user_agent
+     * @return integer
+     */
+    public static function detectRobot($user_agent, $cache_timeout = 3600)
+    {
+        $db = Robots::getDb();
+        $robots = $db->cache(function ($db) {
+            return Robots::find()->asArray()->all();
+        }, $cache_timeout);
+
+        if (count($robots) > 0) {
+            foreach ($robots as $robot) {
+                if (!empty($robot["regexp"]) && preg_match("/".preg_quote($robot["regexp"], "/")."/i", $user_agent)) {
+                    return $robot["id"];
+                }
+            }
+        }
+
+        return 0;
     }
 
     /**

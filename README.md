@@ -49,9 +49,9 @@ $config['bootstrap'][] = 'wdmg\stats\Bootstrap';
 `
 
 # Status and version [in progress development]
-* v.1.0.4 - Added storage period and clear old stats
+* v.1.0.4 - Added bot detection, custom view options, storage period and clear old stats
 * v.1.0.3 - Fixing tables names in migrations
-* v.1.0.2 - MaxMind GeoIp ad Charts.js
+* v.1.0.2 - MaxMind GeoIp and Charts.js
 * v.1.0.1 - Added view for visitors statistics
 * v.1.0.0 - First pre-release
 

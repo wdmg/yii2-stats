@@ -120,7 +120,6 @@ class m190209_224417_stats_robots extends Migration
             ["ArchitextSpider", "architext", "0"],
             ["AskJeeves", "jeeves", "0"],
             ["Bjaaland", "bjaaland", "0"],
-            ["Wild Ferret Web Hopper #1", "", "0"],
             ["Googlebot", "googlebot", "0"],
             ["Northern Light Gulliver", "gulliver", "0"],
             ["Harvest", "harvest", "0"],

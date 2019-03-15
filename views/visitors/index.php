@@ -40,7 +40,8 @@ JS
     <div class="stats visitors-index">
 
         <?php Pjax::begin(); ?>
-        <?php /*echo $this->render('_search', ['model' => $searchModel]);*/ ?>
+
+        <?php echo $this->render('_options', ['model' => $searchModel]); ?>
 
         <?php $form = ActiveForm::begin([
             'action' => ['index'],
@@ -85,14 +86,6 @@ JS
             $visitorTypes = $searchModel::getVisitorTypeList();
 
         ?>
-
-        <?= Html::a(Yii::t('app/modules/stats', 'Clear old data'), ['clear'], [
-            'class' => 'btn btn-danger',
-            'data' => [
-                'confirm' => Yii::t('app/modules/stats', 'Are you sure?'),
-                'method' => 'post',
-            ]
-        ]); ?>
 
         <?= ButtonGroup::widget([
             'options' => [
@@ -159,19 +152,16 @@ JS
 
         <?php ActiveForm::end(); ?>
 
-        <?
-            if ($module->useChart) {
-                echo ChartJS::widget([
-                    'type' => 'line',
-                    'options' => [
-                        'width' => 640,
-                        'height' => 260
-                    ],
-                    'data' => $chartData
-                ]);
-            }
-
-        ?>
+        <?php if ($module->useChart && $searchModel->viewChart) {
+            echo ChartJS::widget([
+                'type' => 'line',
+                'options' => [
+                    'width' => 640,
+                    'height' => 260
+                ],
+                'data' => $chartData
+            ]);
+        } ?>
 
         <?= GridView::widget([
             'dataProvider' => $dataProvider,
@@ -182,7 +172,7 @@ JS
                 'request_uri',
                 //'remote_addr',
                 //'remote_host',
-                [
+                /*[
                     'attribute' => 'user_id',
                     'format' => 'html',
                     'filter' => true,
@@ -192,12 +182,31 @@ JS
                         else
                             return '&nbsp;';
                     },
+                ],*/
+                [
+                    'attribute' => 'robot',
+                    'format' => 'html',
+                    'filter' => true,
+                    'visible' => $searchModel->viewRobots,
+                    'value' => function ($data) use ($searchModel) {
+                        $robot = $searchModel->getRobotInfo($data->robot_id);
+                        if ($robot && count($robot) > 0) {
+                            if ($robot->is_badbot) {
+                                return '<span class="label label-danger">' . $robot->name . '</span>';
+                            } else {
+                                return '<span class="label label-default">' . $robot->name . '</span>';
+                            }
+                        } else {
+                            return '&nbsp;';
+                        }
+                    },
                 ],
                 //'user_agent',
                 [
                     'attribute' => 'referer_uri',
                     'format' => 'raw',
                     'filter' => true,
+                    'visible' => $searchModel->viewReferrerURI,
                     'value' => function($data) {
                         if ($data->referer_uri)
                             return Html::a($data->referer_uri, $data->referer_uri, ['target' => "_blank", 'title' => $data->referer_uri, 'data-toggle' => "tooltip", 'data-pajax' => 0]);
@@ -209,6 +218,7 @@ JS
                     'attribute' => 'referer_host',
                     'format' => 'html',
                     'filter' => false,
+                    'visible' => $searchModel->viewReferrerHost,
                     'value' => function($data) {
                         if ($data->referer_host)
                             return '<img src="http://'.$data->referer_host.'/favicon.ico" style="width:18px;margin-right:4px;" /> '.Html::a($data->referer_host, $data->referer_host, ['_target' => "blank"]);
@@ -220,6 +230,7 @@ JS
                     'label' => Yii::t('app/modules/stats', 'Client'),
                     'format' => 'raw',
                     'filter' => false,
+                    'visible' => $searchModel->viewClientOS,
                     'headerOptions' => [
                         'class' => 'text-center'
                     ],
@@ -236,6 +247,7 @@ JS
                     'attribute' => 'remote_addr',
                     'format' => 'raw',
                     'filter' => true,
+                    'visible' => $searchModel->viewClientIP,
                     'value' => function($data) use ($reader) {
                         /*if ($data->remote_addr && $data->remote_host && $data->remote_host !== 'localhost')
                             return Html::a($data->remote_addr, 'https://check-host.net/ip-info?host=' . $data->remote_addr, ['target' => "_blank", 'data-pajax' => 0]) . ' ('.$data->remote_host . ')';
@@ -298,6 +310,7 @@ JS
                     'attribute' => 'type',
                     'format' => 'html',
                     'filter' => true,
+                    'visible' => $searchModel->viewTransitionType,
                     'headerOptions' => [
                         'class' => 'text-center'
                     ],
@@ -316,6 +329,14 @@ JS
             ],
         ]); ?>
         <?php Pjax::end(); ?>
+
+        <?= Html::a(Yii::t('app/modules/stats', 'Clear old data'), ['clear'], [
+            'class' => 'btn btn-danger pull-right',
+            'data' => [
+                'confirm' => Yii::t('app/modules/stats', 'Are you sure?'),
+                'method' => 'post',
+            ]
+        ]); ?>
     </div>
 
 <?php echo $this->render('../_debug'); ?>

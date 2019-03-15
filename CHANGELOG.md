@@ -1,7 +1,9 @@
 Changelog
 =========
-
+ 
 ## 1.0.4 (2019-03-15)
+ * Added bot detection
+ * Added custom view options
  * Added statistics storage period
  * Added clear old statistic data
  

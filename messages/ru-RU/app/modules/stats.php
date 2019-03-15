@@ -24,6 +24,25 @@ return [
     'Unique' => 'Уникальный?',
     'Params' => 'Параметры',
 
+    'View options' => 'Параметры отображения',
+    'Apply' => 'Применить',
+    'Reset' => 'Сбросить',
+
+    'Show chart' => 'Отображать график',
+    'Show robots' => 'Отображать роботов',
+    'Show only robots' => 'Отображать только роботов',
+    'Show referrer URI' => 'Отображать реферер-адрес',
+    'Show referrer Host' => 'Отображать ссылающийся домен',
+    'Show client IP' => 'Отображать IP клиента',
+    'Show client OS' => 'Отображать ОС клиента',
+    'Show type of transition' => 'Отображать тип перехода',
+
+    'Robot' => 'Робот',
+    'Robot ID' => 'ID робота',
+    'Name' => 'Название',
+    'RegExp' => 'RegExp',
+    'Is bad bot?' => 'Плохой робот?',
+
     'Clear old data' => 'Очистить статистику',
     'Are you sure?' => 'Вы уверены?',
     'Statistics successfully cleared!' => 'Статистика успешно очищена!',
@@ -35,6 +54,10 @@ return [
     'From search' => 'Переход из поиска',
     'From Ads' => 'Переход с рекламы',
     'From socials' => 'Переход с соц.сети',
+
+    'SPAM Bot' => 'СПАМ-бот',
+    'Bot Network' => 'Бот-сеть',
+    'Crawler' => 'Поисковый робот',
 
 ];
 

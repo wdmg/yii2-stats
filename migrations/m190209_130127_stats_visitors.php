@@ -28,6 +28,7 @@ class m190209_130127_stats_visitors extends Migration
             'user_agent' => $this->string(255)->null()->defaultValue(null),
             'referer_uri' => $this->string(255)->null()->defaultValue(null),
             'referer_host' => $this->string(255),
+            'robot_id' => $this->integer(11)->null()->defaultValue(0),
             'https' => $this->tinyInteger(1)->null()->defaultValue(0),
             'type' => $this->tinyInteger(1)->null()->defaultValue(0),
             'datetime' => $this->integer(),
@@ -40,6 +41,7 @@ class m190209_130127_stats_visitors extends Migration
         $this->createIndex('remote','{{%stats_visitors}}', ['remote_addr', 'remote_host'],false);
         $this->createIndex('referer','{{%stats_visitors}}', ['referer_uri', 'referer_host'],false);
         $this->createIndex('session','{{%stats_visitors}}', ['session'],false);
+        $this->createIndex('robot','{{%stats_visitors}}', ['robot_id'],false);
     }
 
     /**
@@ -51,6 +53,7 @@ class m190209_130127_stats_visitors extends Migration
         $this->dropIndex('remote', '{{%stats_visitors}}');
         $this->dropIndex('referer', '{{%stats_visitors}}');
         $this->dropIndex('session', '{{%stats_visitors}}');
+        $this->dropIndex('robot', '{{%stats_visitors}}');
         $this->truncateTable('{{%stats_visitors}}');
         $this->dropTable('{{%stats_visitors}}');
     }

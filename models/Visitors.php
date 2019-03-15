@@ -31,6 +31,11 @@ class Visitors extends ActiveRecord
     const TYPE_FROM_SOCIALS = 5;
 
     /**
+     * Robot data
+     */
+    public $robot = null;
+
+    /**
      * {@inheritdoc}
      */
     public static function tableName()
@@ -65,7 +70,7 @@ class Visitors extends ActiveRecord
             [['session'], 'string', 'max' => 32],
             [['type'], 'integer', 'min' => 0, 'max' => 6],
             [['https', 'unique'], 'integer', 'min' => 0, 'max' => 1],
-            [['user_id'], 'integer'],
+            [['user_id', 'robot_id'], 'integer'],
             [['params'], 'string'],
             [['datetime'], 'safe'],
         ];
@@ -83,7 +88,9 @@ class Visitors extends ActiveRecord
             'request_uri' => Yii::t('app/modules/stats', 'Request URL'),
             'remote_addr' => Yii::t('app/modules/stats', 'Remote IP'),
             'remote_host' => Yii::t('app/modules/stats', 'Remote Host'),
+            'user' => Yii::t('app/modules/stats', 'User'),
             'user_id' => Yii::t('app/modules/stats', 'User ID'),
+            'robot_id' => Yii::t('app/modules/stats', 'Robot ID'),
             'user_agent' => Yii::t('app/modules/stats', 'User Agent'),
             'referer_uri' => Yii::t('app/modules/stats', 'Referrer URL'),
             'referer_host' => Yii::t('app/modules/stats', 'Referrer Host'),
@@ -135,6 +142,15 @@ class Visitors extends ActiveRecord
             }
         }
         return $browser;
+    }
+
+    public function getRobotInfo($robot_id, $cache_timeout = 3600)
+    {
+        $db = Robots::getDb();
+        $this->robot = $db->cache(function ($db) use ($robot_id) {
+            return Robots::find()->where(['id' => $robot_id])->one();
+        }, $cache_timeout);
+        return $this->robot;
     }
 
     public static function clearOldStats($period)
