@@ -1,7 +1,8 @@
 Changelog
 =========
- 
+
 ## 1.0.5 (2019-03-16)
+ * Added dashboard navigation items for NavBar
  * Added visitor details modal
  * Added bot detection
  * Added remembering view options

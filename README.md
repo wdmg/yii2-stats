@@ -47,9 +47,22 @@ If you have connected the module not via a composer add Bootstrap section:
 `
 $config['bootstrap'][] = 'wdmg\stats\Bootstrap';
 `
+# Routing
+Use the `Module::dashboardNavItems()` method of the module to generate a navigation items list for NavBar, like this:
 
+    <?php
+        echo Nav::widget([
+        'options' => ['class' => 'navbar-nav navbar-right'],
+            'label' => 'Modules',
+            'items' => [
+                Yii::$app->getModule('stats')->dashboardNavItems(),
+                ...
+            ]
+        ]);
+    ?>
+    
 # Status and version [in progress development]
-* v.1.0.5 - Added visitor details modal
+* v.1.0.5 - Added dashboard navigation items and visitor details modal
 * v.1.0.4 - Added bot detection, custom view options, storage period and clear old stats
 * v.1.0.3 - Fixing tables names in migrations
 * v.1.0.2 - MaxMind GeoIp and Charts.js

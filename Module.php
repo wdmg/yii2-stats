@@ -292,6 +292,10 @@ class Module extends \yii\base\Module
 
         // Register translations
         $this->registerTranslations();
+
+        // Normalize route prefix
+        $this->routePrefixNormalize();
+
     }
 
     /**
@@ -336,5 +340,44 @@ class Module extends \yii\base\Module
     public static function t($category, $message, $params = [], $language = null)
     {
         return Yii::t('app/modules/stats' . $category, $message, $params, $language);
+    }
+
+    /**
+     * Normalize route prefix
+     * @return string of current route prefix
+     */
+    public function routePrefixNormalize()
+    {
+        if(!empty($this->routePrefix)) {
+            $this->routePrefix = str_replace('/', '', $this->routePrefix);
+            $this->routePrefix = '/'.$this->routePrefix;
+            $this->routePrefix = str_replace('//', '/', $this->routePrefix);
+        }
+        return $this->routePrefix;
+    }
+
+    /**
+     * Build dashboard navigation items for NavBar
+     * @return array of current module nav items
+     */
+    public function dashboardNavItems()
+    {
+        return [
+            'label' => Yii::t('app/modules/stats', 'Statistics'),
+            'url' => [$this->routePrefix . '/stats/'],
+            'active' => in_array(\Yii::$app->controller->module->id, ['stats']),
+            'items' => [
+                [
+                    'label' => Yii::t('app/modules/stats', 'Visitors'),
+                    'url' => [$this->routePrefix . '/stats/'],
+                    'active' => (in_array(\Yii::$app->controller->module->id, ['stats']) &&  Yii::$app->controller->action->id == 'index'),
+                ],
+                [
+                    'label' => Yii::t('app/modules/stats', 'Robots'),
+                    'url' => [$this->routePrefix . '/stats/robots'],
+                    'active' => (in_array(\Yii::$app->controller->module->id, ['stats']) &&  Yii::$app->controller->action->id == 'robots'),
+                ],
+            ]
+        ];
     }
 }
