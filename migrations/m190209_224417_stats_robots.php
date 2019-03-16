@@ -277,6 +277,7 @@ class m190209_224417_stats_robots extends Migration
             ["LinkScan", "linkscan", "0"],
             ["Lockon", "lockon", "0"],
             ["Logo.gif Crawler", "logo_gif", "0"],
+            ["Mail.RU Bot", "Mail.RU_Bot", "0"],
             ["Mac WWWWorm", "macworm", "0"],
             ["Magpie", "magpie", "0"],
             ["marvin/infoseek", "marvin", "0"],
