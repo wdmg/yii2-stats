@@ -45,11 +45,23 @@ return [
     'Show type of transition' => 'Отображать тип перехода',
     'Show auth users' => 'Отображать пользователей',
 
+    'Update' => 'Обновить',
+    'Update robot' => 'Обновить робота',
+
+    'Add new' => 'Добавить новый',
+    'New robot' => 'Новый робот',
+    'Add new robot' => 'Добавить нового робота',
+
     'Robot' => 'Робот',
     'Robot ID' => 'ID робота',
     'Name' => 'Название',
     'RegExp' => 'RegExp',
     'Is bad bot?' => 'Плохой робот?',
+
+    'Add (or update)' => 'Добавить (или обновить)',
+    'Save' => 'Сохранить',
+    'Information about the robot successfully updated!' => 'Информация о роботе успешно обновлена!',
+    'Error while updating information about the robot.' => 'Ошибка при обновлении информации о роботе.',
 
     'Clear old data' => 'Очистить статистику',
     'Are you sure?' => 'Вы уверены?',

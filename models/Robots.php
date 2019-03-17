@@ -32,6 +32,7 @@ class Robots extends ActiveRecord
     public function rules()
     {
         $rules = [
+            [['id'], 'integer'],
             [['name', 'regexp'], 'string'],
             [['is_badbot'], 'integer', 'min' => 0, 'max' => 1],
         ];

@@ -5,7 +5,6 @@ namespace wdmg\stats\controllers;
 use Yii;
 use wdmg\stats\models\Visitors;
 use wdmg\stats\models\VisitorsSearch;
-use yii\base\Object;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
@@ -63,7 +62,7 @@ class VisitorsController extends Controller
     }
 
     /**
-     * Lists all Tasks models.
+     * Lists all Visitors models.
      * @return mixed
      */
     public function actionIndex()
@@ -234,10 +233,10 @@ class VisitorsController extends Controller
     }
 
     /**
-     * Finds the Tasks model based on its primary key value.
+     * Finds the Visitors model based on its primary key value.
      * If the model is not found, a 404 HTTP exception will be thrown.
      * @param integer $id
-     * @return Tasks the loaded model
+     * @return Visitors the loaded model
      * @throws NotFoundHttpException if the model cannot be found
      */
     protected function findModel($id)

@@ -23,8 +23,8 @@ class Bootstrap implements BootstrapInterface
             [
                 $prefix . '<module:stats>/' => '<module>/visitors/index',
                 $prefix . '<module:stats>/view' => '<module>/visitors/view',
-                $prefix . '<module:stats>/<controller:visitors>/' => '<module>/<controller>',
-                $prefix . '<module:stats>/<controller:(visitors|item)>/<action:\w+>' => '<module>/<controller>/<action>',
+                $prefix . '<module:stats>/<controller:(visitors|robots)>/' => '<module>/<controller>',
+                $prefix . '<module:stats>/<controller:(visitors|robots)>/<action:\w+>' => '<module>/<controller>/<action>',
                 [
                     'pattern' => $prefix . '<module:stats>/',
                     'route' => '<module>/visitors/index',
@@ -34,11 +34,11 @@ class Bootstrap implements BootstrapInterface
                     'route' => '<module>/visitors/view',
                     'suffix' => '',
                 ], [
-                    'pattern' => $prefix . '<module:stats>/<controller:visitors>/',
+                    'pattern' => $prefix . '<module:stats>/<controller:(visitors|robots)>/',
                     'route' => '<module>/<controller>',
                     'suffix' => '',
                 ], [
-                    'pattern' => $prefix . '<module:stats>/<controller:(visitors|item)>/<action:\w+>',
+                    'pattern' => $prefix . '<module:stats>/<controller:(visitors|robots)>/<action:\w+>',
                     'route' => '<module>/<controller>/<action>',
                     'suffix' => '',
                 ],
