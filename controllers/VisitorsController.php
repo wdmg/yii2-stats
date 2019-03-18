@@ -160,7 +160,7 @@ class VisitorsController extends Controller
                 'labels' => array_reverse($labels),
                 'datasets' => [
                     [
-                        'label'=> 'Visitors',
+                        'label'=> Yii::t('app/modules/stats', 'Views'),
                         'data' => array_values(array_reverse($all_visitors)),
                         'backgroundColor' => [
                             'rgba(54, 162, 235, 0.2)'
@@ -171,7 +171,7 @@ class VisitorsController extends Controller
                         'borderWidth' => 1
                     ],
                     [
-                        'label'=> 'Unique',
+                        'label'=> Yii::t('app/modules/stats', 'Visitors'),
                         'data' => array_values(array_reverse($unique_visitors)),
                         'backgroundColor' => [
                             'rgba(255, 99, 132, 0.2)'

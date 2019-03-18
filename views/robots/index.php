@@ -34,6 +34,7 @@ JS
 </div>
 <div class="stats robots-index">
     <?php Pjax::begin(); ?>
+
     <?= GridView::widget([
         'dataProvider' => $dataProvider,
         'filterModel' => $searchModel,
@@ -99,7 +100,7 @@ JS
 </div>
 
 <?php $this->registerJs(<<< JS
-$('.robots-update-link').click(function(event) {
+$('body').delegate('.robots-update-link', 'click', function(event) {
     event.preventDefault();
     $('#robotsUpdate').remove();
     $.get(

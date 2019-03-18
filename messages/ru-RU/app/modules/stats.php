@@ -2,6 +2,7 @@
 
 return [
     'Statistics' => 'Статистика',
+    'Views' => 'Просмотры',
     'Visitors' => 'Посетители',
     'Robots' => 'Роботы',
     'Today' => 'Сегодня',

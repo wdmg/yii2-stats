@@ -36,7 +36,8 @@ JS
 
 ?>
     <div class="page-header">
-        <h1><?= Html::encode($this->title) ?> <small class="text-muted pull-right">[v.<?= $this->context->module->version ?>]</small></h1>
+        <h1>
+            <?= Html::encode($this->title) ?> <small class="text-muted pull-right">[v.<?= $this->context->module->version ?>]</small></h1>
     </div>
     <div class="stats visitors-index">
 
@@ -176,7 +177,7 @@ JS
                         if ($data->https)
                             return Html::a('<span class="glyphicon glyphicon-lock text-success" data-toggle="tooltip" title="HTTPS"></span>&nbsp;' . $data->request_uri, $data->request_uri, ['target' => "_blank", 'title' => $data->request_uri, 'data-toggle' => "tooltip", 'data-pajax' => 0]);
                         else
-                            return Html::a($data->request_uri, $data->request_uri, ['target' => "_blank", 'title' => $data->request_uri, 'data-toggle' => "tooltip", 'data-pajax' => 0]);
+                            return Html::a('<span class="glyphicon glyphicon-lock text-muted" data-toggle="tooltip" title="HTTPS"></span>&nbsp;' . $data->request_uri, $data->request_uri, ['target' => "_blank", 'title' => $data->request_uri, 'data-toggle' => "tooltip", 'data-pajax' => 0]);
                     },
                 ],
                 [
@@ -357,7 +358,7 @@ JS
     </div>
 
 <?php $this->registerJs(<<< JS
-$('.visitor-details-link').click(function(event) {
+$('body').delegate('.visitor-details-link', 'click', function(event) {
     event.preventDefault();
     $.get(
         $(this).attr('href'),
