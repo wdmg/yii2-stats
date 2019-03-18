@@ -37,10 +37,57 @@ To add a module to the project, add the following data in your configuration fil
         'stats' => [
             'class' => 'wdmg\stats\Module',
             'collectStats' => true,
-            'routePrefix' => 'admin'
+            'routePrefix' => 'admin',
+            'storagePeriod' => 0,
+            'ignoreDev' => true,
+            'ignoreAjax' => true,
+            'useChart' => true,
+            'ignoreRoute' => ['/admin', '/admin/'],
+            'ignoreListIp' => ['::1', '127.0.0.1'],
+            'ignoreListUA' => [],
+            'cookieName' => 'yii2_stats',
+            'cookieExpire' => 3110400,
+            'advertisingSystems' => ["gclid", "yclid", "fbclid", ...],
+            'socialNetworks' => ["facebook", "instagram", "twitter", ...],
+            'searchEngines' => ["google", "yandex", "yahoo", ...],
+            'clientPlatforms' => [
+                '/windows nt 10/i' => [
+                    'title' => 'Windows 10',
+                    'icon' => 'icon-win-10-os'
+                ],
+                ...
+            ],
+            'clientBrowsers' => [
+                '/msie/i' => [
+                    'title' => 'Internet Explorer',
+                    'icon' => 'icon-ie-browser'
+                ],
+                ...
+            ]
         ],
         ...
     ],
+
+# Options
+
+| Name                | Type    | Default       | Description                   |
+|:------------------- |:-------:|:------------- |:----------------------------- |
+| collectStats        | boolean | `true`        | Collect statistics with this module? |
+| routePrefix         | string  | 'admin'       | Route prefix to the module control panel. |
+| storagePeriod       | integer | 0             | Days, how many to store statistics. 0 - infinity. |
+| useChart            | boolean | `true`        | Use charts when displaying statistics. |
+| ignoreDev           | boolean | `true`        | Ignore activity in development mode. |
+| ignoreAjax          | boolean | `true`        | Ignoring activity for Ajax requests. |
+| ignoreRoute         | array   | ['/admin']    | Ignoring the activity at the specified routing. |
+| ignoreListIp        | array   | ['127.0.0.1'] | Ignoring activity from specified IP addresses. |
+| ignoreListUA        | array   | [...]         | Ignoring of activity at specified UserAgents. |
+| cookieName          | string  | 'yii2_stats'  | The name of the cookie to store the visit ID. |
+| cookieExpire        | integer | 3110400       | Cookie lifetime. |
+| advertisingSystems  | array   | [...]         | List to detect the transition from advertising sites. |
+| socialNetworks      | array   | [...]         | List for detecting transition from social networks. |
+| searchEngines       | array   | [...]         | List for detecting the transition from search engines. |
+| clientPlatforms     | array   | [...]         | List for detecting the client's OS. |
+| clientBrowsers      | array   | [...]         | Client's Browser detection list. |
 
 If you have connected the module not via a composer add Bootstrap section:
 
