@@ -28,6 +28,8 @@ $this->registerJs(<<< JS
 JS
 );
 
+$robotsTypes = $searchModel::getRobotsTypeList();
+
 ?>
 <div class="page-header">
     <h1><?= Html::encode($this->title) ?> <small class="text-muted pull-right">[v.<?= $this->context->module->version ?>]</small></h1>
@@ -43,6 +45,20 @@ JS
             'id',
             'name',
             'regexp',
+            [
+                'attribute' => 'type',
+                'format' => 'html',
+                'filter' => true,
+                'headerOptions' => [
+                    'class' => 'text-center'
+                ],
+                'contentOptions' => [
+                    'class' => 'text-center'
+                ],
+                'value' => function ($data) use ($robotsTypes) {
+                    return $robotsTypes[$data->type];
+                },
+            ],
             [
                 'attribute' => 'is_badbot',
                 'format' => 'html',

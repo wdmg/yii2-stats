@@ -31,6 +31,7 @@ class m190209_130127_stats_visitors extends Migration
             'robot_id' => $this->integer(11)->null()->defaultValue(0),
             'https' => $this->tinyInteger(1)->null()->defaultValue(0),
             'type' => $this->tinyInteger(1)->null()->defaultValue(0),
+            'code' => $this->smallInteger(3)->null(),
             'datetime' => $this->integer(),
             'session' => $this->string(32)->notNull(),
             'unique' => $this->boolean()->defaultValue(false),
@@ -41,6 +42,8 @@ class m190209_130127_stats_visitors extends Migration
         $this->createIndex('remote','{{%stats_visitors}}', ['remote_addr', 'remote_host'],false);
         $this->createIndex('referer','{{%stats_visitors}}', ['referer_uri', 'referer_host'],false);
         $this->createIndex('session','{{%stats_visitors}}', ['session'],false);
+        $this->createIndex('type','{{%stats_visitors}}', ['type'],false);
+        $this->createIndex('code','{{%stats_visitors}}', ['code'],false);
         $this->createIndex('robot','{{%stats_visitors}}', ['robot_id'],false);
 
         // If exist module `Users` set foreign key `user_id` to `users.id`

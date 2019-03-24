@@ -19,6 +19,9 @@ $this->title = Yii::t('app/modules/stats', 'Statistics');
 $this->params['breadcrumbs'][] = $this->title;
 $bundle = MainAsset::register($this);
 
+$visitorTypes = $searchModel::getVisitorTypeList();
+$statusCodes = $searchModel::getStatusCodeList();
+
 $this->registerJs(<<< JS
 
     /* To initialize BS3 tooltips set this below */
@@ -84,8 +87,6 @@ JS
                 $buttonClass['custom'] = 'btn-primary';
             else
                 $buttonClass['custom'] = 'btn-default';
-
-            $visitorTypes = $searchModel::getVisitorTypeList();
 
         ?>
 
@@ -213,7 +214,9 @@ JS
                 [
                     'attribute' => 'referer_host',
                     'format' => 'html',
-                    'filter' => false,
+                    'filter' => Html::activeTextInput($searchModel, 'referer_host', [
+                        'class' => 'form-control',
+                    ]),
                     'visible' => $searchModel->viewReferrerHost,
                     'value' => function($data) {
                         if ($data->referer_host)
@@ -306,7 +309,9 @@ JS
                 [
                     'attribute' => 'type',
                     'format' => 'html',
-                    'filter' => true,
+                    'filter' => Html::activeDropDownList($searchModel, 'type', $visitorTypes, [
+                        'class' => 'form-control',
+                    ]),
                     'visible' => $searchModel->viewTransitionType,
                     'headerOptions' => [
                         'class' => 'text-center'
@@ -320,6 +325,25 @@ JS
                             return $visitorTypes[$data->type];
                         else
                             return $data->type;
+                    },
+                ],
+                [
+                    'attribute' => 'code',
+                    'format' => 'raw',
+                    'filter' => Html::activeTextInput($searchModel, 'code', [
+                        'class' => 'form-control',
+                    ]),
+                    'value' => function($data) {
+                        if (intval($data->code) == 200)
+                            return '<span class="label label-success">'.$data->code.'</span>';
+                        elseif (intval($data->code) >= 300 && intval($data->code) < 400)
+                            return '<span class="label label-info">'.$data->code.'</span>';
+                        elseif (intval($data->code) >= 400 && intval($data->code) < 500)
+                            return '<span class="label label-danger">'.$data->code.'</span>';
+                        elseif (intval($data->code) >= 500 && intval($data->code) < 600)
+                            return '<span class="label label-warning">'.$data->code.'</span>';
+                        else
+                            return '<span class="label label-default">'.$data->code.'</span>';
                     },
                 ],
                 [

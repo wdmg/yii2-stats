@@ -130,6 +130,21 @@ class VisitorsSearch extends Visitors
             'unique' => $this->unique,
         ]);
 
+        if($params['VisitorsSearch']['referer_host']) {
+            $this->referer_host = $params['VisitorsSearch']['referer_host'];
+            $query->andFilterWhere(['=', 'referer_host', $this->referer_host]);
+        }
+
+        if($params['VisitorsSearch']['type']) {
+            $this->type = intval($params['VisitorsSearch']['type']);
+            $query->andFilterWhere(['=', 'type', $this->type]);
+        }
+
+        if($params['VisitorsSearch']['code']) {
+            $this->code = intval($params['VisitorsSearch']['code']);
+            $query->andFilterWhere(['=', 'code', $this->code]);
+        }
+
         if(!$this->period)
             $this->period = 'today';
 
@@ -168,6 +183,7 @@ class VisitorsSearch extends Visitors
             $query->andFilterWhere(['<', 'datetime', $start]);
             $query->andFilterWhere(['>=', 'datetime', $end]);
         }
+
 
 /*
         $query->andFilterWhere([

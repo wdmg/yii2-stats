@@ -33,11 +33,34 @@ class Robots extends ActiveRecord
     {
         $rules = [
             [['id'], 'integer'],
-            [['name', 'regexp'], 'string'],
+            [['name', 'regexp', 'hosts'], 'string'],
             [['is_badbot'], 'integer', 'min' => 0, 'max' => 1],
+            [['type'], 'integer'],
         ];
 
         return $rules;
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function beforeSave($insert)
+    {
+        if (parent::beforeSave($insert)) {
+            $this->hosts = serialize(explode('\r\n', $this->hosts));
+            return true;
+        }
+        return false;
+    }
+
+    public function afterFind() {
+        parent::afterFind();
+
+        $hosts = unserialize($this->hosts);
+        if(is_array($hosts))
+            $this->hosts = implode('\r\n', $hosts);
+        else
+            $this->hosts = '';
     }
 
     /**
@@ -49,6 +72,8 @@ class Robots extends ActiveRecord
             'id' => Yii::t('app/modules/stats', 'ID'),
             'name' => Yii::t('app/modules/stats', 'Name'),
             'regexp' => Yii::t('app/modules/stats', 'RegExp'),
+            'hosts' => Yii::t('app/modules/stats', 'Hosts'),
+            'type' => Yii::t('app/modules/stats', 'Type'),
             'is_badbot' => Yii::t('app/modules/stats', 'Is bad bot?'),
         ];
     }

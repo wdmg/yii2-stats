@@ -32,7 +32,7 @@ class Module extends \yii\base\Module
     /**
      * @var string the module version
      */
-    private $version = "1.0.5";
+    private $version = "1.0.6";
 
     /**
      * @var integer, priority of initialization

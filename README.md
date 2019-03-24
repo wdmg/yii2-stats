@@ -109,6 +109,7 @@ Use the `Module::dashboardNavItems()` method of the module to generate a navigat
     ?>
     
 # Status and version [in progress development]
+* v.1.0.6 - Added type and status code of response
 * v.1.0.5 - Added dashboard navigation items and visitor details modal
 * v.1.0.4 - Added bot detection, custom view options, storage period and clear old stats
 * v.1.0.3 - Fixing tables names in migrations

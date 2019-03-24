@@ -83,6 +83,7 @@ class ControllerBehavior extends \yii\base\Behavior
         $visitor->referer_host = $this->getReferrerHost($request);
         $visitor->https = $request->isSecureConnection ? 1 : 0;
         $visitor->type = $this->identityType($request);
+        $visitor->code = Yii::$app->response->statusCode;
         $visitor->session = $cookie->value;
         $visitor->unique = $this->checkUnique($cookie->value);
         $visitor->params = count($request->getQueryParams()) > 0 ? Json::encode($request->getQueryParams()) : null;

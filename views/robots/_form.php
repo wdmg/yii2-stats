@@ -23,6 +23,8 @@ use yii\bootstrap\Modal;
 <?= $form->field($model, 'id')->textInput() ?>
 <?= $form->field($model, 'name')->textInput() ?>
 <?= $form->field($model, 'regexp')->textInput() ?>
+<?= $form->field($model, 'type')->dropDownList($model::getRobotsTypeList()); ?>
+<?= $form->field($model, 'hosts')->textarea()->hint(Yii::t('app/modules/stats', 'Each value from a new line')) ?>
 <?= $form->field($model, 'is_badbot')->textInput() ?>
 <?php Modal::end(); ?>
 <?php ActiveForm::end(); ?>

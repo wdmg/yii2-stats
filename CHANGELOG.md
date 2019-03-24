@@ -1,6 +1,9 @@
 Changelog
 =========
 
+## 1.0.6 (2019-03-24)
+ * Added type and status code of response
+ 
 ## 1.0.5 (2019-03-16)
  * Added robots update form in modal
  * Added dashboard navigation items for NavBar

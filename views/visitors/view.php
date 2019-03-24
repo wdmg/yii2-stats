@@ -22,6 +22,7 @@ JS
 );
 
 $visitorTypes = $model::getVisitorTypeList();
+$statusCodes = $model::getStatusCodeList();
 
 ?>
 <div class="stats stats-details">
@@ -36,7 +37,30 @@ $visitorTypes = $model::getVisitorTypeList();
                 if ($data->https)
                     return Html::a('<span class="glyphicon glyphicon-lock text-success" data-toggle="tooltip" title="HTTPS"></span>&nbsp;' . $data->request_uri, $data->request_uri, ['target' => "_blank", 'title' => $data->request_uri, 'data-toggle' => "tooltip", 'data-pajax' => 0]);
                 else
-                    return Html::a('<span class="glyphicon glyphicon-lock text-muted" data-toggle="tooltip" title="HTTPS"></span>&nbsp;' . $data->request_uri, $data->request_uri, ['target' => "_blank", 'title' => $data->request_uri, 'data-toggle' => "tooltip", 'data-pajax' => 0]);
+                    return Html::a('<span class="glyphicon glyphicon-lock text-muted" data-toggle="tooltip" title="HTTP"></span>&nbsp;' . $data->request_uri, $data->request_uri, ['target' => "_blank", 'title' => $data->request_uri, 'data-toggle' => "tooltip", 'data-pajax' => 0]);
+            },
+        ],
+        [
+            'attribute' => 'code',
+            'label' => Yii::t('app/modules/stats', 'Response code'),
+            'format' => 'html',
+            'value' => function($data) use ($statusCodes) {
+
+                if($data->code !== null && isset($statusCodes[intval($data->code)]))
+                    $label = $statusCodes[intval($data->code)];
+                else
+                    $label = $statusCodes[0];
+
+                if (intval($data->code) == 200)
+                    return '<span class="label label-success">'.$data->code.'</span>&nbsp;'.$label;
+                elseif (intval($data->code) >= 300 && intval($data->code) < 400)
+                    return '<span class="label label-info">'.$data->code.'</span>&nbsp;'.$label;
+                elseif (intval($data->code) >= 400 && intval($data->code) < 500)
+                    return '<span class="label label-danger">'.$data->code.'</span>&nbsp;'.$label;
+                elseif (intval($data->code) >= 500 && intval($data->code) < 600)
+                    return '<span class="label label-warning">'.$data->code.'</span>&nbsp;'.$label;
+                else
+                    return '<span class="label label-default">'.$data->code.'</span>&nbsp;'.$label;
             },
         ],
         [
@@ -150,6 +174,7 @@ $visitorTypes = $model::getVisitorTypeList();
         ],
         [
             'attribute' => 'type',
+            'label' => Yii::t('app/modules/stats', 'Type of visit'),
             'format' => 'html',
             'value' => function($data) use ($visitorTypes) {
                 if ($data->type !== null)
@@ -163,7 +188,7 @@ $visitorTypes = $model::getVisitorTypeList();
             'format' => 'html',
             'visible' => ($model->params) ? true : false,
             'value' => function($data) {
-                return '<code>' . Html::encode($data->params) . '</code>';
+                return '<code style="display:inline-block;white-space:normal;">' . Html::encode($data->params) . '</code>';
             },
         ],
     ]
