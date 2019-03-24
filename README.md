@@ -8,6 +8,7 @@ Statistics module for Yii2
 * Yii2 v.2.0.13 and newest
 * [Yii2 ChartJS](https://github.com/wdmg/yii2-chartjs) widget
 * [GeoIP2 PHP API](https://github.com/maxmind/GeoIP2-php)
+* [Yii2 Users](https://github.com/wdmg/yii2-users) module (optionaly)
 
 # Installation
 To install the module, run the following command in the console:
