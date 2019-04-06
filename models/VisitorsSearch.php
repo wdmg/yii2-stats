@@ -130,19 +130,25 @@ class VisitorsSearch extends Visitors
             'unique' => $this->unique,
         ]);
 
-        if($params['VisitorsSearch']['referer_host']) {
-            $this->referer_host = $params['VisitorsSearch']['referer_host'];
-            $query->andFilterWhere(['=', 'referer_host', $this->referer_host]);
+        if(isset($params['VisitorsSearch']['referer_host'])) {
+            if($params['VisitorsSearch']['referer_host']) {
+                $this->referer_host = $params['VisitorsSearch']['referer_host'];
+                $query->andFilterWhere(['=', 'referer_host', $this->referer_host]);
+            }
         }
 
-        if($params['VisitorsSearch']['type']) {
-            $this->type = intval($params['VisitorsSearch']['type']);
-            $query->andFilterWhere(['=', 'type', $this->type]);
+        if(isset($params['VisitorsSearch']['type'])) {
+            if($params['VisitorsSearch']['type']) {
+                $this->type = intval($params['VisitorsSearch']['type']);
+                $query->andFilterWhere(['=', 'type', $this->type]);
+            }
         }
 
-        if($params['VisitorsSearch']['code']) {
-            $this->code = intval($params['VisitorsSearch']['code']);
-            $query->andFilterWhere(['=', 'code', $this->code]);
+        if(isset($params['VisitorsSearch']['code'])) {
+            if($params['VisitorsSearch']['code']) {
+                $this->code = intval($params['VisitorsSearch']['code']);
+                $query->andFilterWhere(['=', 'code', $this->code]);
+            }
         }
 
         if(!$this->period)
