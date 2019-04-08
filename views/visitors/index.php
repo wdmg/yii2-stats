@@ -288,11 +288,13 @@ JS
                         'model' => $searchModel,
                         'attribute' => 'datetime',
                         'options' => [
-                            'class' => 'form-control'
+                            'class' => 'form-control',
+                            'value' => date('d.m.Y H:i:s')
                         ],
                         'pluginOptions' => [
                             'className' => '.datepicker',
                             'input' => '.form-control',
+                            'format' => 'DD.MM.YYYY HH:mm:ss',
                             'toggle' => '.input-group-btn > button',
                         ]
                     ]),
@@ -303,7 +305,7 @@ JS
                         'class' => 'text-center'
                     ],
                     'value' => function($data) {
-                        return date('d-m-Y h:i:s', $data->datetime);
+                        return date('d.m.Y H:i:s', $data->datetime);
                     },
                 ],
                 [
