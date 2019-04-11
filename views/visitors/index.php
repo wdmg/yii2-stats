@@ -9,6 +9,7 @@ use yii\bootstrap\ButtonGroup;
 use yii\bootstrap\Modal;
 use wdmg\widgets\ChartJS;
 use wdmg\widgets\DatePicker;
+use wdmg\widgets\SelectInput;
 use wdmg\stats\MainAsset;
 
 /* @var $this yii\web\View */
@@ -311,8 +312,13 @@ JS
                 [
                     'attribute' => 'type',
                     'format' => 'html',
-                    'filter' => Html::activeDropDownList($searchModel, 'type', $visitorTypes, [
-                        'class' => 'form-control',
+                    'filter' => SelectInput::widget([
+                        'model' => $searchModel,
+                        'attribute' => 'type',
+                        'items' => $visitorTypes,
+                        'options' => [
+                            'class' => 'form-control'
+                        ]
                     ]),
                     'visible' => $searchModel->viewTransitionType,
                     'headerOptions' => [
