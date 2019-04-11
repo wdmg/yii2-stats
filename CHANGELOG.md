@@ -1,6 +1,9 @@
 Changelog
 =========
 
+## 1.0.7 (2019-04-12)
+ * Added SelectInput widget
+ 
 ## 1.0.6 (2019-03-24)
  * Added type and status code of response
  
