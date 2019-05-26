@@ -7,6 +7,7 @@ Statistics module for Yii2
 * PHP 5.6 or higher
 * Yii2 v.2.0.13 and newest
 * [Yii2 ChartJS](https://github.com/wdmg/yii2-chartjs) widget
+* [Yii2 SelectInput](https://github.com/wdmg/yii2-selectinput) widget
 * [GeoIP2 PHP API](https://github.com/maxmind/GeoIP2-php)
 * [Yii2 Users](https://github.com/wdmg/yii2-users) module (optionaly)
 
@@ -110,14 +111,8 @@ Use the `Module::dashboardNavItems()` method of the module to generate a navigat
     ?>
     
 # Status and version [in progress development]
+* v.1.0.8 - Updated dependencies
 * v.1.0.7 - Added SelectInput widget
-* v.1.0.6 - Added type and status code of response
-* v.1.0.5 - Added dashboard navigation items and visitor details modal
-* v.1.0.4 - Added bot detection, custom view options, storage period and clear old stats
-* v.1.0.3 - Fixing tables names in migrations
-* v.1.0.2 - MaxMind GeoIp and Charts.js
-* v.1.0.1 - Added view for visitors statistics
-* v.1.0.0 - First pre-release
 
 # Copyright and License
 This product also includes GeoLite2 data created by MaxMind, available from [https://www.maxmind.com](https://www.maxmind.com)

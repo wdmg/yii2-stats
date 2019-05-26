@@ -1,6 +1,9 @@
 Changelog
 =========
 
+## 1.0.8 (2019-05-26)
+ * Updated dependencies
+ 
 ## 1.0.7 (2019-04-12)
  * Added SelectInput widget
  
