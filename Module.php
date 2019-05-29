@@ -6,7 +6,7 @@ namespace wdmg\stats;
  * Yii2 Statistics
  *
  * @category        Module
- * @version         1.0.8
+ * @version         1.1.0
  * @author          Alexsander Vyshnyvetskyy <alex.vyshnyvetskyy@gmail.com>
  * @link            https://github.com/wdmg/yii2-stats
  * @copyright       Copyright (c) 2019 W.D.M.Group, Ukraine
@@ -37,6 +37,16 @@ class Module extends \yii\base\Module
     public $routePrefix = "admin";
 
     /**
+     * @var string, the name of module
+     */
+    public $name = "Statistics";
+
+    /**
+     * @var string, the description of module
+     */
+    public $description = "Statistic module";
+
+    /**
      * @var string the vendor name of module
      */
     private $vendor = "wdmg";
@@ -44,7 +54,7 @@ class Module extends \yii\base\Module
     /**
      * @var string the module version
      */
-    private $version = "1.0.8";
+    private $version = "1.1.0";
 
     /**
      * @var integer, priority of initialization
@@ -347,6 +357,10 @@ class Module extends \yii\base\Module
 
             },
         ];
+
+        // Name and description translation of module
+        $this->name = Yii::t('app/modules/stats', $this->name);
+        $this->description = Yii::t('app/modules/stats', $this->description);
     }
 
     public static function t($category, $message, $params = [], $language = null)
@@ -375,7 +389,7 @@ class Module extends \yii\base\Module
     public function dashboardNavItems()
     {
         return [
-            'label' => Yii::t('app/modules/stats', 'Statistics'),
+            'label' => $this->name,
             'url' => [$this->routePrefix . '/stats/'],
             'active' => in_array(\Yii::$app->controller->module->id, ['stats']),
             'items' => [

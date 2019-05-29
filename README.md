@@ -111,8 +111,8 @@ Use the `Module::dashboardNavItems()` method of the module to generate a navigat
     ?>
     
 # Status and version [in progress development]
+* v.1.1.0 - Added module name and description, translations. Routing fix.
 * v.1.0.8 - Updated dependencies
-* v.1.0.7 - Added SelectInput widget
 
 # Copyright and License
 This product also includes GeoLite2 data created by MaxMind, available from [https://www.maxmind.com](https://www.maxmind.com)

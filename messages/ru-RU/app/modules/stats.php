@@ -2,6 +2,8 @@
 
 return [
     'Statistics' => 'Статистика',
+    'Statistic module' => 'Модуль статистики',
+
     'Views' => 'Просмотры',
     'Visitors' => 'Посетители',
     'Robots' => 'Роботы',

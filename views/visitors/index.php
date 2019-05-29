@@ -16,7 +16,8 @@ use wdmg\stats\MainAsset;
 /* @var $searchModel wdmg\stats\models\VisitorsSearch */
 /* @var $dataProvider yii\data\ActiveDataProvider */
 
-$this->title = Yii::t('app/modules/stats', 'Statistics');
+$this->title = Yii::t('app/modules/stats', 'Visitors');
+$this->params['breadcrumbs'][] = ['label' => $this->context->module->name, 'url' => ['stats']];
 $this->params['breadcrumbs'][] = $this->title;
 $bundle = MainAsset::register($this);
 

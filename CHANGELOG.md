@@ -1,6 +1,9 @@
 Changelog
 =========
 
+## 1.1.0 (2019-05-29)
+ * Added module name and description, translations. Routing fix.
+ 
 ## 1.0.8 (2019-05-26)
  * Updated dependencies
  
