@@ -17,7 +17,7 @@ use wdmg\stats\MainAsset;
 /* @var $dataProvider yii\data\ActiveDataProvider */
 
 $this->title = Yii::t('app/modules/stats', 'Visitors');
-$this->params['breadcrumbs'][] = ['label' => $this->context->module->name, 'url' => ['stats']];
+$this->params['breadcrumbs'][] = $this->context->module->name;
 $this->params['breadcrumbs'][] = $this->title;
 $bundle = MainAsset::register($this);
 
@@ -360,7 +360,7 @@ JS
                 'class' => \yii\grid\ActionColumn::className(),
                 'buttons'=> [
                     'view' => function($url, $data, $key) use ($module) {
-                        $url = Yii::$app->getUrlManager()->createUrl([$module->routePrefix . '/stats/view', 'id' => $data['id']]);
+                        $url = Yii::$app->getUrlManager()->createUrl([$module->routePrefix . '/stats/visitors/view', 'id' => $data['id']]);
                         return Html::a('<span class="glyphicon glyphicon-eye-open"></span>', $url, [
                             'class' => 'visitor-details-link',
                             'title' => Yii::t('yii', 'View'),

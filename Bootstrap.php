@@ -33,18 +33,18 @@ class Bootstrap implements BootstrapInterface
         $app->getUrlManager()->addRules(
             [
                 $prefix . '<module:stats>/' => '<module>/visitors/index',
-                $prefix . '<module:stats>/view' => '<module>/visitors/view',
+                /*$prefix . '<module:stats>/view' => '<module>/visitors/view',*/
                 $prefix . '<module:stats>/<controller:(visitors|robots)>/' => '<module>/<controller>',
                 $prefix . '<module:stats>/<controller:(visitors|robots)>/<action:\w+>' => '<module>/<controller>/<action>',
                 [
                     'pattern' => $prefix . '<module:stats>/',
                     'route' => '<module>/visitors/index',
                     'suffix' => '',
-                ], [
+                ], /*[
                     'pattern' => $prefix . '<module:stats>/view',
                     'route' => '<module>/visitors/view',
                     'suffix' => '',
-                ], [
+                ],*/ [
                     'pattern' => $prefix . '<module:stats>/<controller:(visitors|robots)>/',
                     'route' => '<module>/<controller>',
                     'suffix' => '',

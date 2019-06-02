@@ -78,7 +78,7 @@ class VisitorsController extends Controller
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
         $visitors = $dataProvider->query->all();
 
-        $module = Yii::$app->getModule('stats');
+        $module = $this->module;
         $clientPlatforms = $module->clientPlatforms;
         $clientBrowsers = $module->clientBrowsers;
 
@@ -198,7 +198,7 @@ class VisitorsController extends Controller
 
     public function actionView($id)
     {
-        $module = Yii::$app->getModule('stats');
+        $module = Yii::$app->controller->module;
         $clientPlatforms = $module->clientPlatforms;
         $clientBrowsers = $module->clientBrowsers;
 

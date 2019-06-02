@@ -69,7 +69,8 @@ class RobotsController extends Controller
     {
         $searchModel = new RobotsSearch();
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
-        $module = Yii::$app->getModule('stats');
+
+        $module = $this->module;
         return $this->render('index', [
             'searchModel' => $searchModel,
             'dataProvider' => $dataProvider,
