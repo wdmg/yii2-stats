@@ -6,7 +6,7 @@ namespace wdmg\stats;
  * Yii2 Statistics
  *
  * @category        Module
- * @version         1.1.3
+ * @version         1.1.4
  * @author          Alexsander Vyshnyvetskyy <alex.vyshnyvetskyy@gmail.com>
  * @link            https://github.com/wdmg/yii2-stats
  * @copyright       Copyright (c) 2019 W.D.M.Group, Ukraine
@@ -15,11 +15,14 @@ namespace wdmg\stats;
  */
 
 use Yii;
+use wdmg\base\BaseModule;
+use wdmg\stats\behaviors\ViewBehavior;
+use wdmg\stats\behaviors\ControllerBehavior;
 
 /**
  * Statistics module definition class
  */
-class Module extends \yii\base\Module
+class Module extends BaseModule
 {
     /**
      * {@inheritdoc}
@@ -32,11 +35,6 @@ class Module extends \yii\base\Module
     public $defaultRoute = "visitors/index";
 
     /**
-     * @var string the prefix for routing of module
-     */
-    public $routePrefix = "admin";
-
-    /**
      * @var string, the name of module
      */
     public $name = "Statistics";
@@ -47,14 +45,9 @@ class Module extends \yii\base\Module
     public $description = "Statistic module";
 
     /**
-     * @var string the vendor name of module
-     */
-    private $vendor = "wdmg";
-
-    /**
      * @var string the module version
      */
-    private $version = "1.1.3";
+    private $version = "1.1.4";
 
     /**
      * @var integer, priority of initialization
@@ -299,90 +292,6 @@ class Module extends \yii\base\Module
     ];
 
     /**
-     * {@inheritdoc}
-     */
-    public function init()
-    {
-        parent::init();
-
-        // Set controller namespace for console commands
-        if (Yii::$app instanceof \yii\console\Application)
-            $this->controllerNamespace = 'wdmg\stats\commands';
-
-        // Set current version of module
-        $this->setVersion($this->version);
-
-        // Register translations
-        $this->registerTranslations();
-
-        // Normalize route prefix
-        $this->routePrefixNormalize();
-
-    }
-
-    /**
-     * Return module vendor
-     * @var string of current module vendor
-     */
-    public function getVendor() {
-        return $this->vendor;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function afterAction($action, $result)
-    {
-
-        // Log to debuf console missing translations
-        if (is_array($this->missingTranslation) && YII_ENV == 'dev')
-            Yii::warning('Missing translations: ' . var_export($this->missingTranslation, true), 'i18n');
-
-        $result = parent::afterAction($action, $result);
-        return $result;
-
-    }
-
-    // Registers translations for the module
-    public function registerTranslations()
-    {
-        Yii::$app->i18n->translations['app/modules/stats'] = [
-            'class' => 'yii\i18n\PhpMessageSource',
-            'sourceLanguage' => 'en-US',
-            'basePath' => '@vendor/wdmg/yii2-stats/messages',
-            'on missingTranslation' => function($event) {
-
-                if (YII_ENV == 'dev')
-                    $this->missingTranslation[] = $event->message;
-
-            },
-        ];
-
-        // Name and description translation of module
-        $this->name = Yii::t('app/modules/stats', $this->name);
-        $this->description = Yii::t('app/modules/stats', $this->description);
-    }
-
-    public static function t($category, $message, $params = [], $language = null)
-    {
-        return Yii::t('app/modules/stats' . $category, $message, $params, $language);
-    }
-
-    /**
-     * Normalize route prefix
-     * @return string of current route prefix
-     */
-    public function routePrefixNormalize()
-    {
-        if(!empty($this->routePrefix)) {
-            $this->routePrefix = str_replace('/', '', $this->routePrefix);
-            $this->routePrefix = '/'.$this->routePrefix;
-            $this->routePrefix = str_replace('//', '/', $this->routePrefix);
-        }
-        return $this->routePrefix;
-    }
-
-    /**
      * Build dashboard navigation items for NavBar
      * @return array of current module nav items
      */
@@ -405,5 +314,26 @@ class Module extends \yii\base\Module
                 ],
             ]
         ];
+    }
+
+    public function bootstrap($app)
+    {
+        parent::bootstrap($app);
+
+        // Add stats behaviors for web app
+        if(!($app instanceof \yii\console\Application) && $module) {
+
+            // View behavior to render counter
+            $app->get('view')->attachBehavior('behaviors/ViewBehavior', [
+                'class' => ViewBehavior::class,
+            ]);
+
+            // Controller behavior to write stat data
+            if($module->collectStats) {
+                $app->attachBehavior('behaviors/ControllerBehavior', [
+                    'class' => ControllerBehavior::class,
+                ]);
+            }
+        }
     }
 }

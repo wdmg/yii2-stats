@@ -5,7 +5,7 @@ Statistics module for Yii2
 
 # Requirements 
 * PHP 5.6 or higher
-* Yii2 v.2.0.19 and newest
+* Yii2 v.2.0.20 and newest
 * [Yii2 ChartJS](https://github.com/wdmg/yii2-chartjs) widget
 * [Yii2 SelectInput](https://github.com/wdmg/yii2-selectinput) widget
 * [GeoIP2 PHP API](https://github.com/maxmind/GeoIP2-php)
@@ -91,11 +91,6 @@ To add a module to the project, add the following data in your configuration fil
 | clientPlatforms     | array   | [...]         | List for detecting the client's OS. |
 | clientBrowsers      | array   | [...]         | Client's Browser detection list. |
 
-If you have connected the module not via a composer add Bootstrap section:
-
-`
-$config['bootstrap'][] = 'wdmg\stats\Bootstrap';
-`
 # Routing
 Use the `Module::dashboardNavItems()` method of the module to generate a navigation items list for NavBar, like this:
 
@@ -111,8 +106,8 @@ Use the `Module::dashboardNavItems()` method of the module to generate a navigat
     ?>
     
 # Status and version [in progress development]
+* v.1.1.4 - Module transferred to base module interface. Update Yii2 version.
 * v.1.1.3 - Bugfix, routing and refactoring
-* v.1.1.2 - Update Yii2 version
 
 # Copyright and License
 This product also includes GeoLite2 data created by MaxMind, available from [https://www.maxmind.com](https://www.maxmind.com)

@@ -4,7 +4,7 @@
   "keywords": ["yii2", "yii2-stats", "stats", "statistics", "wdmg"],
   "type": "yii2-extension",
   "license": "MIT",
-  "version": "1.1.3",
+  "version": "1.1.4",
   "homepage": "https://github.com/wdmg/yii2-stats",
   "support": {
     "source": "https://github.com/wdmg/yii2-stats",
@@ -22,7 +22,7 @@
   ],
   "require": {
     "php": ">=5.4",
-    "yiisoft/yii2": "^2.0.19",
+    "yiisoft/yii2": "^2.0.20",
     "geoip2/geoip2": "~2.0",
     "wdmg/yii2-chartjs": "^1.0.2",
     "wdmg/yii2-datepicker": "^1.0.3",
@@ -33,9 +33,6 @@
     "psr-4": {
       "wdmg\\stats\\": ""
     }
-  },
-  "extra": {
-    "bootstrap": "wdmg\\stats\\Bootstrap"
   },
   "scripts": {
     "post-install-cmd": [
