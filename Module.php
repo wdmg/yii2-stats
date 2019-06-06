@@ -6,7 +6,7 @@ namespace wdmg\stats;
  * Yii2 Statistics
  *
  * @category        Module
- * @version         1.1.4
+ * @version         1.1.5
  * @author          Alexsander Vyshnyvetskyy <alex.vyshnyvetskyy@gmail.com>
  * @link            https://github.com/wdmg/yii2-stats
  * @copyright       Copyright (c) 2019 W.D.M.Group, Ukraine
@@ -47,7 +47,7 @@ class Module extends BaseModule
     /**
      * @var string the module version
      */
-    private $version = "1.1.4";
+    private $version = "1.1.5";
 
     /**
      * @var integer, priority of initialization
@@ -292,6 +292,21 @@ class Module extends BaseModule
     ];
 
     /**
+     * {@inheritdoc}
+     */
+    public function init()
+    {
+        parent::init();
+
+        // Set version of current module
+        $this->setVersion($this->version);
+
+        // Set priority of current module
+        $this->setPriority($this->priority);
+
+    }
+
+    /**
      * Build dashboard navigation items for NavBar
      * @return array of current module nav items
      */
@@ -316,12 +331,15 @@ class Module extends BaseModule
         ];
     }
 
+    /**
+     * {@inheritdoc}
+     */
     public function bootstrap($app)
     {
         parent::bootstrap($app);
 
         // Add stats behaviors for web app
-        if(!($app instanceof \yii\console\Application) && $module) {
+        if(!($app instanceof \yii\console\Application) && $this->module) {
 
             // View behavior to render counter
             $app->get('view')->attachBehavior('behaviors/ViewBehavior', [
@@ -329,7 +347,7 @@ class Module extends BaseModule
             ]);
 
             // Controller behavior to write stat data
-            if($module->collectStats) {
+            if($this->collectStats) {
                 $app->attachBehavior('behaviors/ControllerBehavior', [
                     'class' => ControllerBehavior::class,
                 ]);

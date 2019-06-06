@@ -12,7 +12,7 @@ use yii\web\Cookie;
 use yii\web\Request;
 use yii\helpers\Json;
 
-class ControllerBehavior extends \yii\base\Behavior
+class ControllerBehavior extends Behavior
 {
 
     public function events()
@@ -21,6 +21,7 @@ class ControllerBehavior extends \yii\base\Behavior
             Controller::EVENT_AFTER_ACTION => 'onAfterAction'
         ];
     }
+
     /**
      * @param $event Event
      * @throws \yii\base\Exception
@@ -28,7 +29,12 @@ class ControllerBehavior extends \yii\base\Behavior
     public function onAfterAction($event)
     {
 
-        $module = Yii::$app->getModule('stats');
+        // Get stats module
+        if (Yii::$app->hasModule('admin/stats'))
+            $module = Yii::$app->getModule('admin/stats');
+        else
+            $module = Yii::$app->getModule('stats');
+
         if (($module->ignoreDev && (YII_DEBUG || YII_ENV == 'dev')) || ($module->ignoreAjax && Yii::$app->request->isAjax)) {
             return;
         }
@@ -84,7 +90,7 @@ class ControllerBehavior extends \yii\base\Behavior
         $visitor->https = $request->isSecureConnection ? 1 : 0;
         $visitor->type = $this->identityType($request);
         $visitor->code = Yii::$app->response->statusCode;
-        $visitor->session = $cookie->value;
+        $visitor->session = Yii::$app->session->id;
         $visitor->unique = $this->checkUnique($cookie->value);
         $visitor->params = count($request->getQueryParams()) > 0 ? Json::encode($request->getQueryParams()) : null;
         $visitor->robot_id = $this->detectRobot($request->userAgent);
@@ -188,7 +194,11 @@ class ControllerBehavior extends \yii\base\Behavior
     public static function identityType($request)
     {
 
-        $module = Yii::$app->getModule('stats');
+        // Get stats module
+        if (Yii::$app->hasModule('admin/stats'))
+            $module = Yii::$app->getModule('admin/stats');
+        else
+            $module = Yii::$app->getModule('stats');
 
         if(preg_match('/(?!&)utm_([a-z0-9=%]+)/i', $request->getReferrer()) || preg_match('/(?!&)utm_([a-z0-9=%]+)/i', $request->getUrl()))
             return Visitors::TYPE_FROM_ADVERTS;
@@ -197,8 +207,6 @@ class ControllerBehavior extends \yii\base\Behavior
             $patterns = implode($module->advertisingSystems, "|");
             if(preg_match('/('.$patterns.')/i', $request->getReferrer()) || preg_match('/('.$patterns.')/i', $request->getUrl()))
                 return Visitors::TYPE_FROM_ADVERTS;
-            else
-                $patterns = '';
         }
 
         if ($request->getReferrer() === null)
@@ -210,16 +218,12 @@ class ControllerBehavior extends \yii\base\Behavior
             $patterns = implode($module->searchEngines, "|");
             if(preg_match('/('.$patterns.')/i', $request->getReferrer()))
                 return Visitors::TYPE_FROM_SEARCH;
-            else
-                $patterns = '';
         }
 
         if (count($module->socialNetworks) > 0) {
             $patterns = implode($module->socialNetworks, "|");
             if(preg_match('/('.$patterns.')/i', $request->getReferrer()))
                 return Visitors::TYPE_FROM_SOCIALS;
-            else
-                $patterns = '';
         }
 
         return Visitors::TYPE_UNDEFINED;

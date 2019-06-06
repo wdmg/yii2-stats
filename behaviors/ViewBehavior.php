@@ -16,8 +16,12 @@ class ViewBehavior extends \yii\base\Behavior
 
     public function onEndBody($event)
     {
+        // Get stats module
+        if (Yii::$app->hasModule('admin/stats'))
+            $module = Yii::$app->getModule('admin/stats');
+        else
+            $module = Yii::$app->getModule('stats');
 
-        $module = Yii::$app->getModule('stats');
         if (($module->ignoreDev && (YII_DEBUG || YII_ENV == 'dev')) || ($module->ignoreAjax && Yii::$app->request->isAjax)) {
             return;
         }
