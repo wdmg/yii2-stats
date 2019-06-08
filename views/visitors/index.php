@@ -10,7 +10,7 @@ use yii\bootstrap\Modal;
 use wdmg\widgets\ChartJS;
 use wdmg\widgets\DatePicker;
 use wdmg\widgets\SelectInput;
-use wdmg\stats\MainAsset;
+use wdmg\stats\StatsAsset;
 
 /* @var $this yii\web\View */
 /* @var $searchModel wdmg\stats\models\VisitorsSearch */
@@ -19,7 +19,7 @@ use wdmg\stats\MainAsset;
 $this->title = Yii::t('app/modules/stats', 'Visitors');
 $this->params['breadcrumbs'][] = $this->context->module->name;
 $this->params['breadcrumbs'][] = $this->title;
-$bundle = MainAsset::register($this);
+$bundle = StatsAsset::register($this);
 
 $visitorTypes = $searchModel::getVisitorTypeList();
 $statusCodes = $searchModel::getStatusCodeList();

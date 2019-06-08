@@ -3,7 +3,7 @@
 use yii\helpers\Html;
 use yii\grid\GridView;
 use yii\widgets\Pjax;
-use wdmg\stats\MainAsset;
+use wdmg\stats\StatsAsset;
 
 /* @var $this yii\web\View */
 /* @var $searchModel wdmg\stats\models\RobotsSearch */
@@ -12,7 +12,7 @@ use wdmg\stats\MainAsset;
 $this->title = Yii::t('app/modules/stats', 'Robots');
 $this->params['breadcrumbs'][] = $this->context->module->name;
 $this->params['breadcrumbs'][] = $this->title;
-$bundle = MainAsset::register($this);
+$bundle = StatsAsset::register($this);
 
 $this->registerJs(<<< JS
 

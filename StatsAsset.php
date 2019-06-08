@@ -3,9 +3,9 @@
 namespace wdmg\stats;
 use yii\web\AssetBundle;
 
-class MainAsset extends AssetBundle
+class StatsAsset extends AssetBundle
 {
-    public $sourcePath = '@app/vendor/wdmg/yii2-stats/assets';
+    public $sourcePath = '@vendor/wdmg/yii2-stats/assets';
     public $css = [
         'css/stats.css',
     ];
