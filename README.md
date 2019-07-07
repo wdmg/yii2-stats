@@ -1,4 +1,8 @@
-[![Progress](https://img.shields.io/badge/required-Yii2_v2.0.13-blue.svg)](https://packagist.org/packages/yiisoft/yii2) [![Github all releases](https://img.shields.io/github/downloads/wdmg/yii2-stats/total.svg)](https://GitHub.com/wdmg/yii2-stats/releases/) [![GitHub version](https://badge.fury.io/gh/wdmg%2Fyii2-stats.svg)](https://github.com/wdmg/yii2-stats) ![Progress](https://img.shields.io/badge/progress-in_development-red.svg) [![GitHub license](https://img.shields.io/github/license/wdmg/yii2-stats.svg)](https://github.com/wdmg/yii2-stats/blob/master/LICENSE)
+[![Yii2](https://img.shields.io/badge/required-Yii2_v2.0.20-blue.svg)](https://packagist.org/packages/yiisoft/yii2)
+[![Github all releases](https://img.shields.io/github/downloads/wdmg/yii2-stats/total.svg)](https://GitHub.com/wdmg/yii2-stats/releases/)
+![Progress](https://img.shields.io/badge/progress-ready_to_use-green.svg)
+[![GitHub license](https://img.shields.io/github/license/wdmg/yii2-stats.svg)](https://github.com/wdmg/yii2-stats/blob/master/LICENSE)
+![GitHub release](https://img.shields.io/github/release/wdmg/yii2-stats/all.svg)
 
 # Yii2 Statistics Module
 Statistics module for Yii2
@@ -106,7 +110,7 @@ Use the `Module::dashboardNavItems()` method of the module to generate a navigat
         ]);
     ?>
     
-# Status and version [in progress development]
+# Status and version [ready to use]
 * v.1.1.6 - Added choice param for non interactive mode
 * v.1.1.5 - Module refactoring
 * v.1.1.4 - Module transferred to base module interface. Update Yii2 version.
