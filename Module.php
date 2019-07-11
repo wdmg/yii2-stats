@@ -307,10 +307,9 @@ class Module extends BaseModule
     }
 
     /**
-     * Build dashboard navigation items for NavBar
-     * @return array of current module nav items
+     * {@inheritdoc}
      */
-    public function dashboardNavItems()
+    public function dashboardNavItems($createLink = false)
     {
         return [
             'label' => $this->name,
