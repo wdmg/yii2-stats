@@ -4,7 +4,7 @@
   "keywords": ["yii2", "yii2-stats", "stats", "statistics", "wdmg"],
   "type": "yii2-extension",
   "license": "MIT",
-  "version": "1.1.6",
+  "version": "1.1.7",
   "homepage": "https://github.com/wdmg/yii2-stats",
   "support": {
     "source": "https://github.com/wdmg/yii2-stats",
@@ -33,6 +33,21 @@
   "autoload": {
     "psr-4": {
       "wdmg\\stats\\": ""
+    }
+  },
+  "extra": {
+    "options": {
+      "routePrefix": "admin",
+      "collectStats": true,
+      "storagePeriod": 0,
+      "ignoreDev": true,
+      "ignoreAjax": true,
+      "useChart": true,
+      "ignoreRoute": ["/admin", "/admin/"],
+      "ignoreListIp": ["::1", "127.0.0.1"],
+      "ignoreListUA": [],
+      "cookieName": "yii2_stats",
+      "cookieExpire": 3110400
     }
   },
   "scripts": {
