@@ -54,9 +54,36 @@ class InitController extends Controller
         } else if($selected == "2") {
             Yii::$app->runAction('migrate/down', ['migrationPath' => '@vendor/wdmg/yii2-stats/migrations', 'interactive' => true]);
         } else if($selected == "3") {
-            exec("curl -sS https://geolite.maxmind.com/download/geoip/database/GeoLite2-Country.tar.gz > ".__DIR__."/../database/GeoLite2-Country.tar.gz");
-            exec("tar -xf ".__DIR__."/../database/GeoLite2-Country.tar.gz -C ".__DIR__."/../database/ --strip-components 1");
-            exec("rm ".__DIR__."/../database/GeoLite2-Country.tar.gz");
+
+            $geolitePath = "https://geolite.maxmind.com/download/geoip/database/GeoLite2-Country.tar.gz";
+
+            $databasePath = __DIR__."/../database/";
+            if (!file_exists($databasePath) && !is_dir($databasePath))
+                \yii\helpers\FileHelper::createDirectory($databasePath, $mode = 0775, $recursive = true);
+
+            if (strtoupper(substr(PHP_OS, 0, 3)) === 'WIN') {
+                exec("curl -sS ".$geolitePath." > ".$databasePath."/GeoLite2-Country.tar.gz");
+                try {
+                    $phar = new \PharData($databasePath."/GeoLite2-Country.tar.gz");
+                    if ($phar->extractTo($databasePath, null, true)) {
+                        $files = \yii\helpers\FileHelper::findFiles($databasePath, [
+                            'only' => ['*.mmdb']
+                        ]);
+                        foreach($files as $file) {
+                            $fileName = pathinfo(\yii\helpers\FileHelper::normalizePath($file), PATHINFO_BASENAME);
+                            copy($file, $databasePath.$fileName);
+                        }
+                    }
+                    unlink(__DIR__."/../database/GeoLite2-Country.tar.gz");
+                } catch (Exception $e) {
+                    echo $name = $this->ansiFormat("Error! " . $e . "\n\n", Console::FG_RED);
+                }
+            } else {
+                exec("curl -sS ".$geolitePath." > ".$databasePath."GeoLite2-Country.tar.gz");
+                exec("tar -xf ".$databasePath."GeoLite2-Country.tar.gz -C ".$databasePath." --strip-components 1");
+                exec("rm ".$databasePath."GeoLite2-Country.tar.gz");
+            }
+
         } else {
             echo $this->ansiFormat("Error! Your selection has not been recognized.\n\n", Console::FG_RED);
             return ExitCode::UNSPECIFIED_ERROR;

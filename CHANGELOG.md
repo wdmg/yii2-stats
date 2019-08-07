@@ -1,6 +1,9 @@
 Changelog
 =========
 
+## 1.1.8 (2019-08-08)
+ * Bugfix update GeoIP2 from console for non Unix platforms
+
 ## 1.1.7 (2019-07-16)
  * Added extra options to composer.json and navbar menu icon
 

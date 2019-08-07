@@ -111,9 +111,9 @@ Use the `Module::dashboardNavItems()` method of the module to generate a navigat
     ?>
     
 # Status and version [ready to use]
+* v.1.1.8 - Bugfix update GeoIP2 from console for non Unix platforms
 * v.1.1.7 - Added extra options to composer.json and navbar menu icon
 * v.1.1.6 - Added choice param for non interactive mode
-* v.1.1.5 - Module refactoring
 
 # Copyright and License
 This product also includes GeoLite2 data created by MaxMind, available from [https://www.maxmind.com](https://www.maxmind.com)
