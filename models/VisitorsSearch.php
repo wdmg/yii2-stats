@@ -190,21 +190,6 @@ class VisitorsSearch extends Visitors
             $query->andFilterWhere(['>=', 'datetime', $end]);
         }
 
-
-/*
-        $query->andFilterWhere([
-            '<=',
-            'datetime',
-            Date('Y-m-d 00:00:00', strtotime('NOW() - 1 day')
-        ]);
-*/
-
-/*
-        // grid filtering conditions
-        $query->andFilterWhere(['>=', 'datetime', Date('Y-m-d 00:00:00', strtotime($this->start_date))])
-            ->andFilterWhere(['<', 'datetime', Date('Y-m-d 00:00:00', strtotime($this->end_date))]);
-*/
-
         $query->orderBy(['datetime' => SORT_DESC]);
         return $dataProvider;
     }

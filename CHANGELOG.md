@@ -1,6 +1,9 @@
 Changelog
 =========
 
+## 1.1.9 (2019-10-28)
+ * Loading module options from params, optimize GeoIP database update
+ 
 ## 1.1.8 (2019-08-08)
  * Bugfix update GeoIP2 from console for non Unix platforms
 

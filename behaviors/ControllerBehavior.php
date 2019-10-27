@@ -35,31 +35,73 @@ class ControllerBehavior extends Behavior
         else
             $module = Yii::$app->getModule('stats');
 
-        if (($module->ignoreDev && (YII_DEBUG || YII_ENV == 'dev')) || ($module->ignoreAjax && Yii::$app->request->isAjax)) {
+
+        // Get stats options
+        if (isset(Yii::$app->params['stats.ignoreDev']))
+            $ignoreDev = Yii::$app->params['stats.ignoreDev'];
+        else
+            $ignoreDev = $module->ignoreDev;
+
+        if (isset(Yii::$app->params['stats.ignoreAjax']))
+            $ignoreAjax = Yii::$app->params['stats.ignoreAjax'];
+        else
+            $ignoreAjax = $module->ignoreAjax;
+
+        if (isset(Yii::$app->params['stats.ignoreRoute']))
+            $ignoreRoute = Yii::$app->params['stats.ignoreRoute'];
+        else
+            $ignoreRoute = $module->ignoreRoute;
+
+        if (isset(Yii::$app->params['stats.ignoreListIp']))
+            $ignoreListIp = Yii::$app->params['stats.ignoreListIp'];
+        else
+            $ignoreListIp = $module->ignoreListIp;
+
+        if (isset(Yii::$app->params['stats.ignoreListUA']))
+            $ignoreListUA = Yii::$app->params['stats.ignoreListUA'];
+        else
+            $ignoreListUA = $module->ignoreListUA;
+
+        if (isset(Yii::$app->params['stats.cookieName']))
+            $cookieName = Yii::$app->params['stats.cookieName'];
+        else
+            $cookieName = $module->cookieName;
+
+        if (isset(Yii::$app->params['stats.cookieExpire']))
+            $cookieExpire = Yii::$app->params['stats.cookieExpire'];
+        else
+            $cookieExpire = $module->cookieExpire;
+
+        if (isset(Yii::$app->params['stats.storagePeriod']))
+            $storagePeriod = Yii::$app->params['stats.storagePeriod'];
+        else
+            $storagePeriod = $module->storagePeriod;
+
+
+        if (($ignoreDev && (YII_DEBUG || YII_ENV == 'dev')) || ($ignoreAjax && Yii::$app->request->isAjax))
             return;
-        }
 
         // Get request instance
         $request = Yii::$app->request;
 
         // Ignoring by route
-        if (count($module->ignoreRoute) > 0) {
-            foreach ($module->ignoreRoute as $route) {
+        if (count($ignoreRoute) > 0) {
+            foreach ($ignoreRoute as $route) {
                 if(preg_match('/('.preg_quote($route,'/').')/i', $request->url) || preg_match('/('.preg_quote($route,'/').')/i', $request->url))
                     return;
             }
         }
 
         // Ignoring by User IP
-        if (count($module->ignoreListIp) > 0) {
-            if (in_array($request->userIP, $module->ignoreListIp)) {
+        if (count($ignoreListIp) > 0) {
+            if (in_array($request->userIP, $ignoreListIp)) {
                 return;
             }
         }
 
         // Ignoring by User Agent
-        if (count($module->ignoreListUA) > 0) {
-            foreach($module->ignoreListUA as $user_agent) {
+        if (count($ignoreListUA) > 0) {
+            foreach($ignoreListUA as $user_agent) {
 
                 if(stripos($request->userAgent, $user_agent) !== false)
                     return;
@@ -69,14 +111,14 @@ class ControllerBehavior extends Behavior
 
         $cookies = Yii::$app->request->getCookies();
 
-        if (!$cookies->has($module->cookieName)) {
+        if (!$cookies->has($cookieName)) {
             $cookie = new Cookie();
-            $cookie->name = $module->cookieName;
+            $cookie->name = $cookieName;
             $cookie->value = Yii::$app->security->generateRandomString();
-            $cookie->expire = time() + intval($module->cookieExpire);
+            $cookie->expire = time() + intval($cookieExpire);
             Yii::$app->response->getCookies()->add($cookie);
         } else {
-            $cookie = $cookies->get($module->cookieName);
+            $cookie = $cookies->get($cookieName);
         }
 
         $visitor = new Visitors();
@@ -96,8 +138,8 @@ class ControllerBehavior extends Behavior
         $visitor->robot_id = $this->detectRobot($request->userAgent);
         $visitor->save();
 
-        if($module->storagePeriod !== 0 && rand(1, 10) == 1) {
-            $period = (time() - (intval($module->storagePeriod) * 86400));
+        if($storagePeriod !== 0 && rand(1, 10) == 1) {
+            $period = (time() - (intval($storagePeriod) * 86400));
             $visitor::clearOldStats($period);
         }
 

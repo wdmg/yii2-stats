@@ -166,6 +166,11 @@ return [
     'Bot Network' => 'Бот-сеть',
     'Crawler' => 'Поисковый робот',
 
+
+    'OK! GeoIP database updated successful.' => 'OK! База данных GeoIP успешно обновлена.',
+    'An error occurred while updating GeoIP database.' => 'Возникла ошибка при обновлении базы данных GeoIP',
+    'An error occurred while updating GeoIP database: {error}' => 'Возникла ошибка при обновлении базы данных GeoIP: {error}',
+
 ];
 
 ?>

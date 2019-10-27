@@ -6,7 +6,7 @@ namespace wdmg\stats;
  * Yii2 Statistics
  *
  * @category        Module
- * @version         1.1.8
+ * @version         1.1.9
  * @author          Alexsander Vyshnyvetskyy <alex.vyshnyvetskyy@gmail.com>
  * @link            https://github.com/wdmg/yii2-stats
  * @copyright       Copyright (c) 2019 W.D.M.Group, Ukraine
@@ -47,7 +47,7 @@ class Module extends BaseModule
     /**
      * @var string the module version
      */
-    private $version = "1.1.8";
+    private $version = "1.1.9";
 
     /**
      * @var integer, priority of initialization
@@ -75,7 +75,7 @@ class Module extends BaseModule
      * Flag, do not collect statistics in dev mode
      * @var boolean
      */
-    public $ignoreDev = true;
+    public $ignoreDev = false;
 
     /**
      * Flag, do not collect statistics for ajax-requests
@@ -93,13 +93,13 @@ class Module extends BaseModule
      * List of ignored routing
      * @var array
      */
-    public $ignoreRoute = ['/admin', '/admin/'];
+    public $ignoreRoute = ['/admin', '/admin/', '/assets/', '/captcha/'];
 
     /**
      * List of ignored IP`s
      * @var array
      */
-    public $ignoreListIp = ['::1', '127.0.0.1'];
+    public $ignoreListIp = [];
 
     /**
      * List of ignored User Agents
@@ -354,5 +354,57 @@ class Module extends BaseModule
                 ]);
             }
         }
+    }
+
+    /**
+     * Updating GeoIP database from geolite.maxmind.com
+     */
+    public static function updateGeoIP() {
+
+        $geolitePath = "https://geolite.maxmind.com/download/geoip/database/GeoLite2-Country.tar.gz";
+
+        $databasePath = __DIR__."/database/";
+        if (!file_exists($databasePath) && !is_dir($databasePath))
+            \yii\helpers\FileHelper::createDirectory($databasePath, $mode = 0775, $recursive = true);
+
+        if (strtoupper(substr(PHP_OS, 0, 3)) === 'WIN') {
+            exec("curl -sS ".$geolitePath." > ".$databasePath."/GeoLite2-Country.tar.gz");
+            try {
+                $phar = new \PharData($databasePath."/GeoLite2-Country.tar.gz");
+                if ($phar->extractTo($databasePath, null, true)) {
+                    $files = \yii\helpers\FileHelper::findFiles($databasePath, [
+                        'only' => ['*.mmdb']
+                    ]);
+                    foreach($files as $file) {
+                        $fileName = pathinfo(\yii\helpers\FileHelper::normalizePath($file), PATHINFO_BASENAME);
+                        copy($file, $databasePath.$fileName);
+                    }
+                }
+                unlink(__DIR__."/database/GeoLite2-Country.tar.gz");
+                Yii::info("OK! GeoIP database updated successful.");
+                return true;
+            } catch (Exception $e) {
+                Yii::warning("An error occurred while updating GeoIP database: {error}", ['error' => $e]);
+                return false;
+            }
+        } else {
+            try {
+                exec("curl -sS ".$geolitePath." > ".$databasePath."GeoLite2-Country.tar.gz");
+                exec("tar -xf ".$databasePath."GeoLite2-Country.tar.gz -C ".$databasePath." --strip-components 1");
+                exec("rm ".$databasePath."GeoLite2-Country.tar.gz");
+                Yii::info("OK! GeoIP database updated successful.");
+                return true;
+            } catch (Exception $e) {
+                Yii::warning("An error occurred while updating GeoIP database: {error}", ['error' => $e]);
+                return false;
+            }
+        }
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function install() {
+        return (parent::install() && self::updateGeoIP()) ? true : false;
     }
 }
