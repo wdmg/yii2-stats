@@ -79,7 +79,7 @@ $robotsTypes = $searchModel::getRobotsTypeList();
                 },
             ],
             [
-                'class' => \yii\grid\ActionColumn::className(),
+                'class' => \yii\grid\ActionColumn::class,
                 'buttons'=> [
                     'view' => function() {
                         return false;

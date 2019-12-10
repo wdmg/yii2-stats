@@ -357,7 +357,7 @@ JS
                 },
             ],
             [
-                'class' => \yii\grid\ActionColumn::className(),
+                'class' => \yii\grid\ActionColumn::class,
                 'buttons'=> [
                     'view' => function($url, $data, $key) use ($module) {
                         $url = Yii::$app->getUrlManager()->createUrl([$module->routePrefix . '/stats/visitors/view', 'id' => $data['id']]);

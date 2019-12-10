@@ -1,6 +1,9 @@
 Changelog
 =========
 
+## 1.1.10 (2019-12-10)
+ * Fixed deprecated class declaration
+
 ## 1.1.9 (2019-10-28)
  * Loading module options from params, optimize GeoIP database update
  
