@@ -319,13 +319,13 @@ class Module extends BaseModule
                 [
                     'label' => Yii::t('app/modules/stats', 'Visitors'),
                     'url' => [$this->routePrefix . '/stats/'],
-                    'icon' => 'fa-user',
+                    'icon' => 'fa fa-fw fa-user',
                     'active' => (in_array(\Yii::$app->controller->module->id, ['stats']) &&  Yii::$app->controller->action->id == 'index'),
                 ],
                 [
                     'label' => Yii::t('app/modules/stats', 'Robots'),
                     'url' => [$this->routePrefix . '/stats/robots'],
-                    'icon' => 'fa-user-secret',
+                    'icon' => 'fa fa-fw fa-user-secret',
                     'active' => (in_array(\Yii::$app->controller->module->id, ['stats']) &&  Yii::$app->controller->action->id == 'robots'),
                 ],
             ]
