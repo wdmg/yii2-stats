@@ -35,7 +35,6 @@ class ControllerBehavior extends Behavior
         else
             $module = Yii::$app->getModule('stats');
 
-
         // Get stats options
         if (isset(Yii::$app->params['stats.ignoreDev']))
             $ignoreDev = Yii::$app->params['stats.ignoreDev'];
@@ -136,13 +135,15 @@ class ControllerBehavior extends Behavior
         $visitor->unique = $this->checkUnique($cookie->value);
         $visitor->params = count($request->getQueryParams()) > 0 ? Json::encode($request->getQueryParams()) : null;
         $visitor->robot_id = $this->detectRobot($request->userAgent);
-        $visitor->save();
 
-        if($storagePeriod !== 0 && rand(1, 10) == 1) {
+        if ($visitor->save()) {
+            $module->setVisitor($visitor);
+        }
+
+        if ($storagePeriod !== 0 && rand(1, 10) == 1) {
             $period = (time() - (intval($storagePeriod) * 86400));
             $visitor::clearOldStats($period);
         }
-
     }
 
     /**

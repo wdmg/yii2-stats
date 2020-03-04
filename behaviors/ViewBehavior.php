@@ -27,7 +27,6 @@ class ViewBehavior extends \yii\base\Behavior
         }
 
         echo '<!-- start_counter -->';
-
     }
 
 }

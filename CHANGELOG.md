@@ -1,6 +1,9 @@
 Changelog
 =========
 
+## 1.2.0 (2020-02-04)
+ * Collect profiling data
+ 
 ## 1.1.10 (2019-12-10)
  * Fixed deprecated class declaration
 

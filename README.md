@@ -44,6 +44,7 @@ To add a module to the project, add the following data in your configuration fil
         'stats' => [
             'class' => 'wdmg\stats\Module',
             'collectStats' => true,
+            'collectProfiling' => true,
             'routePrefix' => 'admin',
             'storagePeriod' => 0,
             'ignoreDev' => true,
@@ -111,9 +112,9 @@ Use the `Module::dashboardNavItems()` method of the module to generate a navigat
     ?>
     
 # Status and version [ready to use]
+* v.1.2.0 - Collect profiling data
 * v.1.1.10 - Fixed deprecated class declaration
 * v.1.1.9 - Loading module options from params, optimize GeoIP database update
-* v.1.1.8 - Bugfix update GeoIP2 from console for non Unix platforms
 
 # Copyright and License
 This product also includes GeoLite2 data created by MaxMind, available from [https://www.maxmind.com](https://www.maxmind.com)

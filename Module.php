@@ -6,7 +6,7 @@ namespace wdmg\stats;
  * Yii2 Statistics
  *
  * @category        Module
- * @version         1.1.10
+ * @version         1.2.0
  * @author          Alexsander Vyshnyvetskyy <alex.vyshnyvetskyy@gmail.com>
  * @link            https://github.com/wdmg/yii2-stats
  * @copyright       Copyright (c) 2019 W.D.M.Group, Ukraine
@@ -47,7 +47,7 @@ class Module extends BaseModule
     /**
      * @var string the module version
      */
-    private $version = "1.1.10";
+    private $version = "1.2.0";
 
     /**
      * @var integer, priority of initialization
@@ -64,6 +64,12 @@ class Module extends BaseModule
      * @var boolean
      */
     public $collectStats = true;
+
+    /**
+     * Flag, collect profiling data
+     * @var boolean
+     */
+    public $collectProfiling = false;
 
     /**
      * Statistics storage period, days
@@ -292,6 +298,11 @@ class Module extends BaseModule
     ];
 
     /**
+     * @var Visitors::class instance (used in collect profiling)
+     */
+    private $_visitor;
+
+    /**
      * {@inheritdoc}
      */
     public function init()
@@ -348,11 +359,113 @@ class Module extends BaseModule
             ]);
 
             // Controller behavior to write stat data
-            if($this->collectStats) {
+            if ($this->collectStats) {
                 $app->attachBehavior('behaviors/ControllerBehavior', [
                     'class' => ControllerBehavior::class,
                 ]);
             }
+
+            // Collect profiling data
+            if ($this->collectProfiling && $this->collectStats) {
+
+                \yii\base\Event::on(\yii\web\Response::class, \yii\web\Response::EVENT_AFTER_SEND, function ($event) {
+                    $db_profiling = Yii::getLogger()->getDbProfiling();
+                    $elapsed_time = Yii::getLogger()->getElapsedTime();
+                    $memory_usage = memory_get_peak_usage() / (1024 * 1024);
+                    $results = [
+                        'et' => round($elapsed_time, 4), // sec.
+                        'mu' => round($memory_usage, 2), // MB
+                        'dbq' => intval($db_profiling[0]), // queries
+                        'dbt' => round($db_profiling[1], 4) // sec.
+                    ];
+
+                    if ($visitor = $this->getVisitor()) {
+                        $visitor->params = serialize($results);
+                        $visitor->update();
+                        var_export($results);
+                    }
+
+                    /*if ($cache = Yii::$app->getCache()) {
+                        if (!$cache->exists('profiling')) {
+                            $cache->buildKey('profiling');
+                            $cache->set('profiling', [
+                                'timestamp' => time(),
+                                'items' => [$results]
+                            ], -1);
+                        } else {
+                            $profiling = $cache->get('profiling');
+
+                            if (isset($profiling['items'])) {
+                                $cache->set('profiling', [
+                                    'timestamp' => $profiling['timestamp'],
+                                    'items' => array_merge((is_array($profiling['items'])) ? $profiling['items'] : [], [$results])
+                                ], -1);
+                            } else {
+                                $cache->set('profiling', [
+                                    'timestamp' => $profiling['timestamp'],
+                                    'items' => [$results]
+                                ], -1);
+                            }
+                        }
+
+                        if ($cache->exists('profiling')) {
+                            if ($profiling = $cache->get('profiling')) {
+                                if (is_array($profiling['items'])) {
+                                    $elapsed_time = 0;
+                                    $memory_usage = 0;
+                                    $db_queries = 0;
+                                    $db_time = 0;
+
+                                    $i = 1;
+                                    foreach ($profiling['items'] as $data) {
+
+                                        $elapsed_time += (isset($data['et'])) ? $data['et'] : 0;
+                                        $elapsed_time_averg = $elapsed_time / $i;
+
+                                        $memory_usage += (isset($data['mu'])) ? $data['mu'] : 0;
+                                        $memory_usage_averg = $memory_usage / $i;
+
+                                        $db_queries += (isset($data['dbq'])) ? $data['dbq'] : 0;
+                                        $db_queries_averg = $db_queries / $i;
+
+                                        $db_time += (isset($data['dbt'])) ? $data['dbt'] : 0;
+                                        $db_time_averg = $db_time / $i;
+
+                                        $i++;
+                                    }
+
+                                    $cache->set('profiling', array_merge([
+                                        'timestamp' => $profiling['timestamp'],
+                                        'items' => $profiling['items']
+                                    ], [
+                                        'summary' => [
+                                            'et' => $elapsed_time, // sec.
+                                            'mu' => $memory_usage, // MB
+                                            'dbq' => $db_queries, // queries
+                                            'dbt' => $db_time // sec.
+                                        ],
+                                        'average' => [
+                                            'et' => round($elapsed_time_averg, 4), // sec.
+                                            'mu' => round($memory_usage_averg, 2), // MB
+                                            'dbq' => round($db_queries_averg, 4), // queries
+                                            'dbt' => round($db_time_averg, 4) // sec.
+                                        ],
+                                    ]), -1);
+
+
+                                    if ((time() - 60) >= $profiling['timestamp']) {
+                                        // @TODO: Write data to DB
+                                        $cache->delete('profiling');
+                                    }
+
+                                }
+                            }
+                        }
+                    }*/
+
+                });
+            }
+
         }
     }
 
@@ -406,5 +519,14 @@ class Module extends BaseModule
      */
     public function install() {
         return (parent::install() && self::updateGeoIP()) ? true : false;
+    }
+
+    public function setVisitor($visitor = null) {
+        if ($visitor instanceof \yii\db\ActiveRecord) {
+            $this->_visitor = $visitor;
+        }
+    }
+    public function getVisitor() {
+        return $this->_visitor;
     }
 }

@@ -34,8 +34,8 @@ class InitController extends Controller
             '╔════════════════════════════════════════════════╗'. "\n" .
             '║                                                ║'. "\n" .
             '║              STATS MODULE, v.'.$version.'             ║'. "\n" .
-            '║          by Alexsander Vyshnyvetskyy           ║'. "\n" .
-            '║         (c) 2019 W.D.M.Group, Ukraine          ║'. "\n" .
+            '║           by Alexsander Vyshnyvetskyy          ║'. "\n" .
+            '║       (c) 2019-2020 W.D.M.Group, Ukraine       ║'. "\n" .
             '║                                                ║'. "\n" .
             '╚════════════════════════════════════════════════╝';
         echo $name = $this->ansiFormat($welcome . "\n\n", Console::FG_GREEN);
