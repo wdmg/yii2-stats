@@ -69,7 +69,7 @@ class Module extends BaseModule
      * Flag, collect profiling data
      * @var boolean
      */
-    public $collectProfiling = true;
+    public $collectProfiling = false;
 
     /**
      * Statistics storage period, days
