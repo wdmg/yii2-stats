@@ -6,6 +6,7 @@ use Yii;
 use yii\db\ActiveRecord;
 use yii\behaviors\TimestampBehavior;
 use yii\db\Expression;
+use wdmg\validators\SerialValidator;
 
 class Visitors extends ActiveRecord
 {
@@ -108,7 +109,7 @@ class Visitors extends ActiveRecord
     public function afterFind()
     {
         parent::afterFind();
-        if (!is_null($this->params)) {
+        if (!is_null($this->params) && SerialValidator::isValid($this->params)) {
             $this->params = unserialize($this->params);
         }
     }
