@@ -69,7 +69,7 @@ class Module extends BaseModule
      * Flag, collect profiling data
      * @var boolean
      */
-    public $collectProfiling = false;
+    public $collectProfiling = true;
 
     /**
      * Statistics storage period, days
@@ -338,6 +338,12 @@ class Module extends BaseModule
                     'url' => [$this->routePrefix . '/stats/robots'],
                     'icon' => 'fa fa-fw fa-user-secret',
                     'active' => (in_array(\Yii::$app->controller->module->id, ['stats']) &&  Yii::$app->controller->action->id == 'robots'),
+                ],
+                [
+                    'label' => Yii::t('app/modules/stats', 'Load'),
+                    'url' => [$this->routePrefix . '/stats/load/'],
+                    'icon' => 'fa fa-fw fa-weight',
+                    'active' => (in_array(\Yii::$app->controller->module->id, ['load']) &&  Yii::$app->controller->action->id == 'index'),
                 ],
             ]
         ];

@@ -166,6 +166,30 @@ return [
     'Bot Network' => 'Бот-сеть',
     'Crawler' => 'Поисковый робот',
 
+    'Load' => 'Нагрузка',
+    'Load monitoring' => 'Мониторинг нагрузки',
+    'Average load' => 'Средняя нагрузка',
+    'Summary load' => 'Суммарная нагрузка',
+
+    'Web server load' => 'Нагрузка на веб-сервер',
+    'DB server load' => 'Нагрузка на сервер БД',
+
+    'Elapsed time, ms' => 'Затрачено времени, мс',
+    'Elapsed time (summary)' => 'Затрачено времени (суммарно)',
+    'Elapsed time (average)' => 'Затрачено времени (среднее)',
+
+    'Memory usage, Mb' => 'Использовано памяти, Мб',
+    'Memory usage (summary)' => 'Использовано памяти (суммарно)',
+    'Memory usage (average)' => 'Использовано памяти  (среднее)',
+
+    'DB queries, count' => 'Запросов к БД',
+    'DB queries (summary)' => 'Запросов к БД (суммарно)',
+    'DB queries (average)' => 'Запросов к БД (среднее)',
+
+    'DB time, ms' => 'Время БД, мс',
+    'DB time (summary)' => 'Время БД (суммарно)',
+    'DB time (average)' => 'Время БД (среднее)',
+
 
     'OK! GeoIP database updated successful.' => 'OK! База данных GeoIP успешно обновлена.',
     'An error occurred while updating GeoIP database.' => 'Возникла ошибка при обновлении базы данных GeoIP',

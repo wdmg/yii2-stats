@@ -105,6 +105,14 @@ class Visitors extends ActiveRecord
         ];
     }
 
+    public function afterFind()
+    {
+        parent::afterFind();
+        if (!is_null($this->params)) {
+            $this->params = unserialize($this->params);
+        }
+    }
+
 
     public static function getVisitorTypeList() {
         return [

@@ -39,7 +39,7 @@
     "options": {
       "routePrefix": "admin",
       "collectStats": true,
-      "$collectProfiling": false,
+      "collectProfiling": false,
       "storagePeriod": 0,
       "ignoreDev": false,
       "ignoreAjax": true,
