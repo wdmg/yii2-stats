@@ -174,7 +174,7 @@ return [
     'Web server load' => 'Нагрузка на веб-сервер',
     'DB server load' => 'Нагрузка на сервер БД',
 
-    'Elapsed time, ms' => 'Затрачено времени, мс',
+    'Elapsed time, sec.' => 'Затрачено времени, сек.',
     'Elapsed time (summary)' => 'Затрачено времени (суммарно)',
     'Elapsed time (average)' => 'Затрачено времени (среднее)',
 
@@ -182,11 +182,11 @@ return [
     'Memory usage (summary)' => 'Использовано памяти (суммарно)',
     'Memory usage (average)' => 'Использовано памяти  (среднее)',
 
-    'DB queries, count' => 'Запросов к БД',
+    'DB queries' => 'Запросов к БД',
     'DB queries (summary)' => 'Запросов к БД (суммарно)',
     'DB queries (average)' => 'Запросов к БД (среднее)',
 
-    'DB time, ms' => 'Время БД, мс',
+    'DB time, sec.' => 'Время БД, сек.',
     'DB time (summary)' => 'Время БД (суммарно)',
     'DB time (average)' => 'Время БД (среднее)',
 

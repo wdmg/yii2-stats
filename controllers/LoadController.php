@@ -251,7 +251,7 @@ class LoadController extends Controller
                     'labels' => array_reverse($labels),
                     'datasets' => [
                         [
-                            'label'=> Yii::t('app/modules/stats', 'Elapsed time, ms'),
+                            'label'=> Yii::t('app/modules/stats', 'Elapsed time, sec.'),
                             'data' => array_reverse($elapsed_time_avrg),
                             'backgroundColor' => [
                                 'rgba(118, 207, 41, 0.2)'
@@ -278,7 +278,7 @@ class LoadController extends Controller
                     'labels' => array_reverse($labels),
                     'datasets' => [
                         [
-                            'label'=> Yii::t('app/modules/stats', 'DB queries, count'),
+                            'label'=> Yii::t('app/modules/stats', 'DB queries'),
                             'data' => array_reverse($db_queries_avrg),
                             'backgroundColor' => [
                                 'rgba(65, 148, 226, 0.2)'
@@ -289,7 +289,7 @@ class LoadController extends Controller
                             'borderWidth' => 1
                         ],
                         [
-                            'label'=> Yii::t('app/modules/stats', 'DB time, ms'),
+                            'label'=> Yii::t('app/modules/stats', 'DB time, sec.'),
                             'data' => array_reverse($db_time_avrg),
                             'backgroundColor' => [
                                 'rgba(146, 61, 253, 0.2)'

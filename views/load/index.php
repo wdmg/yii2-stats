@@ -188,11 +188,11 @@ JS
         'attributes' => [
             'elapsed_time_summ' => [
                 'label' => Yii::t('app/modules/stats', 'Elapsed time (summary)'),
-                'value' => $dataProvider['elapsed_time_summ'] . " ms",
+                'value' => $dataProvider['elapsed_time_summ'] . " sec.",
             ],
             'elapsed_time_avrg' => [
                 'label' => Yii::t('app/modules/stats', 'Elapsed time (average)'),
-                'value' => $dataProvider['elapsed_time_avrg'] . " ms",
+                'value' => $dataProvider['elapsed_time_avrg'] . " sec.",
             ],
             'memory_usage_summ' => [
                 'label' => Yii::t('app/modules/stats', 'Memory usage (summary)'),
@@ -212,11 +212,11 @@ JS
             ],
             'db_time_summ' => [
                 'label' => Yii::t('app/modules/stats', 'DB time (summary)'),
-                'value' => $dataProvider['db_time_summ'] . " ms",
+                'value' => $dataProvider['db_time_summ'] . " sec.",
             ],
             'db_time_avrg' => [
                 'label' => Yii::t('app/modules/stats', 'DB time (average)'),
-                'value' => $dataProvider['db_time_avrg'] . " ms",
+                'value' => $dataProvider['db_time_avrg'] . " sec.",
             ]
         ],
     ]); ?>
