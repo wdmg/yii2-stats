@@ -2,7 +2,7 @@
 
 use yii\helpers\Html;
 use yii\widgets\DetailView;
-use wdmg\stats\MainAsset;
+use wdmg\stats\StatsAsset;
 
 /* @var $this yii\web\View */
 
