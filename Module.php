@@ -315,6 +315,34 @@ class Module extends BaseModule
         // Set priority of current module
         $this->setPriority($this->priority);
 
+        // Autoload system params
+        $attributes = [
+            'collectStats' => 'boolean',
+            'collectProfiling' => 'boolean',
+            'storagePeriod' => 'integer',
+            'ignoreDev' => 'boolean',
+            'ignoreAjax' => 'boolean',
+            'useChart' => 'boolean',
+            'ignoreRoute' => 'array',
+            'ignoreListIp' => 'array',
+            'ignoreListUA' => 'array',
+            'cookieName' => 'string',
+            'cookieExpire' => 'integer',
+            'advertisingSystems' => 'array',
+            'socialNetworks' => 'array',
+            'searchEngines' => 'array',
+            'clientPlatforms' => 'array',
+            'clientBrowsers' => 'array',
+        ];
+
+        foreach ($attributes as $attribute => $type) {
+            if (isset(Yii::$app->params["stats" . "." . $attribute]) && isset($this->$attribute)) {
+
+                if (\gettype($this->$attribute) == $type)
+                    $this->$attribute = Yii::$app->params["stats" . "." . $attribute];
+
+            }
+        }
     }
 
     /**
@@ -388,7 +416,6 @@ class Module extends BaseModule
                     if ($visitor = $this->getVisitor()) {
                         $visitor->params = serialize($results);
                         $visitor->update();
-                        var_export($results);
                     }
 
                     /*if ($cache = Yii::$app->getCache()) {
