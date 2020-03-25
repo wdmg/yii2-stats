@@ -55,6 +55,7 @@ To add a module to the project, add the following data in your configuration fil
             'ignoreListUA' => [],
             'cookieName' => 'yii2_stats',
             'cookieExpire' => 3110400,
+            'maxmindLicenseKey' => '...',
             'advertisingSystems' => ["gclid", "yclid", "fbclid", ...],
             'socialNetworks' => ["facebook", "instagram", "twitter", ...],
             'searchEngines' => ["google", "yandex", "yahoo", ...],
@@ -91,6 +92,7 @@ To add a module to the project, add the following data in your configuration fil
 | ignoreListUA        | array   | [...]         | Ignoring of activity at specified UserAgents. |
 | cookieName          | string  | 'yii2_stats'  | The name of the cookie to store the visit ID. |
 | cookieExpire        | integer | 3110400       | Cookie lifetime. |
+| maxmindLicenseKey   | mixed   | `false`       | MaxMind LicenseKey for GeoLite2 databases. |
 | advertisingSystems  | array   | [...]         | List to detect the transition from advertising sites. |
 | socialNetworks      | array   | [...]         | List for detecting transition from social networks. |
 | searchEngines       | array   | [...]         | List for detecting the transition from search engines. |
@@ -112,6 +114,7 @@ Use the `Module::dashboardNavItems()` method of the module to generate a navigat
     ?>
     
 # Status and version [ready to use]
+* v.1.2.1 - Fixed updating GeoIP database from MaxMind.com
 * v.1.2.0 - Collect profiling data
 * v.1.1.10 - Fixed deprecated class declaration
 * v.1.1.9 - Loading module options from params, optimize GeoIP database update

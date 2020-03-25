@@ -6,7 +6,7 @@ namespace wdmg\stats;
  * Yii2 Statistics
  *
  * @category        Module
- * @version         1.2.0
+ * @version         1.2.1
  * @author          Alexsander Vyshnyvetskyy <alex.vyshnyvetskyy@gmail.com>
  * @link            https://github.com/wdmg/yii2-stats
  * @copyright       Copyright (c) 2019 - 2020 W.D.M.Group, Ukraine
@@ -47,7 +47,7 @@ class Module extends BaseModule
     /**
      * @var string the module version
      */
-    private $version = "1.2.0";
+    private $version = "1.2.1";
 
     /**
      * @var integer, priority of initialization
@@ -69,7 +69,7 @@ class Module extends BaseModule
      * Flag, collect profiling data
      * @var boolean
      */
-    public $collectProfiling = false;
+    public $collectProfiling = true;
 
     /**
      * Statistics storage period, days
@@ -124,6 +124,12 @@ class Module extends BaseModule
      * @var integer
      */
     public $cookieExpire = 3110400;
+
+    /**
+     * MaxMind LicenseKey for GeoLite2 database
+     * @see https://blog.maxmind.com/2019/12/18/significant-changes-to-accessing-and-using-geolite2-databases/
+     */
+    public $maxmindLicenseKey = false;
 
     /**
      * Advertising Systems
@@ -328,11 +334,12 @@ class Module extends BaseModule
             'ignoreListUA' => 'array',
             'cookieName' => 'string',
             'cookieExpire' => 'integer',
+            'maxmindLicenseKey' => 'string',
             'advertisingSystems' => 'array',
             'socialNetworks' => 'array',
             'searchEngines' => 'array',
             'clientPlatforms' => 'array',
-            'clientBrowsers' => 'array',
+            'clientBrowsers' => 'array'
         ];
 
         foreach ($attributes as $attribute => $type) {
@@ -418,84 +425,6 @@ class Module extends BaseModule
                         $visitor->update();
                     }
 
-                    /*if ($cache = Yii::$app->getCache()) {
-                        if (!$cache->exists('profiling')) {
-                            $cache->buildKey('profiling');
-                            $cache->set('profiling', [
-                                'timestamp' => time(),
-                                'items' => [$results]
-                            ], -1);
-                        } else {
-                            $profiling = $cache->get('profiling');
-
-                            if (isset($profiling['items'])) {
-                                $cache->set('profiling', [
-                                    'timestamp' => $profiling['timestamp'],
-                                    'items' => array_merge((is_array($profiling['items'])) ? $profiling['items'] : [], [$results])
-                                ], -1);
-                            } else {
-                                $cache->set('profiling', [
-                                    'timestamp' => $profiling['timestamp'],
-                                    'items' => [$results]
-                                ], -1);
-                            }
-                        }
-
-                        if ($cache->exists('profiling')) {
-                            if ($profiling = $cache->get('profiling')) {
-                                if (is_array($profiling['items'])) {
-                                    $elapsed_time = 0;
-                                    $memory_usage = 0;
-                                    $db_queries = 0;
-                                    $db_time = 0;
-
-                                    $i = 1;
-                                    foreach ($profiling['items'] as $data) {
-
-                                        $elapsed_time += (isset($data['et'])) ? $data['et'] : 0;
-                                        $elapsed_time_averg = $elapsed_time / $i;
-
-                                        $memory_usage += (isset($data['mu'])) ? $data['mu'] : 0;
-                                        $memory_usage_averg = $memory_usage / $i;
-
-                                        $db_queries += (isset($data['dbq'])) ? $data['dbq'] : 0;
-                                        $db_queries_averg = $db_queries / $i;
-
-                                        $db_time += (isset($data['dbt'])) ? $data['dbt'] : 0;
-                                        $db_time_averg = $db_time / $i;
-
-                                        $i++;
-                                    }
-
-                                    $cache->set('profiling', array_merge([
-                                        'timestamp' => $profiling['timestamp'],
-                                        'items' => $profiling['items']
-                                    ], [
-                                        'summary' => [
-                                            'et' => $elapsed_time, // sec.
-                                            'mu' => $memory_usage, // MB
-                                            'dbq' => $db_queries, // queries
-                                            'dbt' => $db_time // sec.
-                                        ],
-                                        'average' => [
-                                            'et' => round($elapsed_time_averg, 4), // sec.
-                                            'mu' => round($memory_usage_averg, 2), // MB
-                                            'dbq' => round($db_queries_averg, 4), // queries
-                                            'dbt' => round($db_time_averg, 4) // sec.
-                                        ],
-                                    ]), -1);
-
-
-                                    if ((time() - 60) >= $profiling['timestamp']) {
-                                        // @TODO: Write data to DB
-                                        $cache->delete('profiling');
-                                    }
-
-                                }
-                            }
-                        }
-                    }*/
-
                 });
             }
 
@@ -505,53 +434,52 @@ class Module extends BaseModule
     /**
      * Updating GeoIP database from geolite.maxmind.com
      */
-    public static function updateGeoIP() {
+    public function updateGeoIP() {
 
-        $geolitePath = "https://geolite.maxmind.com/download/geoip/database/GeoLite2-Country.tar.gz";
+        if ($maxmindLicenseKey = $this->maxmindLicenseKey) {
 
-        $databasePath = __DIR__."/database/";
-        if (!file_exists($databasePath) && !is_dir($databasePath))
-            \yii\helpers\FileHelper::createDirectory($databasePath, $mode = 0775, $recursive = true);
+            $geolitePath = "https://download.maxmind.com/app/geoip_download?edition_id=GeoLite2-Country&license_key=".$maxmindLicenseKey."&suffix=tar.gz";
 
-        if (strtoupper(substr(PHP_OS, 0, 3)) === 'WIN') {
-            exec("curl -sS ".$geolitePath." > ".$databasePath."/GeoLite2-Country.tar.gz");
-            try {
-                $phar = new \PharData($databasePath."/GeoLite2-Country.tar.gz");
-                if ($phar->extractTo($databasePath, null, true)) {
-                    $files = \yii\helpers\FileHelper::findFiles($databasePath, [
-                        'only' => ['*.mmdb']
-                    ]);
-                    foreach($files as $file) {
-                        $fileName = pathinfo(\yii\helpers\FileHelper::normalizePath($file), PATHINFO_BASENAME);
-                        copy($file, $databasePath.$fileName);
+            $databasePath = __DIR__."/database/";
+            if (!file_exists($databasePath) && !is_dir($databasePath))
+                \yii\helpers\FileHelper::createDirectory($databasePath, $mode = 0775, $recursive = true);
+
+            if (strtoupper(substr(PHP_OS, 0, 3)) === 'WIN') {
+                exec("curl -sS '".$geolitePath."' > ".$databasePath."/GeoLite2-Country.tar.gz");
+                try {
+                    $phar = new \PharData($databasePath."/GeoLite2-Country.tar.gz");
+                    if ($phar->extractTo($databasePath, null, true)) {
+                        $files = \yii\helpers\FileHelper::findFiles($databasePath, [
+                            'only' => ['*.mmdb']
+                        ]);
+                        foreach($files as $file) {
+                            $fileName = pathinfo(\yii\helpers\FileHelper::normalizePath($file), PATHINFO_BASENAME);
+                            copy($file, $databasePath.$fileName);
+                        }
                     }
+                    unlink(__DIR__."/database/GeoLite2-Country.tar.gz");
+                    Yii::info("OK! GeoIP database updated successful.");
+                    return true;
+                } catch (Exception $e) {
+                    Yii::warning("An error occurred while updating GeoIP database: {error}", ['error' => $e]);
+                    return false;
                 }
-                unlink(__DIR__."/database/GeoLite2-Country.tar.gz");
-                Yii::info("OK! GeoIP database updated successful.");
-                return true;
-            } catch (Exception $e) {
-                Yii::warning("An error occurred while updating GeoIP database: {error}", ['error' => $e]);
-                return false;
+            } else {
+                try {
+                    exec("curl -sS '".$geolitePath."' > ".$databasePath."GeoLite2-Country.tar.gz");
+                    exec("tar -xf ".$databasePath."GeoLite2-Country.tar.gz -C ".$databasePath." --strip-components 1");
+                    exec("rm ".$databasePath."GeoLite2-Country.tar.gz");
+                    Yii::info("OK! GeoIP database updated successful.");
+                    return true;
+                } catch (Exception $e) {
+                    Yii::warning("An error occurred while updating GeoIP database: {error}", ['error' => $e]);
+                    return false;
+                }
             }
         } else {
-            try {
-                exec("curl -sS ".$geolitePath." > ".$databasePath."GeoLite2-Country.tar.gz");
-                exec("tar -xf ".$databasePath."GeoLite2-Country.tar.gz -C ".$databasePath." --strip-components 1");
-                exec("rm ".$databasePath."GeoLite2-Country.tar.gz");
-                Yii::info("OK! GeoIP database updated successful.");
-                return true;
-            } catch (Exception $e) {
-                Yii::warning("An error occurred while updating GeoIP database: {error}", ['error' => $e]);
-                return false;
-            }
+            Yii::warning("Error! You must configure the MaxMind license key first.");
+            return 0;
         }
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function install() {
-        return (parent::install() && self::updateGeoIP()) ? true : false;
     }
 
     public function setVisitor($visitor = null) {

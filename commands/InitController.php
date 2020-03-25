@@ -55,8 +55,10 @@ class InitController extends Controller
         } else if($selected == "2") {
             Yii::$app->runAction('migrate/down', ['migrationPath' => '@vendor/wdmg/yii2-stats/migrations', 'interactive' => true]);
         } else if($selected == "3") {
-            if ($module::updateGeoIP())
+            if ($result = $module->updateGeoIP())
                 echo $this->ansiFormat("\n" ."OK! GeoIP database updated successful." . "\n\n", Console::FG_YELLOW);
+            elseif ($result === 0)
+                echo $this->ansiFormat("\n" ."Error! You must configure the MaxMind license key first." . "\n\n", yii\helpers\Console::FG_RED);
             else
                 echo $this->ansiFormat("\n" ."An error occurred while updating GeoIP database." . "\n\n", yii\helpers\Console::FG_RED);
 

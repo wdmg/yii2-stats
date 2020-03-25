@@ -1,6 +1,9 @@
 Changelog
 =========
 
+## 1.2.1 (2020-03-25)
+ * Fixed updating GeoIP database from maxmind.com
+ 
 ## 1.2.0 (2020-02-04)
  * Collect profiling data
  
