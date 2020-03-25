@@ -22,12 +22,12 @@
   ],
   "require": {
     "php": ">=5.4",
-    "yiisoft/yii2": "^2.0.20",
-    "wdmg/yii2-base": "^1.0.1",
+    "yiisoft/yii2": "^2.0.33",
+    "wdmg/yii2-base": "^1.1.6",
     "geoip2/geoip2": "~2.0",
-    "wdmg/yii2-chartjs": "^1.0.4",
-    "wdmg/yii2-selectinput": "^1.0.5",
-    "wdmg/yii2-datepicker": "^1.0.5",
+    "wdmg/yii2-chartjs": "^1.0.5",
+    "wdmg/yii2-selectinput": "^1.0.7",
+    "wdmg/yii2-datepicker": "^1.0.6",
     "wdmg/yii2-validators": "^1.0.5"
   },
   "minimum-stability": "dev",
