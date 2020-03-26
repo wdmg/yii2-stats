@@ -139,6 +139,11 @@ return [
     'New robot' => 'Новый робот',
     'Add new robot' => 'Добавить нового робота',
 
+    'First page' => 'Первая страница',
+    'Last page' => 'Последняя страница',
+    '&larr; Prev page' => '&larr; Предыдущая страница',
+    'Next page &rarr;' => 'Следующая страница &rarr;',
+
     'Robot' => 'Робот',
     'Robot ID' => 'ID робота',
     'Name' => 'Название',

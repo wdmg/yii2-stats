@@ -25,7 +25,7 @@ $visitorTypes = $model::getVisitorTypeList();
 $statusCodes = $model::getStatusCodeList();
 
 ?>
-<div class="stats stats-details">
+<div class="stats-visitors-view">
 <?= DetailView::widget([
     'model' => $model,
     'attributes' => [

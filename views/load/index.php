@@ -48,7 +48,7 @@ JS
 
     <?php Pjax::begin(); ?>
     <?php $form = ActiveForm::begin([
-        'action' => ['index'],
+        'action' => ['load/index'],
         'method' => 'get',
         'options' => [
             'data-pjax' => 1
@@ -138,7 +138,7 @@ JS
                     'class' => 'btn ' . $buttonClass['year']
                 ]
             ]),
-            Button::widget([
+            /*Button::widget([
                 'label' => Yii::t('app/modules/stats', 'Custom date'),
                 'options' => [
                     'name' => 'period',
@@ -146,7 +146,7 @@ JS
                     'value' => 'custom',
                     'class' => 'btn ' . $buttonClass['custom']
                 ]
-            ]),
+            ]),*/
         ]
     ]); ?>
     <?php ActiveForm::end(); ?>

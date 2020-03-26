@@ -45,14 +45,14 @@ JS
     <h1>
         <?= Html::encode($this->title) ?> <small class="text-muted pull-right">[v.<?= $this->context->module->version ?>]</small></h1>
 </div>
-<div class="stats visitors-index">
+<div class="stats-visitors-index">
 
     <?php Pjax::begin(); ?>
 
     <?php echo $this->render('_options', ['model' => $searchModel]); ?>
 
     <?php $form = ActiveForm::begin([
-        'action' => ['index'],
+        'action' => ['visitors/index'],
         'method' => 'get',
         'options' => [
             'data-pjax' => 1
@@ -378,6 +378,21 @@ JS
                     },
                 ],
             ],
+        ],
+        'pager' => [
+            'options' => [
+                'class' => 'pagination',
+            ],
+            'maxButtonCount' => 5,
+            'activePageCssClass' => 'active',
+            'prevPageCssClass' => '',
+            'nextPageCssClass' => '',
+            'firstPageCssClass' => 'previous',
+            'lastPageCssClass' => 'next',
+            'firstPageLabel' => Yii::t('app/modules/stats', 'First page'),
+            'lastPageLabel'  => Yii::t('app/modules/stats', 'Last page'),
+            'prevPageLabel'  => Yii::t('app/modules/stats', '&larr; Prev page'),
+            'nextPageLabel'  => Yii::t('app/modules/stats', 'Next page &rarr;')
         ],
     ]); ?>
     <?php Pjax::end(); ?>
