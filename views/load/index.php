@@ -46,13 +46,25 @@ JS
 </div>
 <div class="stats-loads-index">
 
+    <?php
+
+        $db_dsn = null;
+        if (isset(Yii::$app->getDb()->dsn))
+            $db_dsn = Yii::$app->getDb()->dsn;
+
+        if (isset(Yii::$app->getDb()->getMaster()->dsn))
+            $db_dsn = Yii::$app->getDb()->getMaster()->dsn;
+
+        if (isset(Yii::$app->getDb()->getSlave()->dsn))
+            $db_dsn = Yii::$app->getDb()->getSlave()->dsn;
+
+        var_export('Current dsn: ' . $db_dsn);
+    ?>
+
     <?php Pjax::begin(); ?>
     <?php $form = ActiveForm::begin([
         'action' => ['load/index'],
-        'method' => 'get',
-        'options' => [
-            'data-pjax' => 1
-        ],
+        'method' => 'get'
     ]); ?>
     <?php
 

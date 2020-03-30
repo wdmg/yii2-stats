@@ -408,16 +408,27 @@ class Module extends BaseModule
 
             // Collect profiling data
             if ($this->collectProfiling && $this->collectStats) {
-
                 \yii\base\Event::on(\yii\web\Response::class, \yii\web\Response::EVENT_AFTER_SEND, function ($event) {
                     $db_profiling = Yii::getLogger()->getDbProfiling();
                     $elapsed_time = Yii::getLogger()->getElapsedTime();
                     $memory_usage = memory_get_peak_usage() / (1024 * 1024);
+
+                    $db_dsn = null;
+                    if (isset(Yii::$app->getDb()->dsn))
+                        $db_dsn = Yii::$app->getDb()->dsn;
+
+                    if (isset(Yii::$app->getDb()->getMaster()->dsn))
+                        $db_dsn = Yii::$app->getDb()->getMaster()->dsn;
+
+                    if (isset(Yii::$app->getDb()->getSlave()->dsn))
+                        $db_dsn = Yii::$app->getDb()->getSlave()->dsn;
+
                     $results = [
                         'et' => round($elapsed_time, 4), // sec.
                         'mu' => round($memory_usage, 2), // MB
                         'dbq' => intval($db_profiling[0]), // queries
-                        'dbt' => round($db_profiling[1], 4) // sec.
+                        'dbt' => round($db_profiling[1], 4), // sec.
+                        'dsn' => $db_dsn // sec.
                     ];
 
                     if ($visitor = $this->getVisitor()) {
