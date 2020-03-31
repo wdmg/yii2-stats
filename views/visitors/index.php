@@ -285,12 +285,40 @@ JS
                 },
             ],
             [
+                'attribute' => 'type',
+                'format' => 'html',
+                'filter' => SelectInput::widget([
+                    'model' => $searchModel,
+                    'attribute' => 'type',
+                    'items' => $visitorTypes,
+                    'options' => [
+                        'id' => 'visitors-type',
+                        'class' => 'form-control'
+                    ]
+                ]),
+                'visible' => $searchModel->viewTransitionType,
+                'headerOptions' => [
+                    'class' => 'text-center'
+                ],
+                'contentOptions' => [
+                    'class' => 'text-center'
+                ],
+                'value' => function($data) use ($visitorTypes) {
+
+                    if ($visitorTypes && $data->type !== null)
+                        return $visitorTypes[$data->type];
+                    else
+                        return $data->type;
+                },
+            ],
+            [
                 'attribute' => 'datetime',
                 'format' => 'datetime',
                 'filter' => DatePicker::widget([
                     'model' => $searchModel,
                     'attribute' => 'datetime',
                     'options' => [
+                        'id' => 'visitors-datetime',
                         'class' => 'form-control',
                         'value' => date('d.m.Y H:i:s')
                     ],
@@ -309,32 +337,6 @@ JS
                 ],
                 'value' => function($data) {
                     return date('d.m.Y H:i:s', $data->datetime);
-                },
-            ],
-            [
-                'attribute' => 'type',
-                'format' => 'html',
-                'filter' => SelectInput::widget([
-                    'model' => $searchModel,
-                    'attribute' => 'type',
-                    'items' => $visitorTypes,
-                    'options' => [
-                        'class' => 'form-control'
-                    ]
-                ]),
-                'visible' => $searchModel->viewTransitionType,
-                'headerOptions' => [
-                    'class' => 'text-center'
-                ],
-                'contentOptions' => [
-                    'class' => 'text-center'
-                ],
-                'value' => function($data) use ($visitorTypes) {
-
-                    if ($visitorTypes && $data->type !== null)
-                        return $visitorTypes[$data->type];
-                    else
-                        return $data->type;
                 },
             ],
             [
