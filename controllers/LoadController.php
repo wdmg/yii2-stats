@@ -87,16 +87,12 @@ class LoadController extends Controller
         $visitors = $dataProvider->query->all();
         $module = $this->module;
 
-        $locale = \Locale::getPrimaryLanguage(Yii::$app->language); // Get short locale string
-        if(!$locale)
-            $locale = 'en';
-
         if ($module->useChart && $searchModel->viewChart && ($searchModel->period == 'today' || $searchModel->period == 'yesterday' || $searchModel->period == 'week' || $searchModel->period == 'month' || $searchModel->period == 'year')) {
 
-            $dateTime = new \DateTime('00:00:00');
+            $dateTime = new \DateTime(null, new \DateTimeZone(ini_get('date.timezone')));
             $timestamp = $dateTime->getTimestamp();
 
-            if($searchModel->period == 'today') {
+            if ($searchModel->period == 'today') {
                 $format = 'H:i';
                 $metrik = 'hours';
                 $iterations = 24;

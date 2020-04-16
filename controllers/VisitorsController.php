@@ -95,30 +95,30 @@ class VisitorsController extends Controller
 
         if ($module->useChart && $searchModel->viewChart && ($searchModel->period == 'today' || $searchModel->period == 'yesterday' || $searchModel->period == 'week' || $searchModel->period == 'month' || $searchModel->period == 'year')) {
 
-            $dateTime = new \DateTime('00:00:00');
+            $dateTime = new \DateTime('00:00:00', new \DateTimeZone(ini_get('date.timezone')));
             $timestamp = $dateTime->getTimestamp();
 
-            if($searchModel->period == 'today') {
+            if ($searchModel->period == 'today') {
                 $format = 'H:i';
                 $metrik = 'hours';
                 $iterations = 24;
                 $timestamp = $dateTime->modify('+1 day')->getTimestamp();
-            } else if($searchModel->period == 'yesterday') {
+            } else if ($searchModel->period == 'yesterday') {
                 $format = 'H:i';
                 $metrik = 'hours';
                 $iterations = 24;
                 $timestamp = $dateTime->getTimestamp();
-            } else if($searchModel->period == 'week') {
+            } else if ($searchModel->period == 'week') {
                 $format = 'd M';
                 $metrik = 'days';
                 $iterations = 7;
                 $timestamp = $dateTime->modify('+1 day')->getTimestamp();
-            } else if($searchModel->period == 'month') {
+            } else if ($searchModel->period == 'month') {
                 $format = 'd M';
                 $metrik = 'days';
                 $iterations = 31;
                 $timestamp = $dateTime->modify('+1 day')->getTimestamp();
-            } else if($searchModel->period == 'year') {
+            } else if ($searchModel->period == 'year') {
                 $format = 'M, Y';
                 $metrik = 'months';
                 $iterations = 12;
