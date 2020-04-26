@@ -129,7 +129,7 @@ class Module extends BaseModule
      * MaxMind LicenseKey for GeoLite2 database
      * @see https://blog.maxmind.com/2019/12/18/significant-changes-to-accessing-and-using-geolite2-databases/
      */
-    public $maxmindLicenseKey = false;
+    public $maxmindLicenseKey = "";
 
     /**
      * Advertising Systems
