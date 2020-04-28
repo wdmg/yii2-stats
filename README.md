@@ -114,7 +114,7 @@ Use the `Module::dashboardNavItems()` method of the module to generate a navigat
     ?>
     
 # Status and version [ready to use]
-* v.1.2.1 - Update README.md and dependencies versions
+* v.1.2.2 - Update README.md and dependencies versions
 * v.1.2.1 - Added pagination, fixed updating GeoIP database from MaxMind.com
 * v.1.2.0 - Collect profiling data
 * v.1.1.10 - Fixed deprecated class declaration
