@@ -1,6 +1,12 @@
 Changelog
 =========
 
+## 1.2.2 (2020-04-28)
+ * Update README.md and dependencies versions
+ * MaxMind License Key to empty value
+ * TimeZone in Date()
+ * Added DSN to loads stats, view select period fixed
+
 ## 1.2.1 (2020-03-25)
  * Added pagination
  * Fixed updating GeoIP database from maxmind.com

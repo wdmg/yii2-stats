@@ -1,8 +1,8 @@
 [![Yii2](https://img.shields.io/badge/required-Yii2_v2.0.33-blue.svg)](https://packagist.org/packages/yiisoft/yii2)
-[![Github all releases](https://img.shields.io/github/downloads/wdmg/yii2-stats/total.svg)](https://GitHub.com/wdmg/yii2-stats/releases/)
+[![Downloads](https://img.shields.io/packagist/dt/wdmg/yii2-stats.svg)](https://packagist.org/packages/wdmg/yii2-stats)
+[![Packagist Version](https://img.shields.io/packagist/v/wdmg/yii2-stats.svg)](https://packagist.org/packages/wdmg/yii2-stats)
 ![Progress](https://img.shields.io/badge/progress-ready_to_use-green.svg)
 [![GitHub license](https://img.shields.io/github/license/wdmg/yii2-stats.svg)](https://github.com/wdmg/yii2-stats/blob/master/LICENSE)
-![GitHub release](https://img.shields.io/github/release/wdmg/yii2-stats/all.svg)
 
 # Yii2 Statistics Module
 Statistics module for Yii2
@@ -19,7 +19,7 @@ Statistics module for Yii2
 # Installation
 To install the module, run the following command in the console:
 
-`$ composer require "wdmg/yii2-stats:dev-master"`
+`$ composer require "wdmg/yii2-stats"`
 
 After configure db connection, run the following command in the console:
 
@@ -114,6 +114,7 @@ Use the `Module::dashboardNavItems()` method of the module to generate a navigat
     ?>
     
 # Status and version [ready to use]
+* v.1.2.1 - Update README.md and dependencies versions
 * v.1.2.1 - Added pagination, fixed updating GeoIP database from MaxMind.com
 * v.1.2.0 - Collect profiling data
 * v.1.1.10 - Fixed deprecated class declaration
