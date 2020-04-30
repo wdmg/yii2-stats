@@ -111,6 +111,8 @@ class Visitors extends ActiveRecord
         parent::afterFind();
         if (!is_null($this->params) && SerialValidator::isValid($this->params)) {
             $this->params = unserialize($this->params);
+        } else {
+            $this->params = [];
         }
     }
 

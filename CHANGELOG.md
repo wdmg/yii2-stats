@@ -1,6 +1,9 @@
 Changelog
 =========
 
+## 1.2.*
+ * TimeZone fixed
+ 
 ## 1.2.2 (2020-04-28)
  * Update README.md and dependencies versions
  * MaxMind License Key to empty value

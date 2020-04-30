@@ -89,7 +89,8 @@ class LoadController extends Controller
 
         if ($module->useChart && $searchModel->viewChart && ($searchModel->period == 'today' || $searchModel->period == 'yesterday' || $searchModel->period == 'week' || $searchModel->period == 'month' || $searchModel->period == 'year')) {
 
-            $dateTime = new \DateTime(null, new \DateTimeZone(ini_get('date.timezone')));
+            $timezone = \date_default_timezone_get();
+            $dateTime = new \DateTime('00:00:00', new \DateTimeZone($timezone));
             $timestamp = $dateTime->getTimestamp();
 
             if ($searchModel->period == 'today') {
@@ -106,7 +107,7 @@ class LoadController extends Controller
                 $format = 'd M';
                 $metrik = 'days';
                 $iterations = 7;
-                $timestamp = $dateTime->modify('+1 day')->getTimestamp();
+                $timestamp = $dateTime->modify('+2 day')->getTimestamp();
             } else if($searchModel->period == 'month') {
                 $format = 'd M';
                 $metrik = 'days';
@@ -120,11 +121,20 @@ class LoadController extends Controller
             }
 
             foreach ($visitors as $visitor) {
-                for ($i = 1; $i <= $iterations; $i++) {
-
-                    if($visitor->datetime <= strtotime('-'.$i.' '.$metrik, $timestamp) && $visitor->datetime > strtotime('-'.($i + 1).' '.$metrik, $timestamp))
-                        $output[$i][] = $visitor->params;
-
+                for ($i = 0; $i <= $iterations; $i++) {
+                    if ($searchModel->period == 'today' || $searchModel->period == 'yesterday') {
+                        if ($i == intval(date('H', $visitor->datetime)) + 1) {
+                            $output[abs($iterations - $i)][] = $visitor->params;
+                        } else {
+                            $output[abs($iterations - $i)][] = [];
+                        }
+                    } else {
+                        if ($visitor->datetime <= strtotime('-'.$i.' '.$metrik, $timestamp) && $visitor->datetime > strtotime('-'.($i + 1).' '.$metrik, $timestamp)) {
+                            $output[$i][] = $visitor->params;
+                        } else {
+                            $output[$i][] = [];
+                        }
+                    }
                 }
             }
 
@@ -133,53 +143,46 @@ class LoadController extends Controller
                 if ($searchModel->period == 'year')
                     $labels[] = date($format, strtotime('-'.($i).' '.$metrik, $timestamp));
                 else
-                    $labels[] = date($format, strtotime('-'.($i+1).' '.$metrik, $timestamp));
+                    $labels[] = date($format, strtotime('-'.($i + 1).' '.$metrik, $timestamp));
 
                 if (isset($output[$i])) {
 
                     $et = 0;
+                    $mu = 0;
+                    $dbq = 0;
+                    $dbt = 0;
                     $et_count = 0;
+                    $mu_count = 0;
+                    $dbq_count = 0;
+                    $dbt_count = 0;
+
                     foreach ($output[$i] as $item) {
                         if (isset($item['et'])) {
                             $et += $item['et'];
                             $et_count++;
                         }
-                    }
-                    $elapsed_time_summ[] = round($et, 4);
-                    $elapsed_time_avrg[] = round((($et_count) ? ($et / $et_count) : $et), 4);
-
-                    $mu = 0;
-                    $mu_count = 0;
-                    foreach ($output[$i] as $item) {
                         if (isset($item['mu'])) {
                             $mu += $item['mu'];
                             $mu_count++;
                         }
-                    }
-                    $memory_usage_summ[] = round($mu, 2);
-                    $memory_usage_avrg[] = round((($mu_count) ? ($mu / $mu_count) : $mu), 2);
-
-                    $dbq = 0;
-                    $dbq_count = 0;
-                    foreach ($output[$i] as $item) {
                         if (isset($item['dbq'])) {
                             $dbq += $item['dbq'];
                             $dbq_count++;
                         }
-                    }
-                    $db_queries_summ[] = round($dbq, 4);
-                    $db_queries_avrg[] = round((($dbq_count) ? ($dbq / $dbq_count) : $dbq), 4);
-
-                    $dbt = 0;
-                    $dbt_count = 0;
-                    foreach ($output[$i] as $item) {
                         if (isset($item['dbt'])) {
                             $dbt += $item['dbt'];
                             $dbt_count++;
                         }
                     }
-                    $db_time_summ[] = round($dbt, 4);
-                    $db_time_avrg[] = round((($dbt_count) ? ($dbt / $dbt_count) : $dbt), 4);
+
+                    $elapsed_time_summ[$i] = round($et, 4);
+                    $elapsed_time_avrg[$i] = round((($et_count) ? ($et / $et_count) : $et), 4);
+                    $memory_usage_summ[$i] = round($mu, 2);
+                    $memory_usage_avrg[$i] = round((($mu_count) ? ($mu / $mu_count) : $mu), 2);
+                    $db_queries_summ[$i] = round($dbq, 4);
+                    $db_queries_avrg[$i] = round((($dbq_count) ? ($dbq / $dbq_count) : $dbq), 4);
+                    $db_time_summ[$i] = round($dbt, 4);
+                    $db_time_avrg[$i] = round((($dbt_count) ? ($dbt / $dbt_count) : $dbt), 4);
 
                 }
 

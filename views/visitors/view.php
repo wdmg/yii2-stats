@@ -130,8 +130,11 @@ $statusCodes = $model::getStatusCodeList();
             'attribute' => 'user_agent',
             'format' => 'html',
             'visible' => ($model->user_agent) ? true : false,
+            'contentOptions' => [
+                'style' => "word-break:break-all;"
+            ],
             'value' => function($data) {
-                return '<pre>' . Html::encode($data->user_agent) . '</pre>';
+                return Html::encode($data->user_agent);
             },
         ],
         [
@@ -167,10 +170,7 @@ $statusCodes = $model::getStatusCodeList();
         ],
         [
             'attribute' => 'datetime',
-            'format' => 'datetime',
-            'value' => function($data) {
-                return date('d-m-Y h:i:s', $data->datetime);
-            },
+            'format' => 'datetime'
         ],
         [
             'attribute' => 'type',
@@ -187,8 +187,11 @@ $statusCodes = $model::getStatusCodeList();
             'attribute' => 'params',
             'format' => 'html',
             'visible' => ($model->params) ? true : false,
+            'contentOptions' => [
+                'style' => "word-break:break-all;"
+            ],
             'value' => function($data) {
-                return '<code style="display:inline-block;white-space:normal;">' . Html::encode($data->params) . '</code>';
+                return '<code style="display:inline-block;white-space:normal;">' . Html::encode(var_export($data->params, true)) . '</code>';
             },
         ],
     ]

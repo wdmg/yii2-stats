@@ -334,10 +334,7 @@ JS
                 ],
                 'contentOptions' => [
                     'class' => 'text-center'
-                ],
-                'value' => function($data) {
-                    return date('d.m.Y H:i:s', $data->datetime);
-                },
+                ]
             ],
             [
                 'attribute' => 'code',

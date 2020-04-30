@@ -95,7 +95,8 @@ class VisitorsController extends Controller
 
         if ($module->useChart && $searchModel->viewChart && ($searchModel->period == 'today' || $searchModel->period == 'yesterday' || $searchModel->period == 'week' || $searchModel->period == 'month' || $searchModel->period == 'year')) {
 
-            $dateTime = new \DateTime('00:00:00', new \DateTimeZone(ini_get('date.timezone')));
+            $timezone = \date_default_timezone_get();
+            $dateTime = new \DateTime('00:00:00', new \DateTimeZone($timezone));
             $timestamp = $dateTime->getTimestamp();
 
             if ($searchModel->period == 'today') {
@@ -112,7 +113,7 @@ class VisitorsController extends Controller
                 $format = 'd M';
                 $metrik = 'days';
                 $iterations = 7;
-                $timestamp = $dateTime->modify('+1 day')->getTimestamp();
+                $timestamp = $dateTime->modify('+2 day')->getTimestamp();
             } else if ($searchModel->period == 'month') {
                 $format = 'd M';
                 $metrik = 'days';
@@ -142,7 +143,7 @@ class VisitorsController extends Controller
                 if($searchModel->period == 'year')
                     $labels[] = date($format, strtotime('-'.($i).' '.$metrik, $timestamp));
                 else
-                    $labels[] = date($format, strtotime('-'.($i+1).' '.$metrik, $timestamp));
+                    $labels[] = date($format, strtotime('-'.($i + 1).' '.$metrik, $timestamp));
 
                 if(isset($output1[$i]))
                     $all_visitors[] = count($output1[$i]);
@@ -154,7 +155,6 @@ class VisitorsController extends Controller
                 else
                     $unique_visitors[] = 0;
             }
-
 
             $chartData = [
                 'labels' => array_reverse($labels),
