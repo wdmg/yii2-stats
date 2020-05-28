@@ -6,7 +6,7 @@ namespace wdmg\stats;
  * Yii2 Statistics
  *
  * @category        Module
- * @version         1.2.2
+ * @version         1.2.3
  * @author          Alexsander Vyshnyvetskyy <alex.vyshnyvetskyy@gmail.com>
  * @link            https://github.com/wdmg/yii2-stats
  * @copyright       Copyright (c) 2019 - 2020 W.D.M.Group, Ukraine
@@ -47,7 +47,7 @@ class Module extends BaseModule
     /**
      * @var string the module version
      */
-    private $version = "1.2.2";
+    private $version = "1.2.3";
 
     /**
      * @var integer, priority of initialization
@@ -129,7 +129,7 @@ class Module extends BaseModule
      * MaxMind LicenseKey for GeoLite2 database
      * @see https://blog.maxmind.com/2019/12/18/significant-changes-to-accessing-and-using-geolite2-databases/
      */
-    public $maxmindLicenseKey = "";
+    public $maxmindLicenseKey = false;
 
     /**
      * Advertising Systems
@@ -446,7 +446,6 @@ class Module extends BaseModule
      * Updating GeoIP database from geolite.maxmind.com
      */
     public function updateGeoIP() {
-
         if ($maxmindLicenseKey = $this->maxmindLicenseKey) {
 
             $geolitePath = "https://download.maxmind.com/app/geoip_download?edition_id=GeoLite2-Country&license_key=".$maxmindLicenseKey."&suffix=tar.gz";
@@ -456,8 +455,8 @@ class Module extends BaseModule
                 \yii\helpers\FileHelper::createDirectory($databasePath, $mode = 0775, $recursive = true);
 
             if (strtoupper(substr(PHP_OS, 0, 3)) === 'WIN') {
-                exec("curl -sS '".$geolitePath."' > ".$databasePath."/GeoLite2-Country.tar.gz");
                 try {
+                    exec('curl -sS "'.$geolitePath.'" > '.$databasePath.'/GeoLite2-Country.tar.gz');
                     $phar = new \PharData($databasePath."/GeoLite2-Country.tar.gz");
                     if ($phar->extractTo($databasePath, null, true)) {
                         $files = \yii\helpers\FileHelper::findFiles($databasePath, [
@@ -479,7 +478,7 @@ class Module extends BaseModule
                 try {
                     exec("curl -sS '".$geolitePath."' > ".$databasePath."GeoLite2-Country.tar.gz");
                     exec("tar -xf ".$databasePath."GeoLite2-Country.tar.gz -C ".$databasePath." --strip-components 1");
-                    exec("rm ".$databasePath."GeoLite2-Country.tar.gz");
+                    unlink(__DIR__."/database/GeoLite2-Country.tar.gz");
                     Yii::info("OK! GeoIP database updated successful.");
                     return true;
                 } catch (Exception $e) {

@@ -50,7 +50,7 @@
       "ignoreListUA": [],
       "cookieName": "yii2_stats",
       "cookieExpire": 3110400,
-      "maxmindLicenseKey": ""
+      "maxmindLicenseKey": false
     }
   },
   "scripts": {

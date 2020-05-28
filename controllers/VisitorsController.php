@@ -5,6 +5,7 @@ namespace wdmg\stats\controllers;
 use Yii;
 use wdmg\stats\models\Visitors;
 use wdmg\stats\models\VisitorsSearch;
+use yii\helpers\FileHelper;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
@@ -78,6 +79,7 @@ class VisitorsController extends Controller
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
         $visitors = $dataProvider->query->all();
 
+        $reader = null;
         $module = $this->module;
         $clientPlatforms = $module->clientPlatforms;
         $clientBrowsers = $module->clientBrowsers;
@@ -86,11 +88,28 @@ class VisitorsController extends Controller
         if(!$locale)
             $locale = 'en';
 
-        try {
-            $reader = new \GeoIp2\Database\Reader(__DIR__ .'/../database/GeoLite2-Country.mmdb', [$locale]);
-        } catch (Exception $e) {
-            $reader = null;
-            Yii::warning($e->getMessage());
+        if (!$module->maxmindLicenseKey) {
+            Yii::$app->getSession()->setFlash(
+                'danger',
+                Yii::t(
+                    'app/modules/stats',
+                    'MaxMind GeoLite2 database update key not specified. Visitor location information will not be available.'
+                )
+            );
+        } else if (!file_exists(__DIR__ .'/../database/GeoLite2-Country.mmdb')) {
+            Yii::$app->getSession()->setFlash(
+                'danger',
+                Yii::t(
+                    'app/modules/stats',
+                    'Cannot read MaxMind GeoLite2 database file. It may be necessary to update the database from the application console.'
+                )
+            );
+        } else {
+            try {
+                $reader = new \GeoIp2\Database\Reader(__DIR__ .'/../database/GeoLite2-Country.mmdb', [$locale]);
+            } catch (Exception $e) {
+                Yii::warning($e->getMessage());
+            }
         }
 
         if ($module->useChart && $searchModel->viewChart && ($searchModel->period == 'today' || $searchModel->period == 'yesterday' || $searchModel->period == 'week' || $searchModel->period == 'month' || $searchModel->period == 'year')) {
@@ -202,17 +221,35 @@ class VisitorsController extends Controller
         $clientPlatforms = $module->clientPlatforms;
         $clientBrowsers = $module->clientBrowsers;
 
+        $reader = null;
         $model = self::findModel($id);
 
         $locale = \Locale::getPrimaryLanguage(Yii::$app->language); // Get short locale string
         if(!$locale)
             $locale = 'en';
 
-        try {
-            $reader = new \GeoIp2\Database\Reader(__DIR__ .'/../database/GeoLite2-Country.mmdb', [$locale]);
-        } catch (Exception $e) {
-            $reader = null;
-            Yii::warning($e->getMessage());
+        if (!$module->maxmindLicenseKey) {
+            Yii::$app->getSession()->setFlash(
+                'danger',
+                Yii::t(
+                    'app/modules/stats',
+                    'MaxMind GeoLite2 database update key not specified. Visitor location information will not be available.'
+                )
+            );
+        } else if (!file_exists(__DIR__ .'/../database/GeoLite2-Country.mmdb')) {
+            Yii::$app->getSession()->setFlash(
+                'danger',
+                Yii::t(
+                    'app/modules/stats',
+                    'Cannot read MaxMind GeoLite2 database file. It may be necessary to update the database from the application console.'
+                )
+            );
+        } else {
+            try {
+                $reader = new \GeoIp2\Database\Reader(__DIR__ .'/../database/GeoLite2-Country.mmdb', [$locale]);
+            } catch (Exception $e) {
+                Yii::warning($e->getMessage());
+            }
         }
 
         return $this->renderAjax('view', [

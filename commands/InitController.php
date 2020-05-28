@@ -42,7 +42,7 @@ class InitController extends Controller
         echo "Select the operation you want to perform:\n";
         echo "  1) Apply all module migrations\n";
         echo "  2) Revert all module migrations\n";
-        echo "  3) Update MaxMind GeoIP2 DB\n\n";
+        echo "  3) Update MaxMind GeoLite2 database\n\n";
         echo "Your choice: ";
 
         if(!is_null($this->choice))
@@ -56,11 +56,11 @@ class InitController extends Controller
             Yii::$app->runAction('migrate/down', ['migrationPath' => '@vendor/wdmg/yii2-stats/migrations', 'interactive' => true]);
         } else if($selected == "3") {
             if ($result = $module->updateGeoIP())
-                echo $this->ansiFormat("\n" ."OK! GeoIP database updated successful." . "\n\n", Console::FG_YELLOW);
+                echo $this->ansiFormat("\n" ."OK! MaxMind GeoLite2 database updated successful." . "\n\n", Console::FG_YELLOW);
             elseif ($result === 0)
-                echo $this->ansiFormat("\n" ."Error! You must configure the MaxMind license key first." . "\n\n", yii\helpers\Console::FG_RED);
+                echo $this->ansiFormat("\n" ."Error! You must configure the MaxMind GeoLite2 license key first." . "\n\n", yii\helpers\Console::FG_RED);
             else
-                echo $this->ansiFormat("\n" ."An error occurred while updating GeoIP database." . "\n\n", yii\helpers\Console::FG_RED);
+                echo $this->ansiFormat("\n" ."An error occurred while updating MaxMind GeoLite2 database." . "\n\n", yii\helpers\Console::FG_RED);
 
         } else {
             echo $this->ansiFormat("Error! Your selection has not been recognized.\n\n", Console::FG_RED);

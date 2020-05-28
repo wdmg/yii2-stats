@@ -196,9 +196,12 @@ return [
     'DB time (average)' => 'Время БД (среднее)',
 
 
-    'OK! GeoIP database updated successful.' => 'OK! База данных GeoIP успешно обновлена.',
-    'An error occurred while updating GeoIP database.' => 'Возникла ошибка при обновлении базы данных GeoIP',
-    'An error occurred while updating GeoIP database: {error}' => 'Возникла ошибка при обновлении базы данных GeoIP: {error}',
+    'MaxMind GeoLite2 database update key not specified. Visitor location information will not be available.' => 'Не указан ключ обновления базы данных MaxMind GeoLite2. Информация о местоположении посетителей будет недоступна.',
+    'Cannot read MaxMind GeoLite2 database file. It may be necessary to update the database from the application console.' => 'Не удаётся прочитать файл базы данных MaxMind GeoLite2. Возможно требуется обновлении базы данных из консоли приложения.',
+
+    'OK! MaxMind GeoLite2 database updated successful.' => 'OK! База данных MaxMind GeoLite2 успешно обновлена.',
+    'An error occurred while updating MaxMind GeoLite2 database.' => 'Возникла ошибка при обновлении базы данных MaxMind GeoLite2',
+    'An error occurred while updating MaxMind GeoLite2 database: {error}' => 'Возникла ошибка при обновлении базы данных MaxMind GeoLite2: {error}',
 
 ];
 

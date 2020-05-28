@@ -1,7 +1,10 @@
 Changelog
 =========
 
-## 1.2.*
+## 1.2.3 (2020-05-28)
+ * MaxMind License Key default property fixed
+ * CSS class for stats in views
+ * Update MaxMind for Win platform fixed
  * TimeZone fixed
  
 ## 1.2.2 (2020-04-28)
