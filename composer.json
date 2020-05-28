@@ -4,7 +4,7 @@
   "keywords": ["yii2", "yii2-stats", "stats", "statistics", "wdmg"],
   "type": "yii2-extension",
   "license": "MIT",
-  "version": "1.2.2",
+  "version": "1.2.3",
   "homepage": "https://github.com/wdmg/yii2-stats",
   "support": {
     "source": "https://github.com/wdmg/yii2-stats",
