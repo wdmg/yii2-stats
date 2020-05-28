@@ -28,7 +28,7 @@ After configure db connection, run the following command in the console:
 And select the operation you want to perform:
   1) Apply all module migrations
   2) Revert all module migrations
-  3) Update MaxMind GeoIP2 DB
+  3) Update MaxMind GeoLite2 database
 
 # Migrations
 In any case, you can execute the migration run the following command in the console:
@@ -55,7 +55,7 @@ To add a module to the project, add the following data in your configuration fil
             'ignoreListUA' => [],
             'cookieName' => 'yii2_stats',
             'cookieExpire' => 3110400,
-            'maxmindLicenseKey' => '...',
+            'maxmindLicenseKey' => false,
             'advertisingSystems' => ["gclid", "yclid", "fbclid", ...],
             'socialNetworks' => ["facebook", "instagram", "twitter", ...],
             'searchEngines' => ["google", "yandex", "yahoo", ...],
@@ -114,6 +114,7 @@ Use the `Module::dashboardNavItems()` method of the module to generate a navigat
     ?>
     
 # Status and version [ready to use]
+* v.1.2.3 - MaxMind License Key default property fixed and update MaxMind for Win platform fixed
 * v.1.2.2 - Update README.md and dependencies versions
 * v.1.2.1 - Added pagination, fixed updating GeoIP database from MaxMind.com
 * v.1.2.0 - Collect profiling data

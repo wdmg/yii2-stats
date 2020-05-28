@@ -45,7 +45,7 @@ JS
     <h1>
         <?= Html::encode($this->title) ?> <small class="text-muted pull-right">[v.<?= $this->context->module->version ?>]</small></h1>
 </div>
-<div class="stats-visitors-index">
+<div class="stats-visitors-index stats">
 
     <?php Pjax::begin(); ?>
 
