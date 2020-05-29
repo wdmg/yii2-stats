@@ -23,7 +23,7 @@
   "require": {
     "php": ">=5.4",
     "yiisoft/yii2": "^2.0.33",
-    "wdmg/yii2-base": "^1.2.0",
+    "wdmg/yii2-base": "^1.2.3",
     "geoip2/geoip2": "~2.0",
     "wdmg/yii2-chartjs": "^1.0.6",
     "wdmg/yii2-selectinput": "^1.0.9",
