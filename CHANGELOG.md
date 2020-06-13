@@ -1,6 +1,9 @@
 Changelog
 =========
 
+## 1.2.4 (2020-06-14)
+ * Update README.md
+
 ## 1.2.3 (2020-05-28)
  * MaxMind License Key default property fixed
  * CSS class for stats in views

@@ -6,7 +6,7 @@ namespace wdmg\stats;
  * Yii2 Statistics
  *
  * @category        Module
- * @version         1.2.3
+ * @version         1.2.4
  * @author          Alexsander Vyshnyvetskyy <alex.vyshnyvetskyy@gmail.com>
  * @link            https://github.com/wdmg/yii2-stats
  * @copyright       Copyright (c) 2019 - 2020 W.D.M.Group, Ukraine
@@ -47,7 +47,7 @@ class Module extends BaseModule
     /**
      * @var string the module version
      */
-    private $version = "1.2.3";
+    private $version = "1.2.4";
 
     /**
      * @var integer, priority of initialization
