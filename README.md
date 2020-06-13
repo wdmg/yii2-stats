@@ -4,7 +4,7 @@
 ![Progress](https://img.shields.io/badge/progress-ready_to_use-green.svg)
 [![GitHub license](https://img.shields.io/github/license/wdmg/yii2-stats.svg)](https://github.com/wdmg/yii2-stats/blob/master/LICENSE)
 
-<img src="./docs/images/yii2-media.png" width="100%" alt="Yii2 Media" />
+<img src="./docs/images/yii2-stats.png" width="100%" alt="Yii2 Media" />
 
 # Yii2 Statistics Module
 Statistics module for Yii2. The module takes into account site visitors with details on IP, web browser and user agent. In addition, the module allows you to keep statistics of the load on the web server and database.
