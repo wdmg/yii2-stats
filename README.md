@@ -9,7 +9,7 @@
 # Yii2 Statistics Module
 Statistics module for Yii2. The module takes into account site visitors with details on IP, web browser and user agent. In addition, the module allows you to keep statistics of the load on the web server and database.
 
-This module is an integral part of the [Butterfly.SMS](https://butterflycms.com/) content management system, but can also be used as an standalone extension.
+This module is an integral part of the [Butterfly.СMS](https://butterflycms.com/) content management system, but can also be used as an standalone extension.
 
 Copyrights (c) 2019-2020 [W.D.M.Group, Ukraine](https://wdmg.com.ua/)
 
