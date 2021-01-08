@@ -1,6 +1,9 @@
 Changelog
 =========
 
+## 1.2.*
+ * Added visitors map
+ 
 ## 1.2.4 (2020-06-14)
  * Update README.md
 

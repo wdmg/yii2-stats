@@ -9,7 +9,7 @@ namespace wdmg\stats;
  * @version         1.2.4
  * @author          Alexsander Vyshnyvetskyy <alex.vyshnyvetskyy@gmail.com>
  * @link            https://github.com/wdmg/yii2-stats
- * @copyright       Copyright (c) 2019 - 2020 W.D.M.Group, Ukraine
+ * @copyright       Copyright (c) 2019 - 2021 W.D.M.Group, Ukraine
  * @license         https://opensource.org/licenses/MIT Massachusetts Institute of Technology (MIT) License
  *
  */
@@ -18,6 +18,8 @@ use Yii;
 use wdmg\base\BaseModule;
 use wdmg\stats\behaviors\ViewBehavior;
 use wdmg\stats\behaviors\ControllerBehavior;
+use wdmg\helpers\StringHelper;
+use wdmg\validators\SerialValidator;
 
 /**
  * Statistics module definition class
@@ -70,6 +72,12 @@ class Module extends BaseModule
      * @var boolean
      */
     public $collectProfiling = true;
+
+    /**
+     * Flag, detect geo location by IP
+     * @var boolean
+     */
+    public $detectLocation = false;
 
     /**
      * Statistics storage period, days
@@ -129,7 +137,7 @@ class Module extends BaseModule
      * MaxMind LicenseKey for GeoLite2 database
      * @see https://blog.maxmind.com/2019/12/18/significant-changes-to-accessing-and-using-geolite2-databases/
      */
-    public $maxmindLicenseKey = false;
+    public $maxmindLicenseKey = "";
 
     /**
      * Advertising Systems
@@ -325,6 +333,7 @@ class Module extends BaseModule
         $attributes = [
             'collectStats' => 'boolean',
             'collectProfiling' => 'boolean',
+            'detectLocation' => 'boolean',
             'storagePeriod' => 'integer',
             'ignoreDev' => 'boolean',
             'ignoreAjax' => 'boolean',
@@ -423,19 +432,26 @@ class Module extends BaseModule
                     if (isset(Yii::$app->getDb()->getSlave()->dsn))
                         $db_dsn = Yii::$app->getDb()->getSlave()->dsn;
 
-                    $results = [
-                        'et' => round($elapsed_time, 4), // sec.
-                        'mu' => round($memory_usage, 2), // MB
-                        'dbq' => intval($db_profiling[0]), // queries
-                        'dbt' => round($db_profiling[1], 4), // sec.
-                        'dsn' => $db_dsn // sec.
-                    ];
-
                     if ($visitor = $this->getVisitor()) {
-                        $visitor->params = serialize($results);
+
+                        $params = [];
+                        if (!is_null($visitor->params)) {
+                            if (is_array($visitor->params)) {
+                                $params = $visitor->params;
+                            } else if (is_string($visitor->params) && SerialValidator::isValid($visitor->params)) {
+                                $params = unserialize($visitor->params);
+                            }
+                        }
+
+                        $params['et'] = ($elapsed_time) ? round($elapsed_time, 4) : 0; // sec.
+                        $params['mu'] = ($memory_usage) ? round($memory_usage, 2) : 0; // MB
+                        $params['dbq'] = ($db_profiling[0]) ? intval($db_profiling[0]) : 0; // queries
+                        $params['dbt'] = ($db_profiling[1]) ? round($db_profiling[1], 4) : 0; // sec.
+                        $params['dsn'] = ($db_dsn) ? $db_dsn : null; // DSN
+
+                        $visitor->params = serialize($params);
                         $visitor->update();
                     }
-
                 });
             }
 

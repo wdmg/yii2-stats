@@ -51,6 +51,10 @@ JS
 
     <?php echo $this->render('_options', ['model' => $searchModel]); ?>
 
+    <?php if ($searchModel->viewMap) {
+        echo $this->render('_map', ['model' => $searchModel, 'mapData' => $mapData]);
+    } ?>
+
     <?php $form = ActiveForm::begin([
         'action' => ['visitors/index'],
         'method' => 'get',
@@ -268,19 +272,36 @@ JS
                 'format' => 'raw',
                 'filter' => true,
                 'visible' => $searchModel->viewClientIP,
-                'value' => function($data) use ($reader) {
-                    try {
-                        if ($reader && $data->remote_addr && $data->remote_addr !== '127.0.0.1' && $data->remote_addr !== '::1') {
-                            $record = $reader->country($data->remote_addr);
-                            return Html::tag('span', '', ['class' => 'flag flag-'.strtolower($record->country->isoCode), 'data-toggle'=> "tooltip", 'title' => $record->country->name]) . ' ' . $data->remote_addr;
-                        } else if ($data->remote_addr) {
-                            return $data->remote_addr;
-                        }
-                    } catch (Exception $e) {
-                        if ($data->remote_addr) {
+                'value' => function($data) use ($reader, $module) {
+                    if (isset($data->remote_addr)) {
+                        if (isset($data->iso_code)) {
+                            return Html::tag('span', '', [
+                                    'class' => 'flag flag-'.strtolower($data->iso_code),
+                                    'data-toggle'=> "tooltip",
+                                    'title' => ((isset($data->params['country'])) ? trim($data->params['country']) : strtoupper($data->iso_code))
+                                ]) . ' ' . Html::a($data->remote_addr, 'https://check-host.net/ip-info?host=' . $data->remote_addr, ['target' => "_blank", 'data-pajax' => 0]);
+                        } else if ($module->detectLocation) {
+                            try {
+                                if ($reader && $data->remote_addr && $data->remote_addr !== '127.0.0.1' && $data->remote_addr !== '::1') {
+                                    $record = $reader->country($data->remote_addr);
+                                    return Html::tag('span', '', [
+                                        'class' => 'flag flag-'.strtolower($record->country->isoCode),
+                                        'data-toggle'=> "tooltip",
+                                        'title' => $record->country->name
+                                    ]) . ' ' . Html::a($data->remote_addr, 'https://check-host.net/ip-info?host=' . $data->remote_addr, ['target' => "_blank", 'data-pajax' => 0]);
+                                } else if ($data->remote_addr) {
+                                    return $data->remote_addr;
+                                }
+                            } catch (Exception $e) {
+                                if ($data->remote_addr) {
+                                    return $data->remote_addr;
+                                }
+                            }
+                        } else {
                             return $data->remote_addr;
                         }
                     }
+
                     return Yii::t('app/modules/stats', 'Unknow IP');
                 },
             ],
@@ -384,10 +405,10 @@ JS
             ],
             'maxButtonCount' => 5,
             'activePageCssClass' => 'active',
-            'prevPageCssClass' => '',
-            'nextPageCssClass' => '',
-            'firstPageCssClass' => 'previous',
-            'lastPageCssClass' => 'next',
+            'prevPageCssClass' => 'prev',
+            'nextPageCssClass' => 'next',
+            'firstPageCssClass' => 'first',
+            'lastPageCssClass' => 'last',
             'firstPageLabel' => Yii::t('app/modules/stats', 'First page'),
             'lastPageLabel'  => Yii::t('app/modules/stats', 'Last page'),
             'prevPageLabel'  => Yii::t('app/modules/stats', '&larr; Prev page'),

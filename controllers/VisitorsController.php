@@ -6,6 +6,7 @@ use Yii;
 use wdmg\stats\models\Visitors;
 use wdmg\stats\models\VisitorsSearch;
 use yii\helpers\FileHelper;
+use yii\helpers\Json;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
@@ -202,6 +203,19 @@ class VisitorsController extends Controller
                     ]
                 ]
             ];
+
+            $mapData = [];
+            if ($searchModel->viewMap) {
+                foreach ($visitors as $visitor) {
+                    if ($iso_code = strtoupper($visitor->iso_code)) {
+                        if (isset($mapData[$iso_code]))
+                            $mapData[$iso_code] += 1;
+                        else
+                            $mapData[$iso_code] = 1;
+                    }
+                }
+                $mapData['_all'] = count($visitors);
+            }
         }
 
         return $this->render('index', [
@@ -210,6 +224,7 @@ class VisitorsController extends Controller
             'clientPlatforms' => $clientPlatforms,
             'clientBrowsers' => $clientBrowsers,
             'chartData' => $chartData,
+            'mapData' => Json::encode($mapData),
             'module' => $module,
             'reader' => $reader
         ]);
@@ -256,6 +271,7 @@ class VisitorsController extends Controller
             'clientPlatforms' => $clientPlatforms,
             'clientBrowsers' => $clientBrowsers,
             'model' => $model,
+            'module' => $module,
             'reader' => $reader
         ]);
     }

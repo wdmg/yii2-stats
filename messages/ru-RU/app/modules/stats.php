@@ -29,6 +29,7 @@ return [
     'Type' => 'Тип',
     'Type of visit' => 'Тип посещения',
     'Code' => 'Код',
+    'Location' => 'Местоположение',
     'Response code' => 'Код ответа',
     'Unique' => 'Уникальный?',
     'Params' => 'Параметры',
@@ -120,6 +121,7 @@ return [
     'Network connect timeout error' => 'Ошибка тайм-аута сетевого подключения',
 
     'Show chart' => 'Отображать график',
+    'Show map' => 'Отображать карту',
     'Show robots' => 'Отображать роботов',
     'Show only robots' => 'Отображать только роботов',
     'Show referrer URI' => 'Отображать реферер-адрес',

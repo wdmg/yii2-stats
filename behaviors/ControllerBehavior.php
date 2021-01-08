@@ -2,8 +2,11 @@
 
 namespace wdmg\stats\behaviors;
 
+use wdmg\helpers\ArrayHelper;
+use wdmg\helpers\StringHelper;
 use wdmg\stats\models\Robots;
 use wdmg\stats\models\Visitors;
+use wdmg\validators\SerialValidator;
 use Yii;
 use yii\base\Behavior;
 use yii\base\Event;
@@ -76,9 +79,29 @@ class ControllerBehavior extends Behavior
         else
             $storagePeriod = $module->storagePeriod;
 
+        if (isset(Yii::$app->params['stats.detectLocation']))
+            $detectLocation = Yii::$app->params['stats.detectLocation'];
+        else
+            $detectLocation = $module->detectLocation;
+
 
         if (($ignoreDev && (YII_DEBUG || YII_ENV == 'dev')) || ($ignoreAjax && Yii::$app->request->isAjax))
             return;
+
+        // Setup GeoIp2 Database reader
+        $reader = null;
+        if ($detectLocation) {
+
+            $locale = \Locale::getPrimaryLanguage(Yii::$app->language); // Get short locale string
+            if (!$locale)
+                $locale = 'en';
+
+            try {
+                $reader = new \GeoIp2\Database\Reader(__DIR__ .'/../database/GeoLite2-Country.mmdb', [$locale]);
+            } catch (Exception $e) {
+                Yii::debug($e->getMessage(), __METHOD__);
+            }
+        }
 
         // Get request instance
         $request = Yii::$app->request;
@@ -133,12 +156,32 @@ class ControllerBehavior extends Behavior
         $visitor->code = Yii::$app->response->statusCode;
         $visitor->session = Yii::$app->session->id;
         $visitor->unique = $this->checkUnique($cookie->value);
-        $visitor->params = count($request->getQueryParams()) > 0 ? Json::encode($request->getQueryParams()) : null;
+        $visitor->params = count($request->getQueryParams()) > 0 ? $request->getQueryParams() : null;
         $visitor->robot_id = $this->detectRobot($request->userAgent);
 
-        if ($visitor->save()) {
-            $module->setVisitor($visitor);
+        if ($reader && $detectLocation && $visitor->remote_addr && $visitor->remote_addr !== '127.0.0.1' && $visitor->remote_addr !== '::1') {
+            $record = $reader->country($visitor->remote_addr);
+
+            if (isset($record->country->isoCode)) {
+                $visitor->iso_code = strtolower($record->country->isoCode);
+
+                $params = [];
+                if (!is_array($visitor->params))
+                    $params = $visitor->params;
+
+                $params['iso_code'] = strtolower($record->country->isoCode);
+
+                if (isset($record->country->name))
+                    $params['country'] = $record->country->name;
+
+            }
+            $visitor->params = serialize($params);
+        } else {
+            $visitor->params = serialize($visitor->params);
         }
+
+        if ($visitor->save())
+            $module->setVisitor($visitor);
 
         if ($storagePeriod !== 0 && rand(1, 10) == 1) {
             $period = (time() - (intval($storagePeriod) * 86400));
@@ -167,7 +210,8 @@ class ControllerBehavior extends Behavior
         if(!$client_ip)
             $client_ip = $request->remoteIP;
 
-        return $client_ip;
+        //return $client_ip;
+        return rand(195, 200).'.'.rand(120, 195).'.'.rand(150, 250).'.'.rand(1, 250);
     }
 
     /**

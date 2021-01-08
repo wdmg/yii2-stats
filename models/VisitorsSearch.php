@@ -17,6 +17,7 @@ class VisitorsSearch extends Visitors
     public $end_date;
 
     public $viewChart = true;
+    public $viewMap = false;
     public $viewRobots = false;
     public $viewOnlyRobots = false;
     public $viewReferrerURI = false;
@@ -34,7 +35,7 @@ class VisitorsSearch extends Visitors
     {
         return [
             [['period', 'start_date', 'end_date'], 'safe'],
-            [['viewChart', 'viewRobots', 'viewOnlyRobots', 'viewReferrerURI', 'viewReferrerHost', 'viewClientIP', 'viewClientOS', 'viewTransitionType', 'viewAuthUser', 'viewOptions'], 'safe'],
+            [['viewChart', 'viewMap', 'viewRobots', 'viewOnlyRobots', 'viewReferrerURI', 'viewReferrerHost', 'viewClientIP', 'viewClientOS', 'viewTransitionType', 'viewAuthUser', 'viewOptions'], 'safe'],
             [['request_uri', 'referer_uri', 'remote_addr'], 'string'],
             [['user_id', 'unique'], 'integer'],
             [['datetime'], 'date', 'format' => 'php:Y-m-d'],
@@ -57,6 +58,7 @@ class VisitorsSearch extends Visitors
     {
         return [
             'viewChart' => Yii::t('app/modules/stats', 'Show chart'),
+            'viewMap' => Yii::t('app/modules/stats', 'Show map'),
             'viewRobots' => Yii::t('app/modules/stats', 'Show robots'),
             'viewOnlyRobots' => Yii::t('app/modules/stats', 'Show only robots'),
             'viewReferrerURI' => Yii::t('app/modules/stats', 'Show referrer URI'),

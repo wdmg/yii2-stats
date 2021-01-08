@@ -29,6 +29,7 @@ use yii\widgets\ActiveForm;
                 ]); ?>
 
                 <?= $form->field($model, 'viewChart')->checkbox()->label(''); ?>
+                <?= $form->field($model, 'viewMap')->checkbox()->label(''); ?>
 
                 <?= $form->field($model, 'viewRobots')->checkbox()->label(''); ?>
                 <?= $form->field($model, 'viewOnlyRobots')->checkbox()->label(''); ?>

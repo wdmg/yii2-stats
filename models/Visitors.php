@@ -72,6 +72,7 @@ class Visitors extends ActiveRecord
             [['type'], 'integer', 'min' => 0, 'max' => 6],
             [['https', 'unique'], 'integer', 'min' => 0, 'max' => 1],
             [['user_id', 'robot_id'], 'integer'],
+            [['iso_code'], 'string', 'max' => 3],
             [['params'], 'string'],
             [['datetime', 'code'], 'safe'],
         ];
@@ -100,6 +101,7 @@ class Visitors extends ActiveRecord
             'datetime' => Yii::t('app/modules/stats', 'DateTime'),
             'type' => Yii::t('app/modules/stats', 'Type'),
             'code' => Yii::t('app/modules/stats', 'Code'),
+            'iso_code' => Yii::t('app/modules/stats', 'Location'),
             'session' => Yii::t('app/modules/stats', 'Session'),
             'unique' => Yii::t('app/modules/stats', 'Unique'),
             'params' => Yii::t('app/modules/stats', 'Params'),
