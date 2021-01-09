@@ -416,14 +416,15 @@ JS
         ],
     ]); ?>
     <?php Pjax::end(); ?>
-
-    <?= Html::a(Yii::t('app/modules/stats', 'Clear old data'), ['clear'], [
-        'class' => 'btn btn-danger pull-right',
-        'data' => [
-            'confirm' => Yii::t('app/modules/stats', 'Are you sure?'),
-            'method' => 'post',
-        ]
-    ]); ?>
+    <?php if (Yii::$app->authManager && $this->context->module->moduleExist('rbac') && Yii::$app->user->can('updatePosts')) : ?>
+        <?= Html::a(Yii::t('app/modules/stats', 'Clear old data'), ['clear'], [
+            'class' => 'btn btn-danger pull-right',
+            'data' => [
+                'confirm' => Yii::t('app/modules/stats', 'Are you sure?'),
+                'method' => 'post',
+            ]
+        ]); ?>
+    <?php endif; ?>
 </div>
 
 <?php $this->registerJs(<<< JS

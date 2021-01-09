@@ -13,6 +13,16 @@ use wdmg\stats\models\Robots;
 class RobotsSearch extends Robots
 {
 
+
+    /**
+     * {@inheritdoc}
+     */
+    public function rules()
+    {
+        return [
+            [['name', 'regexp'], 'safe'],
+        ];
+    }
     /**
      * {@inheritdoc}
      */

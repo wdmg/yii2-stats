@@ -51,6 +51,7 @@ To add a module to the project, add the following data in your configuration fil
             'class' => 'wdmg\stats\Module',
             'collectStats' => true,
             'collectProfiling' => true,
+            'detectLocation' => false,
             'routePrefix' => 'admin',
             'storagePeriod' => 0,
             'ignoreDev' => true,
@@ -88,6 +89,7 @@ To add a module to the project, add the following data in your configuration fil
 | Name                | Type    | Default       | Description                   |
 |:------------------- |:-------:|:------------- |:----------------------------- |
 | collectStats        | boolean | `true`        | Collect statistics with this module? |
+| detectLocation      | boolean | `false`       | Detect GEO location by IP? |
 | routePrefix         | string  | 'admin'       | Route prefix to the module control panel. |
 | storagePeriod       | integer | 0             | Days, how many to store statistics. 0 - infinity. |
 | useChart            | boolean | `true`        | Use charts when displaying statistics. |
@@ -120,6 +122,7 @@ Use the `Module::dashboardNavItems()` method of the module to generate a navigat
     ?>
     
 # Status and version [ready to use]
+* v.1.2.5 - RBAC implementation
 * v.1.2.4 - Update README.md
 * v.1.2.3 - MaxMind License Key default property fixed and update MaxMind for Win platform fixed
 * v.1.2.2 - Update README.md and dependencies versions

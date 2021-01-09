@@ -37,8 +37,8 @@ $this->registerJs(<<< JS
                 let id = $(this).data('id');
                 let name = $(this).data('name');
                 let count = $(this).data('count') || 0;
-                let tooltip = $(this).tooltip({
-                    trigger: 'hover focus',
+                $(this).tooltip({
+                    trigger: 'manual',
                     container: '.map-wrapper',
                     placement: 'top',
                     html: true,
@@ -46,35 +46,22 @@ $this->registerJs(<<< JS
                         return name + ': ' + count;
                     },
                 });
+            });
             
-                /*$('.map-wrapper').on('mousemove', function(e) {
-                    let position = ($(tooltip).attr("data-placement") != "") ? $(tooltip).attr("data-placement") : "right";
-                    let top = 0;
-                    let left = 0;
-                    if (position == "right") {
-                        top = +10;
-                        left = +10;
-                    } else if (position == "left") {
-                        top = +10;
-                        left = -10;
-                    } else if (position == "top") {
-                        top = 0;
-                        left = 0;
-                    } else if (position == "bottom") {
-                        top = 20;
-                        left = 0;
-                    }
-                    $(tooltip).css({
-                        top: (e.pageY + top),
-                        left: (e.pageX + left)
-                    });
-                    $(tooltip).tooltip('show');
-                });
-                
-                $('.map-wrapper').on('mouseleave', function(e) {
-                    $(tooltip).tooltip('hide');
-                });*/
-            
+            $('#world-map path').on({
+                'mouseenter': function(event) {
+                    $(this).tooltip('show');
+                },
+                'mousemove': function(event) {
+                    let tooltip = $(this).attr('aria-describedby');
+                    $('#' + tooltip).css({
+                        top: event.target.pageY - $('#world-map').offset().top,
+                        left: event.target.pageX - $('#world-map').offset().left
+                    }).css('display', "inline-block");
+                },
+                'mouseleave': function(event) {
+                    $('#world-map path').tooltip('hide');
+                }
             });
             
         }

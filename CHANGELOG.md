@@ -1,7 +1,8 @@
 Changelog
 =========
 
-## 1.2.*
+## 1.2.5 (2021-01-09)
+ * RBAC implementation
  * Added visitors map
  
 ## 1.2.4 (2020-06-14)

@@ -46,7 +46,7 @@ class LoadController extends Controller
         ];
 
         // If auth manager not configured use default access control
-        if(!Yii::$app->authManager) {
+        if (!Yii::$app->authManager) {
             $behaviors['access'] = [
                 'class' => AccessControl::class,
                 'rules' => [
@@ -55,6 +55,16 @@ class LoadController extends Controller
                         'allow' => true
                     ],
                 ]
+            ];
+        } else if ($this->module->moduleExist('admin/rbac')) { // Ok, then we check access according to the rules
+            $behaviors['access'] = [
+                'class' => AccessControl::class,
+                'rules' => [
+                    [
+                        'roles' => ['viewDashboard'],
+                        'allow' => true
+                    ],
+                ],
             ];
         }
 

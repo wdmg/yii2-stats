@@ -80,10 +80,24 @@ $robotsTypes = $searchModel::getRobotsTypeList();
             ],
             [
                 'class' => \yii\grid\ActionColumn::class,
-                'buttons'=> [
-                    'view' => function() {
-                        return false;
+                'visibleButtons' => [
+                    'view' => false,
+                    'update' => function() use ($module) {
+                        if (Yii::$app->authManager && $this->context->module->moduleExist('rbac') && !Yii::$app->user->can('updatePosts')) {
+                            return false;
+                        }
+
+                        return true;
                     },
+                    'delete' => function() use ($module) {
+                        if (Yii::$app->authManager && $this->context->module->moduleExist('rbac') && !Yii::$app->user->can('updatePosts')) {
+                            return false;
+                        }
+
+                        return true;
+                    },
+                ],
+                'buttons'=> [
                     'update' => function($url, $data, $key) use ($module) {
                         $url = Yii::$app->getUrlManager()->createUrl([$module->routePrefix . '/stats/robots/update', 'id' => $data['id']]);
                         return Html::a('<span class="glyphicon glyphicon-edit"></span>', $url, [
@@ -115,7 +129,8 @@ $robotsTypes = $searchModel::getRobotsTypeList();
         ],
     ]); ?>
     <div>
-        <?= Html::a(
+        <?php if (Yii::$app->authManager && $this->context->module->moduleExist('rbac') && Yii::$app->user->can('updatePosts')) : ?>
+            <?= Html::a(
                 Yii::t('app/modules/stats', 'Add new robot'),
                 Yii::$app->getUrlManager()->createUrl([$module->routePrefix . '/stats/robots/update', 'id' => 0]),
                 [
@@ -126,7 +141,8 @@ $robotsTypes = $searchModel::getRobotsTypeList();
                     'data-pjax' => '1'
                 ]
             );
-        ?>
+            ?>
+        <?php endif; ?>
     </div>
     <?php Pjax::end(); ?>
 </div>
