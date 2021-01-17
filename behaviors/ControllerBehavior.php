@@ -210,8 +210,8 @@ class ControllerBehavior extends Behavior
         if (!$client_ip)
             $client_ip = $request->remoteIP;
 
-        return rand(195, 200).'.'.rand(120, 195).'.'.rand(150, 250).'.'.rand(1, 250); // For testing only
-        //return $client_ip;
+        //return rand(195, 200).'.'.rand(120, 195).'.'.rand(150, 250).'.'.rand(1, 250); // For testing only
+        return $client_ip;
     }
 
     /**
