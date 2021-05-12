@@ -382,10 +382,9 @@ JS
                     'view' => function($url, $data, $key) use ($module) {
                         $url = Yii::$app->getUrlManager()->createUrl([$module->routePrefix . '/stats/visitors/view', 'id' => $data['id']]);
                         return Html::a('<span class="glyphicon glyphicon-eye-open"></span>', $url, [
-                            'class' => 'visitor-details-link',
                             'title' => Yii::t('yii', 'View'),
                             'data-toggle' => 'modal',
-                            'data-target' => '#visitorDetails',
+                            'data-target' => '#visitorDetailsModal',
                             'data-id' => $key,
                             'data-pjax' => '1'
                         ]);
@@ -427,22 +426,37 @@ JS
     <?php endif; ?>
 </div>
 
-<?php $this->registerJs(<<< JS
-$('body').delegate('.visitor-details-link', 'click', function(event) {
-    event.preventDefault();
-    $.get(
-        $(this).attr('href'),
-        function (data) {
-            $('#visitorDetails .modal-body').html(data);
-            $('#visitorDetails').modal();
-        }  
-    );
-});
+<?php
+$this->registerJs(<<< JS
+    $('body').delegate('[data-toggle="modal"][data-target]', 'click', function(event) {
+        
+        event.preventDefault();
+        var target = $(event.target).data('target');
+        $.get(
+            $(this).attr('href'),
+            function (data) {
+                
+                $(target).find('.modal-body').html($(data).remove('.modal-footer'));
+                if ($(data).find('.modal-footer').length > 0) {
+                    $(target).find('.modal-footer').remove();
+                    $(target).find('.modal-content').append($(data).find('.modal-footer'));
+                }
+                
+                if ($(target).find('button[type="submit"]').length > 0 && $(target).find('form').length > 0) {
+                    $(target).find('button[type="submit"]').on('click', function(event) {
+                        event.preventDefault();
+                        $(target).find('form').submit();
+                    });
+                }
+                
+                $(target).modal();
+            }  
+        );
+    });
 JS
 ); ?>
-
 <?php Modal::begin([
-    'id' => 'visitorDetails',
+    'id' => 'visitorDetailsModal',
     'header' => '<h4 class="modal-title">'.Yii::t('app/modules/stats', 'Visit Information').'</h4>',
     'footer' => '<a href="#" class="btn btn-primary" data-dismiss="modal">'.Yii::t('app/modules/stats', 'Close').'</a>',
     'clientOptions' => [

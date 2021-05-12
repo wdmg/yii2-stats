@@ -1,6 +1,9 @@
 Changelog
 =========
 
+## 1.2.*
+ * Show modal call fixed
+
 ## 1.2.5 (2021-01-09)
  * RBAC implementation
  * Added visitors map
