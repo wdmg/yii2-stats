@@ -11,7 +11,7 @@ Statistics module for Yii2. The module takes into account site visitors with det
 
 This module is an integral part of the [Butterfly.СMS](https://butterflycms.com/) content management system, but can also be used as an standalone extension.
 
-Copyrights (c) 2019-2021 [W.D.M.Group, Ukraine](https://wdmg.com.ua/)
+Copyrights (c) 2019-2023 [W.D.M.Group, Ukraine](https://wdmg.com.ua/)
 
 # Requirements 
 * PHP 5.6 or higher
@@ -122,12 +122,9 @@ Use the `Module::dashboardNavItems()` method of the module to generate a navigat
     ?>
     
 # Status and version [ready to use]
+* v.1.3.0 - Update copyrights, fix nav menu
 * v.1.2.5 - RBAC implementation
 * v.1.2.4 - Update README.md
-* v.1.2.3 - MaxMind License Key default property fixed and update MaxMind for Win platform fixed
-* v.1.2.2 - Update README.md and dependencies versions
-* v.1.2.1 - Added pagination, fixed updating GeoIP database from MaxMind.com
-* v.1.2.0 - Collect profiling data
 
 # Copyright and License
 This product also includes GeoLite2 data created by MaxMind, available from [https://www.maxmind.com](https://www.maxmind.com)
